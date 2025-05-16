@@ -50,6 +50,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/dashboard/blog', BlogController::class)->names('dashboard.blog');
     Route::get('/dashboard/blog/destroy/{id}', [BlogController::class, 'destroy']);
 
+    //contact 
+    Route::get('/dashboard/contact/messages', [ContactController::class, 'messages'])->name('dashboard.contact.messages');
+    Route::get('/dashboard/contact/messages/{contact}', [ContactController::class, 'showMessage'])->name('dashboard.contact.show');
+    Route::delete('/dashboard/contact/messages/{contact}', [ContactController::class, 'destroyMessage'])->name('dashboard.contact.destroy');
 
     // Produk (sebelumnya Portfolio)
     Route::resource('/dashboard/product', ProductController::class)->names('dashboard.product');

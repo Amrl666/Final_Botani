@@ -50,6 +50,11 @@
                                 Eduwisata
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('dashboard.contact.messages') }}">
+                                Pesan
+                            </a>
+                        </li>
                         <li class="nav-item mt-3">
                             <form method="POST" action="{{ route('logout') }}">
                               @csrf

@@ -9,7 +9,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        return view('frontend.contact.index');
+        return view('Frontend.contact.index');
     }
 
     public function store(Request $request)
@@ -23,7 +23,7 @@ class ContactController extends Controller
 
         Contact::create($validated);
 
-        return redirect()->route('contact')
+        return redirect('contact')
             ->with('success', 'Pesan Anda telah terkirim. Terima kasih!');
     }
 
