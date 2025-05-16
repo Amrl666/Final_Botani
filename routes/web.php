@@ -1,0 +1,82 @@
+<?php
+
+
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\EduwisataController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Rute-rute ini dikelola oleh RouteServiceProvider yang sudah termasuk 
+| dalam grup "web" middleware.
+|
+*/
+
+// Halaman utama
+Route::get('/', [FrontendController::class, 'index']);
+
+// Halaman kontak
+Route::get('/contact', [ContactController::class, 'index']);
+Route::post('/contact/send', [ContactController::class, 'store']);
+
+// Middleware otentikasi untuk dashboard
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    // Dashboard utama
+    Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+
+    // Gallery
+    Route::resource('/dashboard/gallery', GalleryController::class);
+    Route::get('/dashboard/gallery/destroy/{id}', [GalleryController::class, 'destroy']);
+    Route::get('/dashboard/gallery/edit/{id}', [GalleryController::class, 'edit']);
+    Route::post('/dashboard/gallery/update', [GalleryController::class, 'update']);
+
+    // Gallery video
+    Route::resource('/dashboard/videos', VideoController::class);
+    Route::get('/dashboard/videos/destroy/{id}', [VideoController::class, 'destroy']);
+    Route::get('/dashboard/videos/edit/{id}', [VideoController::class, 'edit']);
+    Route::post('/dashboard/videos/update', [VideoController::class, 'update']);
+
+    // Blog
+    Route::resource('/dashboard/blog', BlogController::class);
+    Route::get('/dashboard/blog/destroy/{id}', [BlogController::class, 'destroy']);
+
+
+    // Produk (sebelumnya Portfolio)
+    Route::resource('/dashboard/product', ProductController::class);
+    Route::get('/dashboard/product/destroy/{id}', [ProductController::class, 'destroy']);
+    Route::get('/dashboard/product/edit/{id}', [ProductController::class, 'edit']);
+
+    // Prestasi (sebelumnya Misi)
+    Route::resource('/dashboard/prestasi', PrestasiController::class);
+    Route::get('/dashboard/prestasi/edit/{id}', [PrestasiController::class, 'edit']);
+    Route::post('/dashboard/prestasi/update', [PrestasiController::class, 'update']);
+
+    // Eduwisata dengan fitur jadwal
+    Route::resource('/dashboard/eduwisata', EduwisataController::class);
+    Route::get('/dashboard/eduwisata/schedule/{id}', [EduwisataController::class, 'schedule']);
+});
+
+// Frontend pages
+// Frontend pages
+Route::get('gallery', [GalleryController::class, 'index_fr'])->name('gallery');
+Route::get('gallery/videos', [VideoController::class, 'index_fr'])->name('videos');
+Route::get('/blog', [BlogController::class, 'index_fr'])->name('blog');
+Route::get('blog/{blog:title}', [BlogController::class, 'show'])->name('blog.show');
+
+Route::get('product', [ProductController::class, 'index_fr'])->name('product.index_fr');
+Route::get('profile', [PrestasiController::class, 'index_fr'])->name('profile');
+
+Route::get('eduwisata', [EduwisataController::class, 'index_fr'])->name('eduwisata');
+Route::get('eduwisata/schedule', [EduwisataController::class, 'schedule_fr'])->name('eduwisata.schedule');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
