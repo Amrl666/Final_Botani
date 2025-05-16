@@ -35,35 +35,39 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
 
     // Gallery
-    Route::resource('/dashboard/gallery', GalleryController::class);
+    Route::resource('/dashboard/gallery', GalleryController::class)->names('dashboard.gallery');
     Route::get('/dashboard/gallery/destroy/{id}', [GalleryController::class, 'destroy']);
     Route::get('/dashboard/gallery/edit/{id}', [GalleryController::class, 'edit']);
     Route::post('/dashboard/gallery/update', [GalleryController::class, 'update']);
 
     // Gallery video
-    Route::resource('/dashboard/videos', VideoController::class);
+    Route::resource('/dashboard/videos', VideoController::class)->names('dashboard.videos');
     Route::get('/dashboard/videos/destroy/{id}', [VideoController::class, 'destroy']);
     Route::get('/dashboard/videos/edit/{id}', [VideoController::class, 'edit']);
     Route::post('/dashboard/videos/update', [VideoController::class, 'update']);
 
     // Blog
-    Route::resource('/dashboard/blog', BlogController::class);
+    Route::resource('/dashboard/blog', BlogController::class)->names('dashboard.blog');
     Route::get('/dashboard/blog/destroy/{id}', [BlogController::class, 'destroy']);
 
 
     // Produk (sebelumnya Portfolio)
-    Route::resource('/dashboard/product', ProductController::class);
+    Route::resource('/dashboard/product', ProductController::class)->names('dashboard.product');
     Route::get('/dashboard/product/destroy/{id}', [ProductController::class, 'destroy']);
     Route::get('/dashboard/product/edit/{id}', [ProductController::class, 'edit']);
 
     // Prestasi (sebelumnya Misi)
-    Route::resource('/dashboard/prestasi', PrestasiController::class);
+    Route::resource('/dashboard/prestasi', PrestasiController::class)->names('dashboard.prestasi');
     Route::get('/dashboard/prestasi/edit/{id}', [PrestasiController::class, 'edit']);
     Route::post('/dashboard/prestasi/update', [PrestasiController::class, 'update']);
 
     // Eduwisata dengan fitur jadwal
-    Route::resource('/dashboard/eduwisata', EduwisataController::class);
-    Route::get('/dashboard/eduwisata/schedule/{id}', [EduwisataController::class, 'schedule']);
+    Route::resource('/dashboard/eduwisata', EduwisataController::class)->names('dashboard.eduwisata');
+    Route::get('/dashboard/eduwisata/schedule/{id}', [EduwisataController::class, 'schedule'])->name('dashboard.eduwisata.schedule');
+    // Menyimpan jadwal baru
+    Route::post('/dashboard/eduwisata/schedule/store', [EduwisataController::class, 'storeSchedule'])->name('dashboard.eduwisata.storeSchedule');
+    // Menghapus jadwal tertentu
+    Route::delete('/dashboard/eduwisata/schedule/destroy/{id}', [EduwisataController::class, 'destroySchedule'])->name('dashboard.eduwisata.destroySchedule');
 });
 
 // Frontend pages

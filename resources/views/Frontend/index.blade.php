@@ -52,6 +52,37 @@
     </div>
 </section>
 
+
+<!-- About Section -->
+<div class="container mx-auto px-4 py-16">
+    <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-8 md:mb-0">
+            <img src="{{ asset('images/kelompok-tani.jpg') }}" alt="Kelompok Tani" class="rounded-lg shadow-lg w-full">
+            <div class="bg-green-600 text-white p-3 rounded-b-lg -mt-1 text-center">
+                Winongo Asri Kelompok Tani
+            </div>
+        </div>
+        <div class="md:w-1/2 md:pl-12">
+            <h2 class="text-green-600 font-bold text-2xl mb-2">KELOMPOK TANI</h2>
+            <h3 class="text-gray-800 font-bold text-3xl mb-4">WINONGO ASRI PATANGPULUHAN</h3>
+            <p class="text-gray-700 mb-6">
+                Kelompok Tani Winongo Asri awalnya salah satu UKM kecil di daerah Wirobrajan yang bergerak di bidang pertanian, Kemudian Tani ini memiliki kelompokkan yang bermitra dengan masyarakat yang selalu intens untuk berdiskusi mengenai hal-hal yang mengangkat pertanian.
+            </p>
+            <p class="text-gray-700 mb-6">
+                Kelompok Tani ini diawalinya dengan masih yang sangat sederhana. Tidak hanya mengkhususkan perkembangannya kemajuan bagi kelompok tani ini menunda permintaan yang dibutuhkan publik hingga untuk ditingkat lokal, penjualan sayuran dan cabai adalah yang produk unggulan mereka, tapi tetapi begitu keterbatasan lahan ini membuat tanaman cabai dan tomat, masih ada dorongan kelompok tani ini mampu bertambah sayuran yang lainnya mulai dan tuna dan begitupun dengan labu, dll demoplot tersebut sudah mulai ada dan menyediakan paket edu-wisata yang bisa disinilah cukup menarik karena mereka menurunkan pengalaman kepada orang-orang mengenai pertanian Hidroponik dan juga berbagi hal yang bisa dikembangkan.
+            </p>
+            <a href="#" class="text-green-600 font-semibold hover:underline flex items-center">
+                Baca selengkapnya <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <div class="mt-8 italic text-gray-600">
+                "Tanam di Bibit dahulu laut hasil buahnya nanti kali"
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Produk Unggulan --}}
 @if($products->count())
 <section class="py-12 bg-white">
