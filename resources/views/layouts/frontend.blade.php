@@ -10,6 +10,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -42,11 +44,8 @@
     </main>
 
     {{-- Footer --}}
-    <footer class="bg-green-700 text-white py-6 mt-10">
-        <div class="container mx-auto text-center text-sm">
-            &copy; {{ date('Y') }} BO-TANI. Seluruh hak cipta dilindungi.
-        </div>
-    </footer>
+    @include('partials.footer')
+
 
     @stack('modals')
     @livewireScripts
