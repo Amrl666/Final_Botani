@@ -10,6 +10,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\EduwisataController;
+use App\Http\Controllers\PerijinanControler;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,7 +81,7 @@ Route::get('gallery', [GalleryController::class, 'index_fr'])->name('gallery');
 Route::get('gallery/videos', [VideoController::class, 'index_fr'])->name('videos');
 Route::get('/blog', [BlogController::class, 'index_fr'])->name('blog');
 Route::get('blog/{blog:title}', [BlogController::class, 'show'])->name('blog.show');
-
+Route::get('perijinan', [PerijinanControler::class,'index_fr'])->name('perijinan');
 Route::get('product', [ProductController::class, 'index_fr'])->name('product.index_fr');
 Route::get('profile', [PrestasiController::class, 'index_fr'])->name('profile');
 

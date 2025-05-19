@@ -20,4 +20,5 @@ class EduwisataSchedule extends Model
     {
         return $this->belongsTo(Eduwisata::class);
     }
+
 }

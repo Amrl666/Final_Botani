@@ -31,6 +31,7 @@
                 <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
                 <a href="{{ route('videos') }}" class="hover:underline">Video</a>
                 <a href="{{ route('blog') }}" class="hover:underline">Blog</a>
+                <a href="{{ route('perijinan') }}" class="hover:underline">Perijinan</a>
                 <a href="{{ route('profile') }}" class="hover:underline">Profil</a>
                 <a href="{{ route('eduwisata') }}" class="hover:underline">Eduwisata</a>
                 <a href="{{ route('contact.index') }}" class="hover:underline">Kontak</a>

@@ -20,4 +20,5 @@ class Eduwisata extends Model
     {
         return $this->hasMany(EduwisataSchedule::class);
     }
+
 }

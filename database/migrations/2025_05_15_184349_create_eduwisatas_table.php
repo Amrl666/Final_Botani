@@ -24,7 +24,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('eduwisata_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->time('time');
+            $table->time('time');   
             $table->integer('max_participants');
             $table->timestamps();
         });
