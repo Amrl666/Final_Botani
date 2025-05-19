@@ -81,24 +81,25 @@ class EduwisataController extends Controller
         return view('dashboard.eduwisata.schedule', compact('eduwisata', 'schedules'));
     }
 
-    public function storeSchedule(Request $request, Eduwisata $eduwisata)
+    public function storeSchedule(Request $request)
     {
         $validated = $request->validate([
+            'eduwisata_id' => 'required|exists:eduwisatas,id',
             'date' => 'required|date',
             'time' => 'required',
             'max_participants' => 'required|integer|min:1',
         ]);
 
-        $eduwisata->schedules()->create($validated);
+        EduwisataSchedule::create($validated);
 
-        return redirect()->route('dashboard.eduwisata.schedule', $eduwisata)
-            ->with('success', 'Schedule added successfully.');
+        return redirect()->route('dashboard.eduwisata.schedule', $validated['eduwisata_id'])
+            ->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
     public function destroySchedule(EduwisataSchedule $schedule)
     {
         $schedule->delete();
-        return back()->with('success', 'Schedule deleted successfully.');
+        return back()->with('success', 'Jadwal berhasil dihapus.');
     }
 
     // Frontend Methods

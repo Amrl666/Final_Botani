@@ -16,6 +16,11 @@ class EduwisataSchedule extends Model
         'max_participants'
     ];
 
+    protected $casts = [
+    'date' => 'date',
+    ];
+
+
     public function eduwisata()
     {
         return $this->belongsTo(Eduwisata::class);

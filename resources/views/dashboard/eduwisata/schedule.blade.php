@@ -46,9 +46,10 @@
                     <h5 class="modal-title" id="addScheduleModalLabel">Add New Schedule</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('dashboard.eduwisata.storeSchedule', $eduwisata) }}" method="POST">
+                <form action="{{ route('dashboard.eduwisata.storeSchedule') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
                         <div class="mb-3">
                             <label for="date" class="form-label">Date</label>
                             <input type="date" class="form-control" id="date" name="date" required>

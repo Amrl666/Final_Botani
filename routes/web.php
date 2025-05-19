@@ -68,11 +68,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Eduwisata dengan fitur jadwal
     Route::resource('/dashboard/eduwisata', EduwisataController::class)->names('dashboard.eduwisata');
-    Route::get('/dashboard/eduwisata/schedule/{id}', [EduwisataController::class, 'schedule'])->name('dashboard.eduwisata.schedule');
+    // Menampilkan halaman daftar jadwal
+    Route::get('/dashboard/eduwisata/schedule/{eduwisata}', [EduwisataController::class, 'schedule'])
+        ->name('dashboard.eduwisata.schedule');
+
     // Menyimpan jadwal baru
-    Route::post('/dashboard/eduwisata/schedule/store', [EduwisataController::class, 'storeSchedule'])->name('dashboard.eduwisata.storeSchedule');
-    // Menghapus jadwal tertentu
-    Route::delete('/dashboard/eduwisata/schedule/destroy/{id}', [EduwisataController::class, 'destroySchedule'])->name('dashboard.eduwisata.destroySchedule');
+    Route::post('/dashboard/eduwisata/schedule/store', [EduwisataController::class, 'storeSchedule'])
+        ->name('dashboard.eduwisata.storeSchedule');
+
+    // Menghapus jadwal
+    Route::delete('/dashboard/eduwisata/schedule/destroy/{schedule}', [EduwisataController::class, 'destroySchedule'])
+        ->name('dashboard.eduwisata.destroySchedule');
+
 });
 
 // Frontend pages
