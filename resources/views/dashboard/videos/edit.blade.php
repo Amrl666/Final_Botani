@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Edit Video</h1>
     
-    <form action="{{ route('dashboard.videos.update', $video) }}" method="POST">
+    <form action="{{ route('dashboard.videos.update', $video) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         
@@ -14,12 +14,12 @@
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ $video->title }}" required>
         </div>
-        
+
         <div class="mb-3">
-            <label for="video" class="form-label">Video URL</label>
-            <input type="url" class="form-control" id="video" name="video" value="{{ $video->video }}" required>
+            <label for="video" class="form-label">Video</label>
+            <input type="file" class="form-control" id="video" name="video" value="{{ $video->video }}" required>
         </div>
-        
+
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3">{{ $video->description }}</textarea>

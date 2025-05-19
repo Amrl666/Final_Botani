@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Add New Video</h1>
     
-    <form action="{{ route('dashboard.videos.store') }}" method="POST">
+    <form action="{{ route('dashboard.videos.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
         <div class="mb-3">
@@ -15,8 +15,8 @@
         </div>
         
         <div class="mb-3">
-            <label for="video" class="form-label">Video URL</label>
-            <input type="url" class="form-control" id="video" name="video" required>
+            <label for="video" class="form-label">Video</label>
+            <input type="file" class="form-control" id="video" name="video" required>
         </div>
         
         <div class="mb-3">

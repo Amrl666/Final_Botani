@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('video');
-            $table->string('name');
+            $table->string('name')->default('Untitled Video'); // Menambahkan default value
             $table->string('title');
+            $table->string('video');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

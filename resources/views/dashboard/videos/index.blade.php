@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Video URL</th>
+                    <th>Video</th>
                     <th>Actions</th>
                 </tr>
             </thead>

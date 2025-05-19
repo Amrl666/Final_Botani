@@ -10,6 +10,6 @@ class Video extends Model
     /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
     protected $fillable = [
-        'name', 'title', 'video'
+        'name', 'title', 'video', 'description'
     ];
 }

@@ -22,7 +22,7 @@ return new class extends Migration
 
         Schema::create('eduwisata_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('eduwisata_id')->constrained();
+            $table->foreignId('eduwisata_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->time('time');
             $table->integer('max_participants');
@@ -35,7 +35,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('eduwisatas');
         Schema::dropIfExists('eduwisata_schedules');
+        Schema::dropIfExists('eduwisatas');
     }
+
 };

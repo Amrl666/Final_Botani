@@ -12,7 +12,10 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100">
                     <div class="ratio ratio-16x9">
-                        <iframe src="{{ $video->video }}" allowfullscreen></iframe>
+                        <video class="w-100" controls>
+                            <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
+                            Browser tidak mendukung tag video.
+                        </video>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ $video->title }}</h5>

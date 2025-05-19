@@ -10,7 +10,6 @@ class Gallery extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'title',
         'image',
         'description'
