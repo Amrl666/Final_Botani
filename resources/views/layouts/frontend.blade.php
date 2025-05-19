@@ -21,11 +21,17 @@
 </head>
 <body class="font-sans antialiased bg-gray-100 text-gray-800">
 
+    
     {{-- Navbar --}}
-    <nav class="bg-green-700 text-white shadow">
+    <nav class="bg-white text-black shadow">
         <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <a href="{{ url('/') }}" class="text-2xl font-bold">BO-TANI</a>
-            <div class="flex flex-wrap justify-center md:justify-end space-x-4 mt-2 md:mt-0 text-sm md:text-base">
+            <!-- Logo - BO berwarna hijau dan TANI berwarna hitam, tetap di kiri -->
+            <a href="{{ url('/') }}" class="text-2xl font-bold flex items-center">
+                <span class="text-green-500">BO</span><span class="text-black">TANI</span>
+            </a>
+
+            <!-- Menu Navigation - Tetap di tengah -->
+            <div class="flex flex-wrap justify-center space-x-4 mt-2 md:mt-0 text-sm md:text-base w-full md:w-auto">
                 <a href="{{ url('/') }}" class="hover:underline">Beranda</a>
                 <a href="{{ route('product.index_fr') }}" class="hover:underline">Produk</a>
                 <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
@@ -38,6 +44,7 @@
             </div>
         </div>
     </nav>
+
 
     {{-- Halaman Konten --}}
     <main class="py-8">

@@ -3,9 +3,38 @@
 @section('title', 'BO-TANI - Beranda')
 
 @section('content')
+<style>
+    .about-image-wrapper {
+        width: 100%; /* Gambar mengambil lebar penuh kontainer */
+        max-width: 500px; /* Maksimal lebar gambar */
+        height: 400px; /* Tinggi tetap untuk gambar */
+        margin: 0 auto; /* Memusatkan gambar */
+        border-radius: 20px 20px 0 0; /* Sudut melengkung hanya di bagian atas */
+        overflow: hidden; /* Menyembunyikan bagian gambar yang keluar dari batas */
+        position: relative;
+    }
+
+    .about-image-wrapper img {
+        object-fit: cover; /* Menjaga proporsi gambar agar tetap bagus, dan gambar tidak terdistorsi */
+        width: 100%; /* Memastikan gambar memenuhi lebar kontainer */
+        height: 100%; /* Menjaga agar gambar sesuai dengan tinggi yang telah ditentukan */
+    }
+
+    .about-image-caption {
+        background-color: #38a169; /* Warna hijau */
+        color: white;
+        padding: 8px; /* Padding lebih kecil agar lebih rapi */
+        text-align: center;
+        font-weight: bold;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+
 {{-- Hero Section --}}
 <section class="bg-green-50 py-10">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+    <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 mb-6 md:mb-0">
             <h1 class="text-4xl font-bold text-green-800 mb-4">Menyemai Harapan, <span class="text-green-600">Menuai Sukses!</span></h1>
             <p class="text-gray-700 mb-6">
@@ -17,19 +46,19 @@
             </div>
         </div>
         <div class="col-lg-6 order-lg-2 order-1 mb-4 mb-lg-0">
-                <div class="hero-image position-relative">
-                    <img src="{{ asset('images/content/sawizoom.png') }}" alt="Kelompok Tani" class="img-fluid rounded shadow">
-                    <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon icon-tomato">
-                    <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon icon-garlic">
-                    <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon icon-chili">
-                </div>
+            <div class="hero-image position-relative">
+                <img src="{{ asset('images/content/sawizoom.png') }}" alt="Kelompok Tani" class="img-fluid rounded shadow">
+                <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon icon-tomato">
+                <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon icon-garlic">
+                <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon icon-chili">
             </div>
+        </div>
     </div>
 </section>
 
 {{-- Akses Cepat --}}
 <section class="py-12 bg-green-100">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-6 lg:px-12">
         <h2 class="text-2xl font-bold text-center mb-8 text-green-800">Akses Cepat</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('blog') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
@@ -52,23 +81,22 @@
     </div>
 </section>
 
-
 <!-- About Section -->
-<div class="container mx-auto px-4 py-16">
+<div class="container mx-auto px-6 lg:px-12 py-16">
     <div class="flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 mb-8 md:mb-0">
-            <img src="{{ asset('images/kelompok-tani.jpg') }}" alt="Kelompok Tani" class="rounded-lg shadow-lg w-full">
-            <div class="bg-green-600 text-white p-3 rounded-b-lg -mt-1 text-center">
+        <div class="md:w-1/2 mb-8 md:mb-0 about-image-wrapper">
+            <img src="{{ asset('images/content/kelompok-tani.jpg') }}" alt="Kelompok Tani" class="rounded-lg shadow-lg w-full">
+            <div class="about-image-caption">
                 Winongo Asri Kelompok Tani
             </div>
         </div>
         <div class="md:w-1/2 md:pl-12">
             <h2 class="text-green-600 font-bold text-2xl mb-2">KELOMPOK TANI</h2>
             <h3 class="text-gray-800 font-bold text-3xl mb-4">WINONGO ASRI PATANGPULUHAN</h3>
-            <p class="text-gray-700 mb-6">
+            <p class="text-gray-700 mb-6 text-justify">
                 Kelompok Tani Winongo Asri awalnya salah satu UKM kecil di daerah Wirobrajan yang bergerak di bidang pertanian, Kemudian Tani ini memiliki kelompokkan yang bermitra dengan masyarakat yang selalu intens untuk berdiskusi mengenai hal-hal yang mengangkat pertanian.
             </p>
-            <p class="text-gray-700 mb-6">
+            <p class="text-gray-700 mb-6 text-justify">
                 Kelompok Tani ini diawalinya dengan masih yang sangat sederhana. Tidak hanya mengkhususkan perkembangannya kemajuan bagi kelompok tani ini menunda permintaan yang dibutuhkan publik hingga untuk ditingkat lokal, penjualan sayuran dan cabai adalah yang produk unggulan mereka, tapi tetapi begitu keterbatasan lahan ini membuat tanaman cabai dan tomat, masih ada dorongan kelompok tani ini mampu bertambah sayuran yang lainnya mulai dan tuna dan begitupun dengan labu, dll demoplot tersebut sudah mulai ada dan menyediakan paket edu-wisata yang bisa disinilah cukup menarik karena mereka menurunkan pengalaman kepada orang-orang mengenai pertanian Hidroponik dan juga berbagi hal yang bisa dikembangkan.
             </p>
             <a href="#" class="text-green-600 font-semibold hover:underline flex items-center">
@@ -86,7 +114,7 @@
 {{-- Produk Unggulan --}}
 @if($products->count())
 <section class="py-12 bg-white">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-6 lg:px-12">
         <h2 class="text-2xl font-bold text-green-800 mb-6">Produk Unggulan</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             @foreach ($products as $product)
@@ -105,7 +133,7 @@
 {{-- Blog Terbaru --}}
 @if($latestBlogs->count())
 <section class="py-12 bg-green-50">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-6 lg:px-12">
         <h2 class="text-2xl font-bold text-green-800 mb-6">Berita Terkini</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach ($latestBlogs as $blog)
@@ -128,7 +156,7 @@
 {{-- Galeri --}}
 @if($galleries->count())
 <section class="py-12 bg-white">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-6 lg:px-12">
         <h2 class="text-2xl font-bold text-green-800 mb-6">Galeri Kegiatan</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             @foreach ($galleries as $gallery)
