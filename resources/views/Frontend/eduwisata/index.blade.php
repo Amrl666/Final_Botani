@@ -5,14 +5,12 @@
 @section('content')
 
 <style>
-    /* Bagian umum container */
     .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
     }
 
-    /* Heading utama */
     h1 {
         font-size: 2rem;
         font-weight: bold;
@@ -21,117 +19,98 @@
         margin-bottom: 40px;
     }
 
-    /* Grid untuk 4 kartu per baris */
     .row {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 kolom */
-        gap: 20px; /* Jarak antar kartu */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 
-    /* Kartu Eduwisata */
+    /* Card dengan border hitam tipis dan background hijau muda */
     .card {
-        border: 1px solid #ddd;
+        background-color: #d7f3d3; /* hijau muda */
+        border: 1px solid #000; /* border hitam tipis */
         border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
         overflow: hidden;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        transition: background-color 0.2s ease;
     }
 
     .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #c5e7be;
     }
 
+    /* Foto full lebar di atas */
     .card-img-top {
+        width: 100%;
         height: 180px;
         object-fit: cover;
-        width: 100%;
-        border-bottom: 1px solid #ddd;
+        border-radius: 10px 10px 0 0;
+        display: block;
     }
 
-    .card-body {
-        padding: 20px;
+    /* Header bawah foto: judul kiri, lokasi kanan */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px 8px;
     }
 
     .card-title {
-        font-size: 1.2rem;
-        font-weight: bold;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
         color: #333;
+    }
+
+    .card-location {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2f5d27; /* hijau tua */
+    }
+
+    /* Deskripsi */
+    .card-body {
+        padding: 0 15px 15px;
+        flex-grow: 1;
     }
 
     .card-text {
-        font-size: 0.95rem;
-        color: #666;
-        margin-bottom: 15px;
-    }
-
-    .card-text strong {
-        font-weight: bold;
-        color: #333;
-    }
-
-    /* Jadwal Eduwisata */
-    .list-group-item {
-        font-size: 0.9rem;
-        color: #444;
-        border: none;
-    }
-
-    .list-group-item:hover {
-        background-color: #f8f9fa;
-    }
-
-    .h5 {
         font-size: 1rem;
-        font-weight: bold;
-        color: #333;
+        color: #334d1a;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Tombol "View All Schedules" */
-    .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-        font-size: 0.9rem;
-        padding: 8px 15px;
-        border-radius: 25px;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-    }
-
-    /* Mengatur agar tombol berada di tengah */
-    .card-footer {
-        display: flex;
-        justify-content: center; /* Memusatkan tombol secara horizontal */
-        padding: 15px;
-    }
-
-    /* Responsif untuk tampilan mobile */
+    /* Responsif */
     @media (max-width: 1200px) {
         .row {
-            grid-template-columns: repeat(3, 1fr); /* 3 kolom untuk layar lebih kecil */
+            grid-template-columns: repeat(3, 1fr);
         }
     }
 
     @media (max-width: 992px) {
         .row {
-            grid-template-columns: repeat(2, 1fr); /* 2 kolom untuk layar lebih kecil */
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
     @media (max-width: 768px) {
         .row {
-            grid-template-columns: 1fr; /* 1 kolom untuk layar sangat kecil */
+            grid-template-columns: 1fr;
         }
 
         h1 {
             font-size: 1.5rem;
-        }
-
-        .btn-success {
-            font-size: 0.85rem;
         }
     }
 </style>
@@ -142,34 +121,21 @@
         
         <div class="row">
             @foreach($eduwisatas as $eduwisata)
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
+                <a href="{{ route('eduwisata.schedule') }}" class="card">
                     @if($eduwisata->image)
-                        <img src="{{ asset('storage/' . $eduwisata->image) }}" class="card-img-top" alt="{{ $eduwisata->name }}">
+                        <img src="{{ asset('storage/' . $eduwisata->image) }}" alt="{{ $eduwisata->name }}" class="card-img-top">
                     @endif
-                    <div class="card-body">
+                    <div class="card-header">
                         <h2 class="card-title">{{ $eduwisata->name }}</h2>
-                        <p class="card-text"><strong>Location:</strong> {{ $eduwisata->location }}</p>
+                        <div class="card-location">{{ $eduwisata->location }}</div>
+                    </div>
+                    <div class="card-body">
                         <p class="card-text">{{ $eduwisata->description }}</p>
-                        
-                        @if($eduwisata->schedules->count() > 0)
-                            <h3 class="h5 mt-4">Available Schedules</h3>
-                            <ul class="list-group list-group-flush mb-3">
-                                @foreach($eduwisata->schedules->take(3) as $schedule)
-                                <li class="list-group-item">
-                                    {{ $schedule->date->format('F j, Y') }} at {{ $schedule->time }} (Max: {{ $schedule->max_participants }})
-                                </li>
-                                @endforeach
-                            </ul>
-                        @endif
                     </div>
-                    <div class="card-footer bg-transparent">
-                        <a href="{{ route('eduwisata.schedule') }}" class="btn btn-success">View All Schedules</a>
-                    </div>
-                </div>
-            </div>
+                </a>
             @endforeach
         </div>
     </div>
 </section>
+
 @endsection
