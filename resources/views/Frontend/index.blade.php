@@ -30,28 +30,52 @@
         bottom: 0;
         width: 100%;
     }
+    .hero-image {
+  background: transparent;
+}
+
 </style>
 
 {{-- Hero Section --}}
 <section class="bg-green-50 py-10">
     <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 mb-6 md:mb-0">
-            <h1 class="text-4xl font-bold text-green-800 mb-4">Menyemai Harapan, <span class="text-green-600">Menuai Sukses!</span></h1>
-            <p class="text-gray-700 mb-6">
-                BO-TANI adalah platform digital dari Kelompok Tani Winongo Asri untuk promosi produk pertanian, reservasi edu-wisata, dan akses informasi pertanian terkini.
-            </p>
-            <div class="flex gap-4">
-                <a href="{{ route('eduwisata') }}" class="bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition">Lihat Eduwisata</a>
-                <a href="{{ route('product.index_fr') }}" class="border border-green-700 text-green-700 px-6 py-3 rounded hover:bg-green-100 transition">Belanja Produk</a>
+        <!-- Gambar di kiri -->
+        <div class="md:w-1/2 mb-6 md:mb-0 relative">
+            <div class="hero-image relative w-full max-w-md mx-auto">
+                <img src="{{ asset('images/content/sawizoom.png') }}" alt="Kelompok Tani" class="img-fluid rounded shadow">
+
+                <!-- Ikon tersebar, cuma 3 macam -->
+                <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon absolute" style="top: 10%; left: 15%; width: 45px; animation: floatUpDown 5s ease-in-out infinite;">
+                <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon absolute" style="top: 40%; right: 20%; width: 40px; animation: floatLeftRight 4s ease-in-out infinite;">
+                <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon absolute" style="bottom: 15%; left: 25%; width: 50px; animation: floatUpDown 6s ease-in-out infinite;">
+
+                <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon absolute" style="top: 25%; right: 10%; width: 35px; animation: floatLeftRight 5s ease-in-out infinite;">
+                <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon absolute" style="bottom: 30%; left: 5%; width: 38px; animation: floatUpDown 4.5s ease-in-out infinite;">
+                <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon absolute" style="top: 60%; right: 30%; width: 42px; animation: floatLeftRight 4.7s ease-in-out infinite;">
             </div>
         </div>
-        <div class="col-lg-6 order-lg-2 order-1 mb-4 mb-lg-0">
-            <div class="hero-image position-relative">
-                <img src="{{ asset('images/content/sawizoom.png') }}" alt="Kelompok Tani" class="img-fluid rounded shadow">
-                <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon icon-tomato">
-                <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon icon-garlic">
-                <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon icon-chili">
-            </div>
+
+        <!-- Teks di kanan -->
+        <div class="md:w-1/2">
+            <h1 class="text-4xl font-bold text-green-800 mb-2">
+                Menyemai Harapan, <span class="text-green-600">Menuai Sukses!</span>
+            </h1>
+          <h2 class="text-4xl sm:text-6xl lg:text-8xl uppercase mb-4" 
+        style="font-family: 'Anton', sans-serif; text-shadow: 1px 1px 0 #00000030, 2px 2px 0 #00000010;">
+         <span class="text-green-600">BO</span>
+         <span class="text-gray-800">TANI</span>
+        </h2>
+            <p class="text-gray-700 mb-6">
+                BO-TANI merupakan aplikasi yang memberikan efisiensi kepada khalayak umum untuk mengakses informasi mengenai Kelompok Tani Winongo Asri. Mereka bisa mengakses informasi umum, seperti: denah, struktur organisasi, foto, dan lain-lain. Mereka juga bisa melakukan pemesanan sayur, booking online terhadap paket eduwisata, dan memberikan kritik serta saran di fitur ulasan.
+            </p>
+            <div class="flex justify-end mt-6">
+    <div class="text-right mt-6">
+    <a href="#selengkapnya"
+       class="inline-block bg-orange-500 text-white px-6 py-3 rounded shadow-md hover:bg-orange-600 transition duration-300 ease-in-out">
+        Selengkapnya
+    </a>
+</div>
+
         </div>
     </div>
 </section>
