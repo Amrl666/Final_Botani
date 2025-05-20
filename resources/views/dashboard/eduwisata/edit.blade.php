@@ -6,9 +6,9 @@
 <div class="container">
     <h1>Edit Eduwisata</h1>
     
-    <form action="{{ route('dashboard.eduwisata.update', $eduwisata) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <form action="{{ route('dashboard.eduwisata.update', $eduwisata->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
         
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>

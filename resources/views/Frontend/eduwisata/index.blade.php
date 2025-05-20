@@ -9,6 +9,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
+        
     }
 
     h1 {
@@ -22,7 +23,8 @@
     .row {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 60px;
+        
     }
 
     /* Card dengan border hitam tipis dan background hijau muda */
@@ -47,7 +49,7 @@
     /* Foto full lebar di atas */
     .card-img-top {
         width: 100%;
-        height: 180px;
+        height: 200px;
         object-fit: cover;
         border-radius: 10px 10px 0 0;
         display: block;
@@ -127,7 +129,7 @@
                     @endif
                     <div class="card-header">
                         <h2 class="card-title">{{ $eduwisata->name }}</h2>
-                        <div class="card-location">{{ $eduwisata->location }}</div>
+                        <div class="card-location">{{ $eduwisata->location }}/PAX</div>
                     </div>
                     <div class="card-body">
                         <p class="card-text">{{ $eduwisata->description }}</p>
