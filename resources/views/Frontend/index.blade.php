@@ -175,8 +175,8 @@
         <div class="flex flex-wrap justify-center gap-6">
             {{-- Tampilkan produk --}}
             @foreach ($products->take(3) as $product)
-            <div class="bg-white shadow rounded overflow-hidden flex flex-col h-full max-w-[40px] w-full">
-                <div class="w-full h-[120px] overflow-hidden">
+            <div class="bg-white shadow rounded overflow-hidden flex flex-col h-full max-w-[40px] h-[20px]">
+                <div class="h-[120px] overflow-hidden">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-3 flex flex-col flex-1 text-center">
@@ -208,9 +208,6 @@
     </div>
 </section>
 @endif
-
-
-
 
 {{-- Galeri --}}
 @if($galleries->count())
