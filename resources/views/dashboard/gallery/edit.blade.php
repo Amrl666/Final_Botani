@@ -26,10 +26,10 @@
         </div>
         
         <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3">{{ $gallery->description }}</textarea>
+            <label for="description" class="form-label">Tanggal Galeri</label>
+            <input type="date" class="form-control" id="description" name="description" value="{{ old('description', isset($gallery) ? $gallery->description : '') }}" required>
         </div>
-        
+
         <button type="submit" class="btn btn-primary">Update Item</button>
     </form>
 </div>

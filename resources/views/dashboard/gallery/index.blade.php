@@ -16,7 +16,7 @@
                 <img src="{{ asset('storage/' . $gallery->image) }}" class="card-img-top" alt="{{ $gallery->title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $gallery->title }}</h5>
-                    <p class="card-text">{{ Str::limit($gallery->description, 100) }}</p>
+                    <p class="card-text text-muted">{{ \Carbon\Carbon::parse($gallery->description)->translatedFormat('d F Y') }}</p>
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('dashboard.gallery.edit', $gallery) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('dashboard.gallery.destroy', $gallery) }}" method="POST">

@@ -25,7 +25,7 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable',
+            'description' => 'required|date',
         ]);
 
         $validated['image'] = $request->file('image')->store('gallery_images', 'public');
@@ -45,7 +45,7 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'required|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable',
+            'description' => 'required|date',
         ]);
 
         if ($request->hasFile('image')) {
