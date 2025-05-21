@@ -35,13 +35,24 @@
 
     .card-img-top {
         width: 100%;
-        height: 220px; /* Gambar lebih besar */
+        height: 300px; /* Gambar lebih besar */
         object-fit: cover;
-        border-radius: 10px 10px 0 0;
+        border-radius: 10px 10px 0 0; /* Sudut gambar melengkung */
     }
 
     .card-body {
         padding: 15px;
+        display: flex;
+        justify-content: space-between; /* Menjaga jarak antar elemen di dalam card */
+        align-items: center; /* Vertikal center */
+    }
+
+    /* Bagian kiri untuk judul */
+    .card-left {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .card-title {
@@ -51,10 +62,20 @@
         color: #333;
     }
 
+    /* Bagian kanan untuk deskripsi */
+    .card-right {
+        flex: 1;
+        display: flex;
+        align-items: center; /* Menyelaraskan vertikal */
+        justify-content: flex-end; /* Rata kanan */
+        color: #2f5d27; /* Warna hijau */
+    }
+
     .card-text {
         font-size: 1rem;
-        color: #2f5d27; /* Warna hijau */
         margin-bottom: 0;
+        color: #2f5d27; /* Hijau untuk deskripsi */
+        white-space: nowrap; /* Mencegah text wrapping */
     }
 
     /* Grid: 2 kolom di desktop, 1 kolom di mobile */
@@ -79,7 +100,7 @@
         }
 
         .card-img-top {
-            height: 180px;
+            height: 200px; /* Menyesuaikan ukuran gambar */
         }
     }
 
@@ -92,7 +113,7 @@
 
 <section class="py-5">
     <div class="container">
-        <h1>Our Gallery</h1>
+        <h1>Galeri</h1>
 
         <div class="row">
             @foreach($galleries as $gallery)
@@ -102,10 +123,14 @@
                         <img src="{{ asset('storage/' . $gallery->image) }}" class="card-img-top" alt="{{ $gallery->title }}">
                     @endif
                     <div class="card-body">
-                        <h5 class="card-title">{{ $gallery->title }}</h5>
-                        @if($gallery->description)
-                            <p class="card-text">{{ Str::limit($gallery->description, 50) }}</p>
-                        @endif
+                        <div class="card-left">
+                            <h5 class="card-title">{{ $gallery->title }}</h5>
+                        </div>
+                        <div class="card-right">
+                            @if($gallery->description)
+                                <p class="card-text">{{ Str::limit($gallery->description, 50) }}</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
