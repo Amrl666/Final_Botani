@@ -135,40 +135,27 @@
     </div>
 </div>
 
-{{-- Produk Unggulan --}}
-@if($products->count())
-<section class="py-12 bg-white">
-    <div class="container mx-auto px-6 lg:px-12">
-        <h2 class="text-2xl font-bold text-green-800 mb-6">Produk Unggulan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            @foreach ($products as $product)
-            <div class="border rounded shadow p-4">
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-40 object-cover mb-3 rounded">
-                <h4 class="font-semibold">{{ $product->name }}</h4>
-                <p class="text-sm text-gray-600">{{ Str::limit($product->description, 60) }}</p>
-                <p class="text-green-700 font-bold mt-2">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
 
-{{-- Blog Terbaru --}}
+{{-- Unggahan Blog --}}
 @if($latestBlogs->count())
 <section class="py-12 bg-green-50">
     <div class="container mx-auto px-6 lg:px-12">
-        <h2 class="text-2xl font-bold text-green-800 mb-6">Berita Terkini</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-green-800">UNGGAHAN BLOG</h2>
+            <div class="w-32 h-1 bg-green-500 mx-auto mt-2 rounded-full"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             @foreach ($latestBlogs as $blog)
-            <div class="bg-white shadow rounded overflow-hidden">
-                @if($blog->image)
-                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="w-full h-40 object-cover">
-                @endif
-                <div class="p-4">
-                    <h3 class="font-bold text-lg">{{ $blog->title }}</h3>
-                    <p class="text-sm text-gray-600 mt-1">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
-                    <a href="{{ route('blog.show', $blog->title) }}" class="text-green-600 text-sm mt-2 inline-block hover:underline">Baca selengkapnya</a>
+            <div class="bg-white shadow rounded overflow-hidden flex flex-col h-full">
+                <div class="w-full h-[120px] overflow-hidden">
+                    @if($blog->image)
+                    <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+                    @endif
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <h3 class="font-bold text-base mb-2">{{ $blog->title }}</h3>
+                    <p class="text-sm text-gray-600 flex-1">{{ Str::limit(strip_tags($blog->content), 80) }}</p>
+                    <a href="{{ route('blog.show', $blog->title) }}" class="text-green-600 text-sm hover:underline mt-4">Baca selengkapnya</a>
                 </div>
             </div>
             @endforeach
@@ -176,6 +163,54 @@
     </div>
 </section>
 @endif
+{{-- Produk Unggulan --}}
+@if($products->count())
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-green-800">PRODUK TERBAIK</h2>
+            <div class="w-32 h-1 bg-green-500 mx-auto mt-2 rounded-full"></div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-6">
+            {{-- Tampilkan produk --}}
+            @foreach ($products->take(3) as $product)
+            <div class="bg-white shadow rounded overflow-hidden flex flex-col h-full max-w-[40px] w-full">
+                <div class="w-full h-[120px] overflow-hidden">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 flex flex-col flex-1 text-center">
+                    <h4 class="font-semibold text-base mb-1">{{ $product->name }}</h4>
+                    <p class="text-sm text-gray-600 flex-1">{{ Str::limit($product->description, 60) }}</p>
+                    <a href="#" class="mt-3 border border-green-600 text-green-600 text-sm px-3 py-1.5 rounded hover:bg-green-50 transition-all duration-200">
+                        Pesan Sekarang
+                    </a>
+                </div>
+            </div>
+            @endforeach
+
+            {{-- Jika produk lebih dari 3, tampilkan card "Lainnya" --}}
+            @if ($products->count() > 3)
+            <div class="bg-green-100 shadow rounded overflow-hidden flex flex-col h-full max-w-[240px] w-full">
+                <div class="w-full h-[120px] flex items-center justify-center bg-green-200 text-green-800 font-bold text-base">
+                    +{{ $products->count() - 3 }} Produk
+                </div>
+                <div class="p-3 flex flex-col flex-1 text-center">
+                    <h4 class="font-bold text-green-800 text-base mb-1">Lainnya</h4>
+                    <p class="text-sm text-green-700 flex-1">Buah-Buahan dan Sayuran lainnya</p>
+                    <a href="{{ route('frontend.produk') }}" class="mt-3 border border-green-700 text-green-700 text-sm px-3 py-1.5 rounded hover:bg-green-200 transition-all duration-200">
+                        Selengkapnya
+                    </a>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+@endif
+
+
+
 
 {{-- Galeri --}}
 @if($galleries->count())
