@@ -24,27 +24,37 @@
     
     {{-- Navbar --}}
     <nav class="bg-white text-black shadow">
-        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <!-- Logo - BO berwarna hijau dan TANI berwarna hitam, tetap di kiri -->
-            <a href="{{ url('/') }}" class="text-2xl font-bold flex items-center">
-                <span class="text-green-500">BO</span><span class="text-black">TANI</span>
-            </a>
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
 
-            <!-- Menu Navigation - Tetap di tengah -->
-            <div class="flex flex-wrap justify-center space-x-4 mt-2 md:mt-0 text-sm md:text-base w-full md:w-auto">
-                <a href="{{ url('/') }}" class="hover:underline">Beranda</a>
-                <a href="{{ route('product.index_fr') }}" class="hover:underline">Produk</a>
-                <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
-                <a href="{{ route('videos') }}" class="hover:underline">Video</a>
-                <a href="{{ route('blog') }}" class="hover:underline">Blog</a>
-                <a href="{{ route('perijinan') }}" class="hover:underline">Perijinan</a>
-                <a href="{{ route('profile') }}" class="hover:underline">Profil</a>
-                <a href="{{ route('eduwisata') }}" class="hover:underline">Eduwisata</a>
-                <a href="{{ route('contact.index') }}" class="hover:underline">Kontak</a>
+    <!-- Logo kiri -->
+    <a href="{{ url('/') }}" class="text-2xl font-bold flex items-center">
+      <span class="text-green-500">BO</span><span class="text-black">TANI</span>
+    </a>
+
+    <!-- Menu tengah -->
+    <div class="flex space-x-4 text-sm md:text-base">
+      <a href="{{ url('/') }}" class="hover:underline">Beranda</a>
+      <a href="{{ route('product.index_fr') }}" class="hover:underline">Produk</a>
+      <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
+      <a href="{{ route('videos') }}" class="hover:underline">Video</a>
+      <a href="{{ route('blog') }}" class="hover:underline">Blog</a>
+      <a href="{{ route('perijinan') }}" class="hover:underline">Perijinan</a>
+      <a href="{{ route('profile') }}" class="hover:underline">Profil</a>
+      <a href="{{ route('eduwisata') }}" class="hover:underline">Eduwisata</a>
+      <a href="{{ route('contact.index') }}" class="hover:underline">Kontak</a>
+    </div>
+
+    <!-- Icon search kanan -->
+    <a href="#" class="text-xl hover:text-green-500 ml-4">
+      <i class="fas fa-search"></i>
+    </a>
+
+  </div>
+</nav>
+
             </div>
         </div>
     </nav>
-
 
     {{-- Halaman Konten --}}
     <main class="py-8">
