@@ -12,7 +12,7 @@ class Eduwisata extends Model
     protected $fillable = [
         'name',
         'description',
-        'location',
+        'harga',
         'image'
     ];
 

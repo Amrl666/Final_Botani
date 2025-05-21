@@ -26,9 +26,10 @@ class EduwisataController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
-            'location' => 'required',
+            'harga' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('eduwisata_images', 'public');
@@ -49,9 +50,10 @@ class EduwisataController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
-            'location' => 'required',
+            'harga' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
 
         if ($request->hasFile('image')) {
             if ($eduwisata->image) {

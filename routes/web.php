@@ -67,7 +67,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/dashboard/prestasi/update', [PrestasiController::class, 'update']);
 
     // Eduwisata dengan fitur jadwal
-    Route::resource('/dashboard/eduwisata', EduwisataController::class)->names('dashboard.eduwisata');
+    Route::resource('/dashboard/eduwisata', EduwisataController::class)
+    ->names('dashboard.eduwisata')
+    ->parameters(['eduwisata' => 'eduwisata']);
+
     // Menampilkan halaman daftar jadwal
     Route::get('/dashboard/eduwisata/schedule/{eduwisata}', [EduwisataController::class, 'schedule'])
         ->name('dashboard.eduwisata.schedule');
