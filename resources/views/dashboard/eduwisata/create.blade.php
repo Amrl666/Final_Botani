@@ -20,9 +20,10 @@
         </div>
         
         <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" class="form-control" id="location" name="location" required>
+            <label for="harga">Harga (Rp)</label>
+            <input type="number" name="harga" class="form-control" value="{{ old('harga', $eduwisata->harga ?? '') }}" required>
         </div>
+
         
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>

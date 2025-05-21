@@ -24,19 +24,24 @@ class ProductController extends Controller
     // Menyimpan produk baru
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
-            'stock' => 'required|integer|min:0',
-            'featured' => 'boolean',
+            'stock' => 'required|integer',
+            'image' => 'required|image',
+            'featured' => 'nullable|boolean',
         ]);
 
-        $validated['image'] = $request->file('image')->store('product_images', 'public');
+        $data = $request->all();
+        $data['featured'] = $request->has('featured') ? 1 : 0;
 
-        Product::create($validated);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('product_images', 'public');
+            $data['image'] = $imagePath;
+        }
 
+        Product::create($data);
         return redirect()->route('dashboard.product.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
@@ -50,12 +55,12 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'price' => 'required|numeric',
-            'stock' => 'required|integer|min:0',
-            'featured' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'stock' => 'required|integer',
+            'featured' => 'required|boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -69,6 +74,7 @@ class ProductController extends Controller
 
         return redirect()->route('dashboard.product.index')->with('success', 'Produk berhasil diperbarui.');
     }
+
 
     // Menghapus produk
     public function destroy(Product $product)

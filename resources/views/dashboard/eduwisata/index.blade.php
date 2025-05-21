@@ -36,12 +36,13 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route('dashboard.eduwisata.edit', $eduwisata) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('dashboard.eduwisata.destroy', $eduwisata) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
+                       <a href="{{ route('dashboard.eduwisata.edit', $eduwisata->id) }}">Edit</a>
+                    <form action="{{ route('dashboard.eduwisata.destroy', $eduwisata->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Hapus</button>
+                    </form>
+
                     </td>
                 </tr>
                 @endforeach
