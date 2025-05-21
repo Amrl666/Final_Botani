@@ -128,7 +128,7 @@
                         </div>
                         <div class="card-right">
                             @if($gallery->description)
-                                <p class="card-text">{{ Str::limit($gallery->description, 50) }}</p>
+                                <p class="card-text text-muted">{{ \Carbon\Carbon::parse($gallery->description)->translatedFormat('d F Y') }}</p>
                             @endif
                         </div>
                     </div>

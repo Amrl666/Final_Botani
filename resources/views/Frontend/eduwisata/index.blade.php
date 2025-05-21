@@ -129,7 +129,7 @@
                     @endif
                     <div class="card-header">
                         <h2 class="card-title">{{ $eduwisata->name }}</h2>
-                        <div class="card-location">{{ $eduwisata->location }}/PAX</div>
+                        <div class="card-location">Rp {{ number_format($eduwisata->harga, 0, ',', '.') }}</div>
                     </div>
                     <div class="card-body">
                         <p class="card-text">{{ $eduwisata->description }}</p>

@@ -14,4 +14,9 @@ class Gallery extends Model
         'image',
         'description'
     ];
+
+    protected $casts = [
+    'description' => 'date',
+    ];
+
 }

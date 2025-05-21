@@ -169,25 +169,27 @@
 
     <section class="py-4">
         <div class="container">
-            @if($prestasi)
-            <div class="prestasi-grid">
-                <div class="prestasi-card">
-                    <div class="prestasi-image">
-                        <img src="{{ asset('storage/' . $prestasi->image) }}" alt="{{ $prestasi->title }}">
-                    </div>
-                    <div class="prestasi-content">
-                        <div class="prestasi-title">{{ $prestasi->title }}</div>
-                        <div class="prestasi-text">{!! Str::limit(strip_tags($prestasi->content), 250) !!}</div>
-                    </div>
+        @if($prestasi && $prestasi->count())
+        <div class="prestasi-grid">
+            @foreach($prestasi as $item)
+            <div class="prestasi-card">
+                <div class="prestasi-image">
+                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}">
+                </div>
+                <div class="prestasi-content">
+                    <div class="prestasi-title">{{ $item->title }}</div>
+                        <div class="prestasi-text">{!! Str::limit(strip_tags($item->content), 250) !!}</div>
                 </div>
             </div>
-            @else
-            <div class="alert alert-info text-center mt-4">
-                Tidak ada informasi prestasi yang tersedia saat ini.
-            </div>
-            @endif
+            @endforeach
         </div>
-    </section>
+        @else
+        <div class="alert alert-info text-center mt-4">
+            Tidak ada informasi prestasi yang tersedia saat ini.
+        </div>
+        @endif
+    </div>
+</section>
 </div>
 
 @endsection

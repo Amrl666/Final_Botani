@@ -39,7 +39,10 @@
         </div>
         
         <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="featured" name="featured" {{ $product->featured ? 'checked' : '' }}>
+            {{-- Tambahkan ini agar nilai '0' dikirim saat checkbox tidak dicentang --}}
+            <input type="hidden" name="featured" value="0">
+            
+            <input type="checkbox" class="form-check-input" id="featured" name="featured" value="1" {{ $product->featured ? 'checked' : '' }}>
             <label class="form-check-label" for="featured">Featured Product</label>
         </div>
         
