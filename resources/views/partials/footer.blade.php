@@ -7,7 +7,6 @@
         <p class="text-gray-700 mb-6 text-left">
             Memberikan Solusi tepat untuk memajukan kelompok tani winongo asri
         </p>
-
         <div class="text-left max-w-xl">
             <ul class="space-y-3 text-gray-700">
                 <li class="flex items-start">
@@ -25,36 +24,32 @@
             </ul>
         </div>
     </div>
-
-
     {{-- Footer Sosial --}}
-    <div class="bg-lime-300 py-6  rounded-t-2xl">
-    <div class="container mx-auto flex flex-col md:flex-row md:justify-between items-start gap-4">
-        
-        {{-- Logo + Nama --}}
-        <div class="flex items-center space-x-3">
-            <img src="{{ asset('images/logo/logobotani.png') }}" alt="BO TANI Logo" class="w-12 h-12">
-            <span class="text-2xl font-bold text-green-800">BO TANI</span>
-        </div>
-
-        {{-- Copyright --}}
-        <div class="text-sm text-white mt-2 md:mt-0">
-            ©{{ date('Y') }} | <span class="font-bold">BO <span class="text-lime-800">TANI</span></span> | All Rights Reserved
-        </div>
-
-        {{-- Sosial Media --}}
-        <div class="flex space-x-4 mt-2 md:mt-0">
-            <a href="#" class="text-white hover:text-lime-700">
-                <i class="fab fa-facebook-square text-2xl"></i>
-            </a>
-            <a href="#" class="text-white hover:text-lime-700">
-                <i class="fab fa-instagram text-2xl"></i>
-            </a>
-            <a href="#" class="text-white hover:text-lime-700">
-                <i class="fab fa-youtube text-2xl"></i>
-            </a>
+    <div class="bg-lime-300 py-6 rounded-t-2xl">
+        <div class="container mx-auto px-4 relative">
+            <div class="flex flex-col md:flex-row md:items-center relative">
+                {{-- Logo + Nama (Geser ke Kiri 3cm) --}}
+                <div class="flex items-center space-x-3 mx-auto md:mx-0" style="position: absolute; left: -113px;">
+                    <img src="{{ asset('images/logo/logobotani.png') }}" alt="BO TANI Logo" class="w-12 h-12">
+                    <span class="text-2xl font-bold text-green-800">BO TANI</span>
+                </div>
+                {{-- Copyright (Tetap di Tengah) --}}
+                <div class="text-sm text-white mt-4 md:mt-0 mx-auto text-center w-full md:w-auto">
+                    ©{{ date('Y') }} | <span class="font-bold">BO <span class="text-lime-800">TANI</span></span> | All Rights Reserved
+                </div>
+                {{-- Sosial Media (Geser ke Kanan 3cm) --}}
+                <div class="flex space-x-4 mt-4 md:mt-0 mx-auto md:mx-0" style="position: absolute; right: -113px;">
+                    <a href="#" class="text-white hover:text-lime-700">
+                        <i class="fab fa-facebook-square text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-lime-700">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-lime-700">
+                        <i class="fab fa-youtube text-2xl"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
 </footer>
