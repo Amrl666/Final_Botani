@@ -93,9 +93,9 @@ Route::get('/blog', [BlogController::class, 'index_fr'])->name('blog');
 Route::get('blog/{blog:title}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('perijinan', [PerijinanControler::class,'index_fr'])->name('perijinan');
 Route::get('product', [ProductController::class, 'index_fr'])->name('product.index_fr');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 Route::get('profile', [PrestasiController::class, 'index_fr'])->name('profile');
-
 Route::get('eduwisata', [EduwisataController::class, 'index_fr'])->name('eduwisata');
 Route::get('eduwisata/schedule', [EduwisataController::class, 'schedule_fr'])->name('eduwisata.schedule');
-
+Route::get('/eduwisata/{eduwisata}/schedule', [EduwisataController::class, 'scheduleDetail'])->name('eduwisata.schedule.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');

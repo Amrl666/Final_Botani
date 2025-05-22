@@ -5,12 +5,14 @@
 @section('content')
 <section class="py-5">
     <div class="row mb-5">
-    <div class="col-12 text-center">
-        <h2 class="fw-bold">PRODUK TERBAIK</h2>
+        <div class="col-12 text-center">
+            <h2 class="fw-bold">PRODUK TERBAIK</h2>
+        </div>
     </div>
-    </div>
-            @foreach($products as $product)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
+
+    @foreach($products as $product)
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0">
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 180px; object-fit: cover;">
@@ -31,13 +33,12 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            @endforeach
+            </a>
         </div>
+    @endforeach
 
-        <div class="d-flex justify-content-center mt-4">
-            {{ $products->links() }}
-        </div>
+    <div class="d-flex justify-content-center mt-4">
+        {{ $products->links() }}
     </div>
 </section>
 @endsection

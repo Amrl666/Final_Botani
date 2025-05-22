@@ -123,7 +123,7 @@
         
         <div class="row">
             @foreach($eduwisatas as $eduwisata)
-                <a href="{{ route('eduwisata.schedule') }}" class="card">
+                <a href="{{ route('eduwisata.schedule.detail', $eduwisata->id) }}" class="card">
                     @if($eduwisata->image)
                         <img src="{{ asset('storage/' . $eduwisata->image) }}" alt="{{ $eduwisata->name }}" class="card-img-top">
                     @endif
