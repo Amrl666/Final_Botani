@@ -119,4 +119,10 @@ class EduwisataController extends Controller
 
         return view('frontend.eduwisata.schedule', compact('eduwisatas'));
     }
+    public function scheduleDetail(Eduwisata $eduwisata)
+    {
+        $eduwisata->load('schedules');
+        return view('frontend.eduwisata.schedule', compact('eduwisata'));
+    }
+
 }
