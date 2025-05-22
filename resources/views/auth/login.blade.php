@@ -85,8 +85,8 @@
 
         .form-group {
             margin-bottom: 1rem;
+            text-align: center;
         }
-
         .capitalize {
             text-transform: capitalize;
         }
@@ -101,16 +101,21 @@
         }
         .login-button,
         .admin-login-button {
-            width: 100%; /* Memastikan tombol memenuhi lebar kolom */
+            width: 100%;
             background-color: #22c55e;
             color: white;
             font-weight: 600;
-            padding: 0.75rem; /* Menambah padding untuk memperpanjang secara horizontal */
+            padding: 0.75rem;
             border-radius: 0.375rem;
-            text-align: center; /* memastikan teks berada di tengah */
+            text-align: center; /* HAPUS ini */
             cursor: pointer;
             border: none;
             text-transform: capitalize;
+
+            /* TAMBAHKAN INI */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .admin-login-button {
@@ -211,10 +216,9 @@
     </style>
     <div class="login-container">
            <img src="{{ asset('images/logo/logobotani.png') }}" alt="Logo Bo Tani" class="corner-logo">
-            <span class="logo-text">
-            <span class="text-green">BO</span><span class="text-black">TANI</span>
+        <span class="logo-text">
+            <span class="text-green">BO</span><span class="text-black" style="margin-left: 0.4rem;">TANI</span>
         </span>
-
 
         {{-- Gambar kiri --}}
         <div class="login-image">
