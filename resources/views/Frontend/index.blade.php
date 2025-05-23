@@ -20,6 +20,17 @@
         height: 100%; /* Menjaga agar gambar sesuai dengan tinggi yang telah ditentukan */
     }
 
+    @keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    }
+
+    @keyframes floatLeftRight {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(10px); }
+    }
+
+
     .about-image-caption {
         background-color: #38a169; /* Warna hijau */
         color: white;
