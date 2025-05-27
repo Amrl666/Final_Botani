@@ -30,6 +30,39 @@
         50% { transform: translateX(10px); }
     }
 
+    /* Animasi untuk produk */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floatCard {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    .product-card {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        animation-delay: calc(var(--order) * 0.1s);
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+        animation: floatCard 3s ease-in-out infinite;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
 
     .about-image-caption {
         background-color: #38a169; /* Warna hijau */
@@ -184,34 +217,36 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-6">
-            {{-- Tampilkan produk --}}
             @foreach ($products->take(3) as $product)
-            <div class="bg-white shadow rounded overflow-hidden flex flex-col h-full max-w-[40px] h-[20px]">
-                <div class="h-[120px] overflow-hidden">
+            <div class="bg-white shadow rounded overflow-hidden flex flex-col w-full max-w-[240px]">
+                <div class="w-full h-[160px] overflow-hidden">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-3 flex flex-col flex-1 text-center">
-                    <h4 class="font-semibold text-base mb-1">{{ $product->name }}</h4>
-                    <p class="text-sm text-gray-600 flex-1">{{ Str::limit($product->description, 60) }}</p>
-                    <a href="#" class="mt-3 border border-green-600 text-green-600 text-sm px-3 py-1.5 rounded hover:bg-green-50 transition-all duration-200">
-                        Pesan Sekarang
-                    </a>
+                <div class="p-4 flex flex-col flex-1">
+                    <h4 class="font-semibold text-base mb-2 text-center">{{ $product->name }}</h4>
+                    <p class="text-sm text-gray-600 flex-1 text-center">{{ Str::limit($product->description, 60) }}</p>
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('product.show', $product->id) }}" class="inline-block border border-green-600 text-green-600 text-sm px-4 py-2 rounded hover:bg-green-50 transition-all duration-200">
+                            Pesan Sekarang
+                        </a>
+                    </div>
                 </div>
             </div>
             @endforeach
 
-            {{-- Jika produk lebih dari 3, tampilkan card "Lainnya" --}}
             @if ($products->count() > 3)
-            <div class="bg-green-100 shadow rounded overflow-hidden flex flex-col h-full max-w-[240px] w-full">
-                <div class="w-full h-[120px] flex items-center justify-center bg-green-200 text-green-800 font-bold text-base">
+            <div class="bg-green-100 shadow rounded overflow-hidden flex flex-col w-full max-w-[240px]">
+                <div class="w-full h-[160px] flex items-center justify-center bg-green-200 text-green-800 font-bold text-lg">
                     +{{ $products->count() - 3 }} Produk
                 </div>
-                <div class="p-3 flex flex-col flex-1 text-center">
-                    <h4 class="font-bold text-green-800 text-base mb-1">Lainnya</h4>
-                    <p class="text-sm text-green-700 flex-1">Buah-Buahan dan Sayuran lainnya</p>
-                    <a href="{{ route('frontend.produk') }}" class="mt-3 border border-green-700 text-green-700 text-sm px-3 py-1.5 rounded hover:bg-green-200 transition-all duration-200">
-                        Selengkapnya
-                    </a>
+                <div class="p-4 flex flex-col flex-1">
+                    <h4 class="font-bold text-green-800 text-base mb-2 text-center">Lainnya</h4>
+                    <p class="text-sm text-green-700 flex-1 text-center">Buah-Buahan dan Sayuran lainnya</p>
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('frontend.produk') }}" class="inline-block border border-green-700 text-green-700 text-sm px-4 py-2 rounded hover:bg-green-200 transition-all duration-200">
+                            Selengkapnya
+                        </a>
+                    </div>
                 </div>
             </div>
             @endif
