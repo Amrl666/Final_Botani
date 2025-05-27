@@ -15,7 +15,7 @@
             <div class="p-4">
                 <h2 class="font-semibold text-lg mb-2">{{ $blog->title }}</h2>
                 <p class="text-sm text-gray-600">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
-                <a href="{{ route('blog.show', $blog->title) }}" class="text-green-700 text-sm mt-2 inline-block hover:underline">
+                <a href="{{ route('blog.show_fr', $blog->title) }}" class="text-green-700 text-sm mt-2 inline-block hover:underline">
                     Baca selengkapnya →
                 </a>
             </div>

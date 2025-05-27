@@ -90,7 +90,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('gallery', [GalleryController::class, 'index_fr'])->name('gallery');
 Route::get('gallery/videos', [VideoController::class, 'index_fr'])->name('videos');
 Route::get('/blog', [BlogController::class, 'index_fr'])->name('blog');
-Route::get('blog/{blog:title}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{blog:title}', [BlogController::class, 'show_fr'])->name('blog.show_fr');
 Route::get('perijinan', [PerijinanControler::class,'index_fr'])->name('perijinan');
 Route::get('product', [ProductController::class, 'index_fr'])->name('product.index_fr');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
