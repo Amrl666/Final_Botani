@@ -199,7 +199,7 @@
                 <div class="p-4 flex flex-col flex-1">
                     <h3 class="font-bold text-base mb-2">{{ $blog->title }}</h3>
                     <p class="text-sm text-gray-600 flex-1">{{ Str::limit(strip_tags($blog->content), 80) }}</p>
-                    <a href="{{ route('blog.show', $blog->title) }}" class="text-green-600 text-sm hover:underline mt-4">Baca selengkapnya</a>
+                    <a href="{{ route('blog.show_fr', $blog->title) }}" class="text-green-600 text-sm hover:underline mt-4">Baca selengkapnya</a>
                 </div>
             </div>
             @endforeach
