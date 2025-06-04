@@ -1,52 +1,51 @@
 @extends('layouts.app')
 
-@section('title', 'Products')
+@section('title', $product->name)
 
 @section('content')
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Products</h1>
-        <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">Add New Product</a>
+<div class="max-w-md mx-auto mt-10">
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <!-- Gambar Produk -->
+    <div class="h-64 w-full overflow-hidden">
+      @if($product->image)
+        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+      @else
+        <div class="flex items-center justify-center h-full bg-gray-100 text-gray-400">
+          No Image Available
+        </div>
+      @endif
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Featured</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($products as $product)
-                <tr>
-                    <td>{{ $product->name }}</td>
-                    <td>{{ number_format($product->price, 2) }}</td>
-                    <td>{{ $product->stock }}</td>
-                    <td>{{ $product->featured ? 'Yes' : 'No' }}</td>
-                    <td>
-                        @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="50">
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('dashboard.product.edit', $product) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('dashboard.product.destroy', $product) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    <!-- Isi Card -->
+    <div class="p-6 space-y-4">
+      <h2 class="text-2xl font-bold text-gray-900">{{ $product->name }}</h2>
+      <p class="text-sm text-gray-500">{{ $product->category ?? 'Uncategorized' }}</p>
 
-    {{ $products->links() }}
+      <p class="text-gray-700 leading-relaxed">
+        {{ $product->description ?? 'No description available.' }}
+      </p>
+
+      <div class="flex justify-between items-center mt-4">
+        <span class="text-xl font-semibold text-blue-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+        <span class="text-sm font-medium {{ $product->stock > 0 ? 'text-green-600' : 'text-red-600' }}">
+          {{ $product->stock > 0 ? 'Stok: ' . $product->stock : 'Stok Habis' }}
+        </span>
+      </div>
+
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+          {{ $product->featured ? 'bg-yellow-300 text-yellow-900' : 'bg-gray-200 text-gray-600' }}">
+          {{ $product->featured ? 'Featured' : 'Regular' }}
+        </span>
+      </div>
+
+      <button
+        class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-300
+        disabled:opacity-50 disabled:cursor-not-allowed"
+        {{ $product->stock > 0 ? '' : 'disabled' }}>
+        {{ $product->stock > 0 ? 'Beli Sekarang' : 'Stok Habis' }}
+      </button>
+    </div>
+  </div>
 </div>
 @endsection

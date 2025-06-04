@@ -3,96 +3,54 @@
 @section('title', 'Detail Produk')
 
 @section('content')
-
-<style>
-    .product-detail {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        align-items: flex-start;
-    }
-
-    .product-image img {
-        max-width: 100%;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .product-info {
-        flex: 1;
-        min-width: 280px;
-    }
-
-    .product-title {
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        color: #14532d;
-    }
-
-    .product-description {
-        font-size: 16px;
-        margin-bottom: 1.5rem;
-        line-height: 1.6;
-    }
-
-    .product-price {
-        font-size: 24px;
-        font-weight: bold;
-        color: #198754;
-        margin-bottom: 1.5rem;
-    }
-
-    .quantity-controls {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .quantity-controls input {
-        width: 60px;
-        text-align: center;
-    }
-
-    .total-price {
-        font-size: 20px;
-        margin-bottom: 1.5rem;
-    }
-</style>
-
-<section class="py-5">
-    <div class="container">
-        <div class="product-detail">
-            <div class="product-image">
+<section class="py-10 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-2xl shadow-md overflow-hidden">
+            
+            <!-- Gambar Produk -->
+            <div>
                 @if($product->image && file_exists(public_path('storage/' . $product->image)))
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                         class="w-full h-64 md:h-full object-cover">
                 @else
-                    <img src="https://via.placeholder.com/600x400?text=No+Image" alt="No Image">
+                    <img src="https://via.placeholder.com/600x400?text=No+Image" alt="No Image"
+                         class="w-full h-64 md:h-full object-cover">
                 @endif
             </div>
 
-            <div class="product-info">
-                <div class="product-title">{{ $product->name ?? 'Nama Produk Tidak Diketahui' }}</div>
-                <div class="product-description">
-                    {{ $product->description ?? 'Deskripsi produk belum tersedia.' }}
+            <!-- Info Produk -->
+            <div class="p-6 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-green-900 mb-4">
+                        {{ $product->name ?? 'Nama Produk Tidak Diketahui' }}
+                    </h2>
+
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        {{ $product->description ?? 'Deskripsi produk belum tersedia.' }}
+                    </p>
+
+                    <div class="text-xl font-semibold text-green-700 mb-6">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </div>
+
+                    <!-- Quantity Controls -->
+                    <div class="flex items-center gap-3 mb-4">
+                        <button id="minus" class="w-9 h-9 border border-gray-300 rounded text-xl hover:bg-gray-100">−</button>
+                        <input type="number" id="quantity"
+                               class="w-16 text-center border border-gray-300 rounded py-1" value="0" min="0">
+                        <button id="plus" class="w-9 h-9 border border-gray-300 rounded text-xl hover:bg-gray-100">+</button>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="text-base font-medium text-gray-800 mb-6">
+                        Total: <span id="total">Rp 0</span>
+                    </div>
                 </div>
 
-                <div class="product-price">
-                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                </div>
-
-                <div class="quantity-controls">
-                    <button id="minus" class="btn btn-outline-secondary">-</button>
-                    <input type="number" id="quantity" class="form-control" value="0" min="0">
-                    <button id="plus" class="btn btn-outline-secondary">+</button>
-                </div>
-
-                <div class="total-price">
-                    Total: <span id="total">Rp 0</span>
-                </div>
-
-                <button class="btn btn-success">Beli Sekarang</button>
+                <!-- Button -->
+                <button class="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200">
+                    Beli Sekarang
+                </button>
             </div>
         </div>
     </div>
@@ -104,16 +62,16 @@
         const plus = document.getElementById('plus');
         const quantityInput = document.getElementById('quantity');
         const totalDisplay = document.getElementById('total');
-
         const price = {{ $product->price ?? 0 }};
 
         function updateTotal() {
-            const qty = parseInt(quantityInput.value);
-            totalDisplay.textContent = 'Rp ' + (qty * price).toLocaleString('id-ID');
+            const qty = parseInt(quantityInput.value) || 0;
+            const total = qty * price;
+            totalDisplay.textContent = 'Rp ' + total.toLocaleString('id-ID');
         }
 
         minus.addEventListener('click', () => {
-            let qty = parseInt(quantityInput.value);
+            let qty = parseInt(quantityInput.value) || 0;
             if (qty > 0) {
                 quantityInput.value = qty - 1;
                 updateTotal();
@@ -121,13 +79,13 @@
         });
 
         plus.addEventListener('click', () => {
-            let qty = parseInt(quantityInput.value);
+            let qty = parseInt(quantityInput.value) || 0;
             quantityInput.value = qty + 1;
             updateTotal();
         });
 
         quantityInput.addEventListener('input', updateTotal);
+        updateTotal(); // Inisialisasi
     });
 </script>
-
 @endsection

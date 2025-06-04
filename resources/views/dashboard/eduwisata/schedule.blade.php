@@ -1,77 +1,83 @@
 @extends('layouts.app')
 
-@section('title', 'Eduwisata Schedules')
+@section('title', 'Jadwal ' . $eduwisata->name)
 
 @section('content')
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Schedules for {{ $eduwisata->name }}</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">Add Schedule</button>
+<div class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold">Jadwal: <span class="text-blue-600">{{ $eduwisata->name }}</span></h2>
+        <a href="{{ route('dashboard.eduwisata.index') }}" class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md">
+            ← Kembali
+        </a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Max Participants</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($schedules as $schedule)
-                <tr>
-                    <td>{{ $schedule->date->format('d M Y') }}</td>
-                    <td>{{ $schedule->time }}</td>
-                    <td>{{ $schedule->max_participants }}</td>
-                    <td>
-                        <form action="{{ route('dashboard.eduwisata.destroySchedule', $schedule) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Add Schedule Modal -->
-    <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addScheduleModalLabel">Add New Schedule</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('dashboard.eduwisata.storeSchedule') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
-                        <div class="mb-3">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="date" name="date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="time" class="form-label">Time</label>
-                            <input type="time" class="form-control" id="time" name="time" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="max_participants" class="form-label">Max Participants</label>
-                            <input type="number" class="form-control" id="max_participants" name="max_participants" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Schedule</button>
-                    </div>
-                </form>
-            </div>
+    <!-- Eduwisata Card -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        @if($eduwisata->image)
+            <img src="{{ asset('storage/' . $eduwisata->image) }}" class="w-full h-60 object-cover" alt="{{ $eduwisata->name }}">
+        @endif
+        <div class="p-6">
+            <h3 class="text-xl font-bold">{{ $eduwisata->name }}</h3>
+            <p class="text-gray-600 mt-2">{{ $eduwisata->description }}</p>
+            <p class="text-gray-700 mt-2"><strong>Harga:</strong> Rp{{ number_format($eduwisata->harga, 0, ',', '.') }}</p>
         </div>
     </div>
 
-    <a href="{{ route('dashboard.eduwisata.index') }}" class="btn btn-secondary mt-3">Back to Eduwisata</a>
+    <!-- Form Tambah Jadwal -->
+    <div class="bg-white p-6 rounded-lg shadow mb-10">
+        <h4 class="text-lg font-semibold mb-4">Tambah Jadwal Baru</h4>
+        <form method="POST" action="{{ route('dashboard.eduwisata.schedule.store') }}" class="grid md:grid-cols-3 gap-4">
+            @csrf
+            <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
+            <div>
+                <label for="date" class="block text-sm font-medium">Tanggal</label>
+                <input type="date" name="date" class="mt-1 block w-full border border-gray-300 rounded-md p-2" required>
+            </div>
+            <div>
+                <label for="time" class="block text-sm font-medium">Waktu</label>
+                <input type="time" name="time" class="mt-1 block w-full border border-gray-300 rounded-md p-2" required>
+            </div>
+            <div>
+                <label for="max_participants" class="block text-sm font-medium">Maks. Peserta</label>
+                <input type="number" name="max_participants" class="mt-1 block w-full border border-gray-300 rounded-md p-2" min="1" required>
+            </div>
+            <div class="col-span-3 text-right mt-4">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
+                    Tambah Jadwal
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Jadwal Cards -->
+    <div>
+        <h4 class="text-xl font-semibold mb-4">Daftar Jadwal</h4>
+        @if($schedules->isEmpty())
+            <p class="text-gray-500">Belum ada jadwal.</p>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($schedules as $schedule)
+                <div class="bg-white p-5 rounded-lg shadow flex flex-col justify-between">
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 mb-1">
+                            {{ \Carbon\Carbon::parse($schedule->date)->translatedFormat('d F Y') }}
+                        </h5>
+                        <p class="text-sm text-gray-600">Waktu: {{ $schedule->time }}</p>
+                        <p class="text-sm text-gray-600">Peserta Maks: {{ $schedule->max_participants }}</p>
+                    </div>
+                    <form action="{{ route('dashboard.eduwisata.schedule.destroy', $schedule->id) }}" method="POST" class="mt-4" onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 text-sm">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
 </div>
 @endsection
