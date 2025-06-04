@@ -1,34 +1,64 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Blog Post')
-
 @section('content')
-<div class="container">
-    <h1>Edit Blog Post</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Blog Post</h1>
+        <div>
+            <button form="editPostForm" type="submit" class="btn btn-primary me-2">Simpan</button>
+            <a href="{{ route('dashboard.blog.index') }}" class="btn btn-secondary">Batal</a>
+        </div>
+    </div>
     
-    <form action="{{ route('dashboard.blog.update', $blog) }}" method="POST" enctype="multipart/form-data">
+    <form id="editPostForm" action="{{ route('dashboard.blog.update', $blog) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ $blog->title }}" required>
+            <input 
+                type="text" 
+                class="form-control @error('title') is-invalid @enderror" 
+                id="title" 
+                name="title" 
+                value="{{ old('title', $blog->title) }}" 
+                required
+            >
+            @error('title')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" name="image">
+            <input 
+                type="file" 
+                class="form-control @error('image') is-invalid @enderror" 
+                id="image" 
+                name="image"
+                accept="image/*"
+            >
             @if($blog->image)
-                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" width="100" class="mt-2">
+                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" width="240" class="mt-3 rounded">
             @endif
+            @error('image')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required>{{ $blog->content }}</textarea>
+            <textarea 
+                class="form-control @error('content') is-invalid @enderror" 
+                id="content" 
+                name="content" 
+                rows="6" 
+                required
+            >{{ old('content', $blog->content) }}</textarea>
+            @error('content')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-        
-        <button type="submit" class="btn btn-primary">Update Post</button>
     </form>
 </div>
 @endsection

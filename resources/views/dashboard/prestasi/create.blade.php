@@ -1,30 +1,58 @@
 @extends('layouts.app')
 
-@section('title', 'Create Prestasi')
-
 @section('content')
 <div class="container">
-    <h1>Create New Prestasi</h1>
-    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Create New Prestasi</h1>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="{{ route('dashboard.prestasi.index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+
     <form action="{{ route('dashboard.prestasi.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input 
+                type="text" 
+                class="form-control @error('title') is-invalid @enderror" 
+                id="title" 
+                name="title" 
+                value="{{ old('title') }}" 
+                required
+            >
+            @error('title')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" name="image">
+            <input 
+                type="file" 
+                class="form-control @error('image') is-invalid @enderror" 
+                id="image" 
+                name="image"
+            >
+            @error('image')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            <textarea 
+                class="form-control @error('content') is-invalid @enderror" 
+                id="content" 
+                name="content" 
+                rows="5" 
+                required
+            >{{ old('content') }}</textarea>
+            @error('content')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         
-        <button type="submit" class="btn btn-primary">Create</button>
     </form>
 </div>
 @endsection
