@@ -77,22 +77,48 @@
     .hero-image {
   background: transparent;
 }
+.bg-dark-green {
+  background-color: #259B00;
+  overflow: hidden; /* biar gak meluber */
+}
+
+.bg-dark-green .container {
+  position: relative;
+}
+
+.akses-cepat-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* gambar tetap proporsional */
+  z-index: 0;
+  opacity: 0.8; /* opsional: biar kontennya tetap terlihat */
+}
+
+
+
+.bg-dark-green > .container > *:not(.akses-cepat-img) {
+  position: relative;
+  z-index: 1;
+}
+
 
 </style>
 
 {{-- Hero Section --}}
-<section class="bg-green-50 py-10">
-    <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center">
+<section class="bg-green-50 py-10 relative overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center relative z-10">
         <!-- Gambar di kiri -->
         <div class="md:w-1/2 mb-6 md:mb-0 relative">
             <div class="hero-image relative w-full max-w-md mx-auto">
                 <img src="{{ asset('images/content/sawizoom.png') }}" alt="Kelompok Tani" class="img-fluid rounded shadow">
 
-                <!-- Ikon tersebar, cuma 3 macam -->
+                <!-- Ikon tersebar -->
                 <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon absolute" style="top: 10%; left: 15%; width: 45px; animation: floatUpDown 5s ease-in-out infinite;">
                 <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon absolute" style="top: 40%; right: 20%; width: 40px; animation: floatLeftRight 4s ease-in-out infinite;">
                 <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon absolute" style="bottom: 15%; left: 25%; width: 50px; animation: floatUpDown 6s ease-in-out infinite;">
-
                 <img src="{{ asset('images/icons/tomat.png') }}" alt="Tomat" class="floating-icon absolute" style="top: 25%; right: 10%; width: 35px; animation: floatLeftRight 5s ease-in-out infinite;">
                 <img src="{{ asset('images/icons/bawang.png') }}" alt="Bawang" class="floating-icon absolute" style="bottom: 30%; left: 5%; width: 38px; animation: floatUpDown 4.5s ease-in-out infinite;">
                 <img src="{{ asset('images/icons/lombokijo.png') }}" alt="Cabai" class="floating-icon absolute" style="top: 60%; right: 30%; width: 42px; animation: floatLeftRight 4.7s ease-in-out infinite;">
@@ -104,29 +130,42 @@
             <h1 class="text-4xl font-bold text-green-800 mb-2">
                 Menyemai Harapan, <span class="text-green-600">Menuai Sukses!</span>
             </h1>
-          <h2 class="text-4xl sm:text-6xl lg:text-8xl uppercase mb-4" 
-        style="font-family: 'Anton', sans-serif; text-shadow: 1px 1px 0 #00000030, 2px 2px 0 #00000010;">
-         <span class="text-green-600">BO</span>
-         <span class="text-gray-800">TANI</span>
-        </h2>
+            <h2 class="text-4xl sm:text-6xl lg:text-8xl uppercase mb-4" 
+                style="font-family: 'Anton', sans-serif; text-shadow: 1px 1px 0 #00000030, 2px 2px 0 #00000010;">
+                <span class="text-green-600">BO</span>
+                <span class="text-gray-800">TANI</span>
+            </h2>
             <p class="text-gray-700 mb-6">
                 BO-TANI merupakan aplikasi yang memberikan efisiensi kepada khalayak umum untuk mengakses informasi mengenai Kelompok Tani Winongo Asri. Mereka bisa mengakses informasi umum, seperti: denah, struktur organisasi, foto, dan lain-lain. Mereka juga bisa melakukan pemesanan sayur, booking online terhadap paket eduwisata, dan memberikan kritik serta saran di fitur ulasan.
             </p>
-            <div class="flex justify-end mt-6">
-    <div class="text-right mt-6">
-    <a href="#selengkapnya"
-       class="inline-block bg-orange-500 text-white px-6 py-3 rounded shadow-md hover:bg-orange-600 transition duration-300 ease-in-out">
-        Selengkapnya
-    </a>
-</div>
-
-        </div>
+            <div class="text-right mt-6">
+            <!-- Tombol Aksi -->
+            <div class="relative z-10 text-center mt-6">
+                <a href="#profil"
+                class="inline-block bg-orange-500 text-white px-6 py-3 rounded shadow-md hover:bg-orange-600 transition duration-300 ease-in-out">
+                    Selengkapnya
+                </a>
+            </div>
+            </div>
+        </div> 
     </div>
+    <!-- Background Images -->
+<div class="relative w-full h-[250px]">
+    <!-- Background Kiri -->
+    <img src="{{ asset('images/content/bgijokiri.png') }}" alt="Kiri"
+         class="absolute top-[20px] left-0 h-[250px] w-1/3 object-cover z-0">
+
+    <!-- Background Kanan -->
+    <img src="{{ asset('images/content/bgijokanan.png') }}" alt="Kanan"
+         class="absolute top-[20px] right-0 h-[250px] w-2/3 object-cover z-0">
+</div>
+</div>
 </section>
 
 {{-- Akses Cepat --}}
-<section class="py-12 bg-green-100">
+<section class="py-12 bg-dark-green">
     <div class="container mx-auto px-6 lg:px-12">
+        <img src="{{ asset('images/content/bgsayur.png') }}" alt="bg akses cepat" class="akses-cepat-img" />
         <h2 class="text-2xl font-bold text-center mb-8 text-green-800">Akses Cepat</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('blog') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
