@@ -39,16 +39,16 @@
                 </div>
                 {{-- Sosial Media--}}
                 <div class="flex space-x-4 mt-4 md:mt-0 mx-auto md:mx-0" style="position: absolute; right: -90px;">
-                    <a href="#" class="text-white hover:text-lime-700">
-                        <i class="fab fa-facebook-square text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-lime-700">
-                        <i class="fab fa-instagram text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-lime-700">
-                        <i class="fab fa-youtube text-2xl"></i>
-                    </a>
-                </div>
+                <a href="#" class="text-white hover:text-lime-700">
+                    <i class="fab fa-facebook-square text-3xl"></i>
+                </a>
+                <a href="#" class="text-white hover:text-lime-700">
+                    <i class="fab fa-instagram text-3xl"></i>
+                </a>
+                <a href="#" class="text-white hover:text-lime-700">
+                    <i class="fab fa-youtube text-3xl"></i>
+                </a>
+            </div>
             </div>
         </div>
     </div>

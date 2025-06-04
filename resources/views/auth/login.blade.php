@@ -240,16 +240,6 @@
                     @endsession
 
                     <h2 class="login-title">Masuk ke Akun <br>Bo Tani Anda</h2>
-                    <div class="social-login">
-                        <button type="button" class="social-button">
-                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo">
-                            Google
-                        </button>
-                        <button type="button" class="social-button">
-                            <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook Logo">
-                        </button>
-                    </div>
-
                     <div class="form-group">
                         <x-input id="email"
                             class="form-input"
@@ -280,14 +270,8 @@
                         <x-button class="login-button">Masuk</x-button>
                     </div>
 
-                   <div class="form-group">
-                        <x-button class="admin-login-button">Masuk Sebagai Admin</x-button>
-                    </div>
-
                     <div class="form-footer" id="animatedFooter">
                     <div class="footer-link-combined">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}" class="footer-link" style="margin-left: 4px;">Daftar</a>
                     </div>
                     <a href="{{ route('password.request') }}" class="footer-link">Lupa Sandi</a>
                 </div>
