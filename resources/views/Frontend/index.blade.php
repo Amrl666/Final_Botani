@@ -162,27 +162,26 @@
 </div>
 </section>
 
-{{-- Akses Cepat --}}
 <section class="py-12 bg-dark-green">
     <div class="container mx-auto px-6 lg:px-12">
         <img src="{{ asset('images/content/bgsayur.png') }}" alt="bg akses cepat" class="akses-cepat-img" />
-        <h2 class="text-2xl font-bold text-center mb-8 text-green-800">Akses Cepat</h2>
+        <h2 class="text-5xl font-bold text-center mb-10 text-green-800">Akses Cepat</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('blog') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
-                <img src="{{ asset('icons/berita.png') }}" alt="Berita" class="w-12 mx-auto mb-2">
-                <h5 class="font-semibold">Berita</h5>
+                <img src="{{ asset('icons/berita.png') }}" alt="Berita" class="w-20 mx-auto mb-4">
+                <h5 class="font-semibold text-2xl">Berita</h5>
             </a>
             <a href="{{ route('product.index_fr') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
-                <img src="{{ asset('icons/store.png') }}" alt="Produk" class="w-12 mx-auto mb-2">
-                <h5 class="font-semibold">Produk</h5>
+                <img src="{{ asset('icons/store.png') }}" alt="Produk" class="w-20 mx-auto mb-4">
+                <h5 class="font-semibold text-2xl">Produk</h5>
             </a>
             <a href="{{ route('eduwisata') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
-                <img src="{{ asset('icons/edu wisata.png') }}" alt="Edu Wisata" class="w-12 mx-auto mb-2">
-                <h5 class="font-semibold">Edu Wisata</h5>
+                <img src="{{ asset('icons/edu wisata.png') }}" alt="Edu Wisata" class="w-20 mx-auto mb-4">
+                <h5 class="font-semibold text-2xl">Edu Wisata</h5>
             </a>
             <a href="{{ route('contact.index') }}" class="bg-white p-4 shadow rounded text-center hover:shadow-lg transition">
-                <img src="{{ asset('icons/help.png') }}" alt="Kontak" class="w-12 mx-auto mb-2">
-                <h5 class="font-semibold">Kontak</h5>
+                <img src="{{ asset('icons/help.png') }}" alt="Kontak" class="w-20 mx-auto mb-4">
+                <h5 class="font-semibold text-2xl">Kontak</h5>
             </a>
         </div>
     </div>
