@@ -28,7 +28,7 @@
     <!-- Form Tambah Jadwal -->
     <div class="bg-white p-6 rounded-lg shadow mb-10">
         <h4 class="text-lg font-semibold mb-4">Tambah Jadwal Baru</h4>
-        <form method="POST" action="{{ route('dashboard.eduwisata.schedule.store') }}" class="grid md:grid-cols-3 gap-4">
+        <form method="POST" action="{{ route('dashboard.eduwisata.storeSchedule') }}" class="grid md:grid-cols-3 gap-4">
             @csrf
             <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
             <div>
