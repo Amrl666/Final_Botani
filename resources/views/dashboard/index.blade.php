@@ -1,95 +1,202 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard')
+
 @section('content')
-<style>
-  .cookieContainer {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: nowrap;
-  }
+<div class="row g-4">
+    <!-- Stats Cards -->
+    <div class="col-12">
+        <div class="row g-4">
+            <!-- Products Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="stats-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="card-subtitle text-muted mb-1">Total Products</h6>
+                                <h2 class="card-title mb-0">18</h2>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-primary" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  .cookieCard {
-    width: 300px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    color: rgb(241, 241, 241);
-  }
+            <!-- Orders Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="stats-icon bg-success bg-opacity-10 text-success">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="card-subtitle text-muted mb-1">Total Orders</h6>
+                                <h2 class="card-title mb-0">42</h2>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  .cookieCard:hover {
-    transform: scale(1.05);
-  }
+            <!-- Eduwisata Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="stats-icon bg-info bg-opacity-10 text-info">
+                                    <i class="fas fa-school"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="card-subtitle text-muted mb-1">Active Eduwisata</h6>
+                                <h2 class="card-title mb-0">5</h2>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-info" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  .cookieCard::before {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    right: -25%;
-    top: -25%;
-    z-index: 1;
-  }
-
-  .cookieHeading {
-    font-size: 1.5em;
-    font-weight: 600;
-    z-index: 2;
-  }
-
-  .cookieDescription {
-    font-size: 2.5em;
-    font-weight: 700;
-    z-index: 2;
-  }
-</style>
-
-<div class="mb-6 px-4">
-    <h1 class="text-3xl font-bold text-green-800 mb-4">Dashboard</h1>
-
-    <div class="cookieContainer">
-        <!-- Card 1 -->
-        <div class="cookieCard" style="background: linear-gradient(to right,rgb(137, 104, 255),rgb(175, 152, 255));">
-            <style>
-              .cookieCard:nth-child(1)::before {
-                background: linear-gradient(to right,rgb(142, 110, 255),rgb(208, 195, 255));
-              }
-            </style>
-            <h2 class="cookieHeading">Jumlah Produk</h2>
-            <p class="cookieDescription">18</p>
+            <!-- Messages Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="stats-icon bg-warning bg-opacity-10 text-warning">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="card-subtitle text-muted mb-1">New Messages</h6>
+                                <h2 class="card-title mb-0">12</h2>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-warning" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Card 2 -->
-        <div class="cookieCard" style="background: linear-gradient(to right,rgb(250, 176, 5),rgb(255, 214, 94));">
-            <style>
-              .cookieCard:nth-child(2)::before {
-                background: linear-gradient(to right,rgb(255, 198, 57),rgb(255, 233, 131));
-              }
-            </style>
-            <h2 class="cookieHeading">Jumlah Pesanan</h2>
-            <p class="cookieDescription">42</p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="cookieCard" style="background: linear-gradient(to right,rgb(59, 130, 246),rgb(147, 197, 253));">
-            <style>
-              .cookieCard:nth-child(3)::before {
-                background: linear-gradient(to right,rgb(147, 197, 253),rgb(191, 219, 254));
-              }
-            </style>
-            <h2 class="cookieHeading">Eduwisata Aktif</h2>
-            <p class="cookieDescription">5</p>
+    <!-- Recent Activities -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <h5 class="card-title mb-0">Recent Activities</h5>
+            </div>
+            <div class="card-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">New Product Added</h6>
+                            <p class="text-muted mb-0">Organic Fertilizer Package was added to the store</p>
+                            <small class="text-muted">2 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-success"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">New Order Received</h6>
+                            <p class="text-muted mb-0">Order #1234 was placed by John Doe</p>
+                            <small class="text-muted">4 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-info"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">Eduwisata Registration</h6>
+                            <p class="text-muted mb-0">New group registration for Plant Workshop</p>
+                            <small class="text-muted">1 day ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+.stats-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 24px;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 3rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -1.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--bs-primary);
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 1rem;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-content {
+    padding: 0.5rem 0;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.25rem;
+}
+
+.progress {
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+</style>
 @endsection
