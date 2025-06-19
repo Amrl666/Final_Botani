@@ -12,6 +12,8 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\EduwisataController;
 use App\Http\Controllers\PerijinanControler;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::delete('/dashboard/eduwisata/schedule/destroy/{schedule}', [EduwisataController::class, 'destroySchedule'])
         ->name('dashboard.eduwisata.destroySchedule');
 
+    Route::get('/dashboard/orders', [OrderController::class, 'index'])->name('dashboard.orders.index');
+    Route::put('/dashboard/orders/{order}', [OrderController::class, 'update'])->name('order.update');
+    Route::get('/dashboard/orders/export', [OrderController::class, 'exportManual'])->name('orders.export');
 });
 
 // Frontend pages
@@ -99,3 +104,19 @@ Route::get('eduwisata', [EduwisataController::class, 'index_fr'])->name('eduwisa
 Route::get('eduwisata/schedule', [EduwisataController::class, 'schedule_fr'])->name('eduwisata.schedule');
 Route::get('/eduwisata/{eduwisata}/schedule', [EduwisataController::class, 'scheduleDetail'])->name('eduwisata.schedule.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/riwayat/produk/{telepon}', [OrderController::class, 'riwayatProduk'])->name('riwayat.produk');
+Route::get('/riwayat/eduwisata/{telepon}', [OrderController::class, 'riwayatEduwisata'])->name('riwayat.eduwisata');
+Route::get('/logout-riwayat', function () {
+    Session::forget('telepon');
+    return redirect('/')->with('success', 'Anda berhasil keluar dari riwayat.');
+})->name('logout.riwayat');
+Route::view('/login-wa', 'auth.login_wa')->name('login.wa');
+Route::post('/login-wa', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'telepon' => 'required|regex:/^[0-9]{10,15}$/'
+    ]);
+
+    session(['telepon' => $request->telepon]);
+    return redirect('/')->with('success', 'Login berhasil!');
+})->name('login.wa.submit');

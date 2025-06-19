@@ -31,23 +31,49 @@
       <span class="text-green-500">BO</span><span class="text-black">TANI</span>
     </a>
 
-    <!-- Menu tengah -->
-    <div class="flex space-x-4 text-sm md:text-base">
-      <a href="{{ url('/') }}" class="hover:underline">Beranda</a>
-      <a href="{{ route('product.index_fr') }}" class="hover:underline">Produk</a>
-      <a href="{{ route('eduwisata') }}" class="hover:underline">Eduwisata</a>
-      <a href="{{ route('blog') }}" class="hover:underline">Blog</a>
-      <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
-      <a href="{{ route('videos') }}" class="hover:underline">Video</a>
-      <a href="{{ route('perijinan') }}" class="hover:underline">Perijinan</a>
-      <a href="{{ route('profile') }}" class="hover:underline">Profil</a>
-      <a href="{{ route('contact.index') }}" class="hover:underline">Kontak</a>
-    </div>
+<!-- Menu tengah -->
+<div class="flex space-x-4 text-sm md:text-base">
+  <a href="{{ url('/') }}" class="hover:underline">Beranda</a>
+  <a href="{{ route('product.index_fr') }}" class="hover:underline">Produk</a>
+  <a href="{{ route('eduwisata') }}" class="hover:underline">Eduwisata</a>
+  <a href="{{ route('blog') }}" class="hover:underline">Blog</a>
+  <a href="{{ route('gallery') }}" class="hover:underline">Galeri</a>
+  <a href="{{ route('videos') }}" class="hover:underline">Video</a>
+  <a href="{{ route('perijinan') }}" class="hover:underline">Perijinan</a>
+  <a href="{{ route('profile') }}" class="hover:underline">Profil</a>
+  <a href="{{ route('contact.index') }}" class="hover:underline">Kontak</a>
 
-    <!-- Icon search kanan -->
-    <a href="#" class="text-xl hover:text-green-500 ml-4">
-      <i class="fas fa-search"></i>
-    </a>
+  {{-- Tambahan Riwayat --}}
+@if(session()->has('telepon'))
+  <div class="relative group">
+    <button class="flex items-center gap-2 hover:text-green-600">
+      <i class="fas fa-user-circle text-xl"></i>
+      <span class="text-sm md:text-base">{{ session('telepon') }}</span>
+      <i class="fas fa-chevron-down text-xs"></i>
+    </button>
+    
+    <div class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition duration-150 z-50">
+      <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
+         class="block px-4 py-2 text-sm hover:bg-gray-100">
+         Riwayat Produk
+      </a>
+      <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
+         class="block px-4 py-2 text-sm hover:bg-gray-100">
+         Riwayat Eduwisata
+      </a>
+      <a href="{{ route('logout.riwayat') }}"
+         class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+         Keluar Riwayat
+      </a>
+    </div>
+  </div>
+@else
+  <a href="{{ route('login.wa') }}" class="hover:underline text-green-600">
+    Lihat Riwayat
+  </a>
+@endif
+
+</div>
 
   </div>
 </nav>
@@ -57,9 +83,18 @@
     </nav>
 
     {{-- Halaman Konten --}}
-    <main class="py-8">
-        @yield('content')
-    </main>
+<main class="py-8">
+    @if(session('success'))
+        <div class="container mx-auto px-4">
+            <div class="bg-green-100 border border-green-300 text-green-800 p-4 rounded mb-4 shadow">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
+    @yield('content')
+</main>
+
 
     {{-- Footer --}}
     @include('partials.footer')

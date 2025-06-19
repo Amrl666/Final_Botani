@@ -49,10 +49,37 @@
                         </div>
                     </div>
 
+                                        <!-- Tombol WhatsApp -->
                     <div class="mt-4 flex justify-between items-center">
                         <a href="{{ route('eduwisata') }}" class="text-sm text-gray-600 hover:text-gray-800">← Kembali</a>
-                        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Beli Sekarang</button>
+                        <button type="button" id="whatsapp-button" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                            Beli via WhatsApp
+                        </button>
                     </div>
+                    <!-- Form Pemesanan Langsung -->
+                    <form action="{{ route('order.store') }}" method="POST" class="mt-6 border-t pt-4">
+                        @csrf
+                        <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700">Nama:</label>
+                            <input type="text" name="nama_pemesan" required class="form-input mt-1 w-full border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700">No. WA:</label>
+                            <input type="text" name="telepon" required class="form-input mt-1 w-full border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700">Jumlah orang:</label>
+                            <input type="number" name="jumlah_orang" min="1" required class="form-input mt-1 w-full border-gray-300 rounded-md">
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                            Pesan Sekarang via Website
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -67,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalDisplay = document.getElementById('total');
     const priceDiv = document.getElementById('price');
     const dateInput = document.getElementById('date');
-    const buyButton = document.querySelector('button.bg-green-500');
+    const buyButton = document.getElementById('whatsapp-button');
 
     const price = Number(priceDiv.dataset.price) || 0;
 

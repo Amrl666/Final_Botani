@@ -204,6 +204,11 @@
                 <i class="fas fa-envelope"></i> Pesan
               </a>
             </li>
+            <li class="nav-item mb-2">
+              <a href="{{ route('dashboard.orders.index') }}" class="nav-link {{ request()->routeIs('dashboard.orders.*') ? 'active' : '' }}">
+                <i class="fas fa-shopping-cart"></i> Orders
+              </a>
+            </li>
             <li class="nav-item mt-4">
               <form method="POST" action="{{ route('logout') }}">
                 @csrf

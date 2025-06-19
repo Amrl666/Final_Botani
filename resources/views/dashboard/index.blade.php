@@ -41,7 +41,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h6 class="card-subtitle text-muted mb-1">Total Orders</h6>
-                                <h2 class="card-title mb-0">42</h2>
+                                <h2 class="card-title mb-0">{{ \App\Models\Order::count() }}</h2>
                             </div>
                         </div>
                         <div class="progress" style="height: 4px;">
@@ -127,6 +127,14 @@
                             <h6 class="mb-1">Eduwisata Registration</h6>
                             <p class="text-muted mb-0">New group registration for Plant Workshop</p>
                             <small class="text-muted">1 day ago</small>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-success"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">New Order Received</h6>
+                            <p class="text-muted mb-0">{{ \App\Models\Order::latest()->first()->nama_pemesan ?? 'Pelanggan' }} membuat pesanan</p>
+                            <small class="text-muted">{{ \App\Models\Order::latest()->first()?->created_at->diffForHumans() ?? '-' }}</small>
                         </div>
                     </div>
                 </div>
