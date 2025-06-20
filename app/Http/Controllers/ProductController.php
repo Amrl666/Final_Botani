@@ -91,11 +91,11 @@ class ProductController extends Controller
     public function index_fr()
     {
         $products = Product::latest()->paginate(8);
-        return view('frontend.product.index', compact('products'));
+        return view('Frontend.product.index', compact('products'));
     }
     public function show(Product $product)
     {
-        return view('frontend.product.product', compact('product'));
+        return view('Frontend.product.product', compact('product'));
     }
 
 }

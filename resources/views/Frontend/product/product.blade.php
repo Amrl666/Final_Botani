@@ -1,128 +1,198 @@
 @extends('layouts.frontend')
 
-@section('title', 'Detail Produk')
+@section('title', $product->name)
 
 @section('content')
-<section class="py-10 bg-gray-50">
+<div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-2xl shadow-md overflow-hidden">
-            
-            <!-- Gambar Produk -->
-            <div class="p-4 flex items-center justify-center bg-gray-100">
-                @if($product->image && file_exists(public_path('storage/' . $product->image)))
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                        class="object-contain max-h-24 w-auto">
-                @else
-                    <img src="https://via.placeholder.com/600x400?text=No+Image" alt="No Image"
-                        class="object-contain max-h-24 w-auto">
-                @endif
-            </div>
+        <!-- Breadcrumb -->
+        <nav class="mb-8 animate-slide-down">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li>
+                    <a href="{{ route('product.index_fr') }}" class="hover:text-green-600 transition-colors duration-200">
+                        Produk
+                    </a>
+                </li>
+                <li>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </li>
+                <li class="text-gray-800 font-medium">{{ $product->name }}</li>
+            </ol>
+        </nav>
 
-            <!-- Info Produk -->
-            <div class="p-6 flex flex-col justify-between">
-                <div>
-                    <h2 class="text-2xl font-bold text-green-900 mb-4">
-                        {{ $product->name ?? 'Nama Produk Tidak Diketahui' }}
-                    </h2>
-
-                    <p class="text-gray-700 mb-4 leading-relaxed">
-                        {{ $product->description ?? 'Deskripsi produk belum tersedia.' }}
-                    </p>
-
-                    <div id="price" data-price="{{ $product->price ?? 0 }}" class="text-xl font-semibold text-green-700 mb-6">
-                        Rp {{ number_format($product->price, 0, ',', '.') }}
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+                <!-- Product Image -->
+                <div class="animate-slide-right">
+                    <div class="relative aspect-square rounded-xl overflow-hidden group">
+                        @if($product->image)
+                            <img src="{{ asset('storage/' . $product->image) }}" 
+                                 alt="{{ $product->name }}" 
+                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        @else
+                            <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                                <i class="fas fa-seedling text-6xl text-gray-400"></i>
+                            </div>
+                        @endif
+                        
+                        @if($product->featured)
+                            <div class="absolute top-4 left-4">
+                                <span class="bg-yellow-400 text-yellow-900 text-sm font-bold px-4 py-2 rounded-full">
+                                    Produk Unggulan
+                                </span>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
-                <!-- Form Pemesanan -->
-                <form action="{{ route('order.store') }}" method="POST" class="space-y-4">
-                    @csrf
-                    <input type="hidden" name="produk_id" value="{{ $product->id }}">
-
-                    <!-- Nama Pemesan -->
-                    <div>
-                        <label for="nama_pemesan" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                        <input type="text" id="nama_pemesan" name="nama_pemesan" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                               required>
+                <!-- Product Info -->
+                <div class="animate-slide-left">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $product->name }}</h1>
+                    
+                    <div class="flex items-center space-x-4 mb-6">
+                        <span class="text-3xl font-bold text-green-600">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </span>
+                        <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                            Stok: {{ $product->stock }}
+                        </span>
                     </div>
 
-                    <!-- Nomor Telepon -->
-                    <div>
-                        <label for="telepon" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
-                        <input type="tel" id="telepon" name="telepon" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                               required>
+                    <div class="prose prose-green max-w-none mb-8">
+                        <p class="text-gray-600">{{ $product->description }}</p>
                     </div>
 
-                    <!-- Jumlah -->
-                    <div>
-                        <label for="jumlah" class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
-                        <div class="flex items-center gap-3">
-                            <button type="button" id="minus" class="w-9 h-9 border border-gray-300 rounded text-xl hover:bg-gray-100">−</button>
-                            <input type="number" id="quantity" name="jumlah_orang"
-                                   class="w-16 text-center border border-gray-300 rounded py-1" value="1" min="1">
-                            <button type="button" id="plus" class="w-9 h-9 border border-gray-300 rounded text-xl hover:bg-gray-100">+</button>
+                    @if($product->stock > 0)
+                        <form action="{{ route('order.store') }}" method="POST" class="space-y-6">
+                            @csrf
+                            <input type="hidden" name="produk_id" value="{{ $product->id }}">
+                            
+                            <div class="space-y-4">
+                                <div class="flex flex-col space-y-2">
+                                    <label for="nama_pemesan" class="text-sm font-medium text-gray-700">Nama Pemesan</label>
+                                    <input type="text" 
+                                           name="nama_pemesan" 
+                                           id="nama_pemesan" 
+                                           required
+                                           class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                </div>
+
+                                <div class="flex flex-col space-y-2">
+                                    <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
+                                    <input type="tel" 
+                                           name="telepon" 
+                                           id="telepon" 
+                                           required
+                                           class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                </div>
+
+                                <div class="flex flex-col space-y-2">
+                                    <label for="alamat" class="text-sm font-medium text-gray-700">Alamat Pengiriman</label>
+                                    <textarea name="alamat" 
+                                              id="alamat" 
+                                              rows="3" 
+                                              required
+                                              class="form-textarea rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200"></textarea>
+                                </div>
+
+                                <div class="flex flex-col space-y-2">
+                                    <label for="jumlah" class="text-sm font-medium text-gray-700">Jumlah (Kg)</label>
+                                    <input type="number" 
+                                           name="jumlah" 
+                                           id="jumlah" 
+                                           min="1" 
+                                           max="{{ $product->stock }}"
+                                           required
+                                           class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                </div>
+                            </div>
+
+                            <button type="submit" 
+                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
+                                Pesan Sekarang
+                            </button>
+                        </form>
+                    @else
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                            <p class="text-red-800 font-medium">Maaf, stok produk ini sedang habis</p>
                         </div>
-                    </div>
-
-                    <!-- Total Harga -->
-                    <div class="pt-2">
-                        <p class="text-lg font-medium text-gray-800">
-                            Total: <span id="total">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                        </p>
-                    </div>
-
-                    <!-- Tombol Pesan -->
-                    <button type="submit" 
-                            class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">
-                        Pesan Sekarang
-                    </button>
-                </form>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideRight {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideLeft {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slide-down {
+    animation: slideDown 1s ease-out forwards;
+}
+
+.animate-slide-right {
+    animation: slideRight 1s ease-out forwards;
+}
+
+.animate-slide-left {
+    animation: slideLeft 1s ease-out forwards;
+}
+
+.form-input, .form-textarea {
+    transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+    transform: translateY(-2px);
+}
+
+button[type="submit"] {
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.95);
+}
+</style>
+
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const minus = document.getElementById('minus');
-    const plus = document.getElementById('plus');
-    const quantityInput = document.getElementById('quantity');
-    const totalDisplay = document.getElementById('total');
-    const priceDiv = document.getElementById('price');
-
-    const price = Number(priceDiv.dataset.price) || 0;
-
-    function updateTotal() {
-        let qty = parseInt(quantityInput.value) || 1;
-        if (qty < 1) qty = 1;
-        quantityInput.value = qty;
-        let total = qty * price;
-        totalDisplay.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+document.addEventListener('DOMContentLoaded', () => {
+    const jumlahInput = document.getElementById('jumlah');
+    const maxStock = {{ $product->stock }};
+    
+    if (jumlahInput) {
+        jumlahInput.addEventListener('input', () => {
+            if (parseInt(jumlahInput.value) > maxStock) {
+                jumlahInput.value = maxStock;
+            }
+        });
     }
-
-    minus.addEventListener('click', () => {
-        let qty = parseInt(quantityInput.value) || 1;
-        if (qty > 1) {
-            quantityInput.value = qty - 1;
-            updateTotal();
-        }
-    });
-
-    plus.addEventListener('click', () => {
-        let qty = parseInt(quantityInput.value) || 1;
-        quantityInput.value = qty + 1;
-        updateTotal();
-    });
-
-    quantityInput.addEventListener('input', updateTotal);
-    quantityInput.addEventListener('change', function() {
-        if (this.value < 1) this.value = 1;
-        updateTotal();
-    });
-
-    updateTotal();
 });
 </script>
+@endpush
 @endsection

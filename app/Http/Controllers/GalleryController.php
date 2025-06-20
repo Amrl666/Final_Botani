@@ -74,6 +74,6 @@ class GalleryController extends Controller
     public function index_fr()
     {
         $galleries = Gallery::latest()->paginate(12);
-        return view('frontend.gallery.index', compact('galleries'));
+        return view('Frontend.gallery.index', compact('galleries'));
     }
 }

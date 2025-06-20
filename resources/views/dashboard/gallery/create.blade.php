@@ -3,28 +3,173 @@
 @section('title', 'Add Gallery Item')
 
 @section('content')
-<div class="container">
-    <h1>Add New Gallery Item</h1>
-    
-    <form action="{{ route('dashboard.gallery.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Add New Gallery Item</h1>
+            <p class="text-muted">Upload and organize gallery images</p>
         </div>
-        
-        <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" name="image" required>
+        <a href="{{ route('dashboard.gallery.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Gallery
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('dashboard.gallery.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <div class="mb-4">
+                            <label for="title" class="form-label">Image Title</label>
+                            <input type="text" 
+                                   class="form-control @error('title') is-invalid @enderror" 
+                                   id="title" 
+                                   name="title" 
+                                   value="{{ old('title') }}"
+                                   placeholder="Enter image title"
+                                   required>
+                            @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="image" class="form-label">Image File</label>
+                            <div class="image-upload-wrapper">
+                                <input type="file" 
+                                       class="form-control @error('image') is-invalid @enderror" 
+                                       id="image" 
+                                       name="image" 
+                                       accept="image/*"
+                                       onchange="previewImage(event)"
+                                       required>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                </small>
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="description" class="form-label">Gallery Date</label>
+                            <input type="date" 
+                                   class="form-control @error('description') is-invalid @enderror" 
+                                   id="description" 
+                                   name="description" 
+                                   value="{{ old('description', isset($gallery) ? $gallery->description : '') }}" 
+                                   required>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-light">Reset</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Add to Gallery
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        
-        <div class="mb-3">
-            <label for="description" class="form-label">Tanggal Galeri</label>
-            <input type="date" class="form-control" id="description" name="description" value="{{ old('description', isset($gallery) ? $gallery->description : '') }}" required>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Image Preview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="image-preview-container mb-3">
+                        <div id="previewPlaceholder" class="text-center py-5">
+                            <i class="fas fa-image fa-3x text-muted mb-3"></i>
+                            <p class="text-muted mb-0">Image preview will appear here</p>
+                        </div>
+                        <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
+                    </div>
+                    <div class="image-info d-none" id="imageInfo">
+                        <div class="d-flex justify-content-between text-muted mb-2">
+                            <span>File size:</span>
+                            <span id="imageSize">-- KB</span>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted">
+                            <span>Dimensions:</span>
+                            <span id="imageDimensions">-- x --</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <button type="submit" class="btn btn-primary">Add Item</button>
-    </form>
+    </div>
 </div>
+
+<style>
+.image-upload-wrapper {
+    position: relative;
+}
+
+.image-preview-container {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imagePreview {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+</style>
+
+@push('scripts')
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('imagePreview');
+    const placeholder = document.getElementById('previewPlaceholder');
+    const imageInfo = document.getElementById('imageInfo');
+    const size = document.getElementById('imageSize');
+    const dimensions = document.getElementById('imageDimensions');
+
+    if (file) {
+        const url = URL.createObjectURL(file);
+        preview.src = url;
+        preview.classList.remove('d-none');
+        placeholder.classList.add('d-none');
+        imageInfo.classList.remove('d-none');
+
+        // Display file size
+        const fileSizeKB = (file.size / 1024).toFixed(2);
+        size.textContent = `${fileSizeKB} KB`;
+
+        // Get image dimensions
+        const img = new Image();
+        img.onload = function() {
+            dimensions.textContent = `${this.width} x ${this.height}`;
+        };
+        img.src = url;
+    } else {
+        preview.src = '';
+        preview.classList.add('d-none');
+        placeholder.classList.remove('d-none');
+        imageInfo.classList.add('d-none');
+    }
+}
+</script>
+@endpush
+
 @endsection

@@ -107,9 +107,10 @@ class EduwisataController extends Controller
     // Frontend Methods
     public function index_fr()
     {
-        $eduwisatas = Eduwisata::with('schedules')->latest()->get();
-        return view('frontend.eduwisata.index', compact('eduwisatas'));
+        $eduwisatas = Eduwisata::with('schedules')->latest()->paginate(10); // ubah dari ->get() ke ->paginate()
+        return view('Frontend.eduwisata.index', compact('eduwisatas'));
     }
+
 
     public function schedule_fr()
     {
@@ -117,12 +118,12 @@ class EduwisataController extends Controller
             $query->where('date', '>=', now())->orderBy('date');
         }])->get();
 
-        return view('frontend.eduwisata.schedule', compact('eduwisatas'));
+        return view('Frontend.eduwisata.schedule', compact('eduwisatas'));
     }
     public function scheduleDetail(Eduwisata $eduwisata)
     {
         $eduwisata->load('schedules');
-        return view('frontend.eduwisata.schedule', compact('eduwisata'));
+        return view('Frontend.eduwisata.schedule', compact('eduwisata'));
     }
 
 }

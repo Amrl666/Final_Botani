@@ -3,28 +3,181 @@
 @section('title', 'Create Blog Post')
 
 @section('content')
-<div class="container">
-    <h1>Create New Blog Post</h1>
-    
-    <form action="{{ route('dashboard.blog.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Create New Blog Post</h1>
+            <p class="text-muted">Write and publish engaging content</p>
         </div>
-        
-        <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" name="image">
+        <a href="{{ route('dashboard.blog.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Blog
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('dashboard.blog.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <div class="mb-4">
+                            <label for="title" class="form-label">Post Title</label>
+                            <input type="text" 
+                                   class="form-control @error('title') is-invalid @enderror" 
+                                   id="title" 
+                                   name="title" 
+                                   value="{{ old('title') }}"
+                                   placeholder="Enter post title"
+                                   required>
+                            @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="image" class="form-label">Featured Image</label>
+                            <div class="image-upload-wrapper">
+                                <input type="file" 
+                                       class="form-control @error('image') is-invalid @enderror" 
+                                       id="image" 
+                                       name="image" 
+                                       accept="image/*"
+                                       onchange="previewImage(event)">
+                                <small class="text-muted d-block mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Optional. Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                </small>
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control @error('content') is-invalid @enderror" 
+                                      id="content" 
+                                      name="content" 
+                                      rows="10"
+                                      placeholder="Write your blog post content here..."
+                                      required>{{ old('content') }}</textarea>
+                            @error('content')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted d-block mt-2">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                You can use HTML tags for formatting
+                            </small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-light">Reset</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Publish Post
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        
-        <div class="mb-3">
-            <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Post Preview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="image-preview-container mb-3">
+                        <div id="previewPlaceholder" class="text-center py-5">
+                            <i class="fas fa-image fa-3x text-muted mb-3"></i>
+                            <p class="text-muted mb-0">Featured image preview</p>
+                        </div>
+                        <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
+                    </div>
+                    <div class="post-info">
+                        <div class="d-flex justify-content-between text-muted mb-2">
+                            <span>Title:</span>
+                            <span id="titlePreview" class="text-dark">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted mb-2">
+                            <span>Content length:</span>
+                            <span id="contentLength">0 characters</span>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted">
+                            <span>Word count:</span>
+                            <span id="wordCount">0 words</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <button type="submit" class="btn btn-primary">Create Post</button>
-    </form>
+    </div>
 </div>
+
+<style>
+.image-upload-wrapper {
+    position: relative;
+}
+
+.image-preview-container {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imagePreview {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+#content {
+    resize: vertical;
+    min-height: 300px;
+}
+</style>
+
+@push('scripts')
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('imagePreview');
+    const placeholder = document.getElementById('previewPlaceholder');
+
+    if (file) {
+        const url = URL.createObjectURL(file);
+        preview.src = url;
+        preview.classList.remove('d-none');
+        placeholder.classList.add('d-none');
+    } else {
+        preview.src = '';
+        preview.classList.add('d-none');
+        placeholder.classList.remove('d-none');
+    }
+}
+
+// Update preview when title changes
+document.getElementById('title').addEventListener('input', function() {
+    document.getElementById('titlePreview').textContent = this.value || '--';
+});
+
+// Update preview when content changes
+document.getElementById('content').addEventListener('input', function() {
+    const content = this.value;
+    document.getElementById('contentLength').textContent = content.length + ' characters';
+    document.getElementById('wordCount').textContent = content.trim().split(/\s+/).filter(word => word.length > 0).length + ' words';
+});
+</script>
+@endpush
+
 @endsection

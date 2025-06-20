@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Order extends Model
 {
     protected $fillable = [
-        'nama_pemesan', 'telepon', 'jumlah_orang',
-        'produk_id', 'eduwisata_id', 'total_harga',
-        'status', 'keterangan'
+        'nama_pemesan', 'telepon', 'alamat', 
+        'jumlah', 'jumlah_orang', 'produk_id', 
+        'eduwisata_id', 'total_harga', 'status',
+        'tanggal_kunjungan', 'keterangan'
     ];
 
     protected $casts = [
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
+        'tanggal_kunjungan' => 'date',
     ];
 
     public function produk(): BelongsTo {

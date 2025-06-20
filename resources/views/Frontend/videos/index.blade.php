@@ -3,173 +3,179 @@
 @section('title', 'Videos')
 
 @section('content')
-<section class="videos-section py-5 bg-light">
-    <div class="container custom-container">
-        <h1 class="videos-title mb-4 text-center">
-        Explore Our Inspiring <span class="highlight fw-bold">Video Collection</span>
-        </h1>
+<section class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12 animate-slide-down">
+            <h1 class="text-4xl font-bold text-green-800 mb-4">Galeri Video</h1>
+            <p class="text-gray-600 text-lg mb-4">Jelajahi koleksi video inspiratif kami</p>
+            <div class="w-24 h-1 bg-green-500 mx-auto rounded-full"></div>
+        </div>
 
-        <div class="row g-4 justify-content-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($videos as $video)
-                <div class="col-sm-12 col-md-6 col-lg-4 d-flex justify-content-center">
-                    <div class="video-card card bg-white shadow-sm">
-                        <div class="ratio ratio-16x9 video-wrapper">
-                            <video controls preload="metadata" class="video-player" tabindex="0" aria-label="Video titled {{ $video->title }}">
-                                <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                <div class="video-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 animate-slide-up" 
+                     style="--delay: {{ $loop->iteration * 0.1 }}s">
+                    <div class="relative aspect-video group">
+                        <video class="w-full h-full object-cover" preload="metadata" poster="{{ asset('images/video-placeholder.jpg') }}">
+                            <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <button class="play-button bg-white bg-opacity-90 rounded-full p-4 transform hover:scale-110 transition-transform duration-300"
+                                    onclick="playVideo(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title video-title fw-semibold mb-2">
-                                {{ $video->title }}
-                            </h5>
-                            @if($video->description)
-                                <p class="card-text video-description text-muted" title="{{ $video->description }}">
-                                    {{ \Illuminate\Support\Str::limit($video->description, 160, '...') }}
-                                </p>
-                            @else
-                                <p class="card-text video-description text-muted fst-italic">
-                                    No description available for this video.
-                                </p>
-                            @endif
+                    </div>
+
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $video->title }}</h3>
+                        @if($video->description)
+                            <p class="text-gray-600 line-clamp-2 mb-4">{{ $video->description }}</p>
+                        @endif
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            {{ $video->created_at->format('d M Y') }}
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="col-12">
-                    <div class="alert alert-info text-center no-video-message">
-                        Sorry, no videos available at the moment. Please check back soon!
+                <div class="col-span-full">
+                    <div class="bg-white rounded-xl shadow-lg p-8 text-center animate-fade-in">
+                        <div class="mb-4">
+                            <i class="fas fa-video text-4xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Belum Ada Video</h3>
+                        <p class="text-gray-600">Video akan segera hadir. Silakan kunjungi kembali nanti.</p>
                     </div>
                 </div>
             @endforelse
         </div>
 
-        <div class="mt-4 d-flex justify-content-center">
+        <div class="mt-12 animate-fade-in" style="--delay: 0.5s">
             {{ $videos->links() }}
         </div>
     </div>
 </section>
 
 @push('styles')
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    .videos-section {
-        font-family: 'Inter', sans-serif;
-        color: #2f855a;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-    .videos-title {
-        color: #2f855a;
-        font-size: 2.5rem;
-        letter-spacing: 0.05em;
-        font-weight: 900; /* super bold */
-    }
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
 
-    .highlight {
-        color: #38a169;
-    }
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
 
-    .video-card {
-        border: 1px solid #c6f6d5;
-        padding: 1rem;
-        max-width: 350px;
-        width: 100%;
-        background-color: #fff;
-        border-radius: 0.5rem;
-        transition: box-shadow 0.3s ease;
-    }
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
 
-    .video-card:hover {
-        box-shadow: 0 8px 20px rgba(56, 161, 105, 0.3);
-    }
+.animate-slide-down {
+    animation: slideDown 1s ease-out forwards;
+}
 
-    .video-wrapper {
-        max-height: 200px;
-        overflow: hidden;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-    }
+.animate-slide-up {
+    opacity: 0;
+    animation: slideUp 1s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
 
-    .video-player {
-        object-fit: cover;
-        width: 100%;
-        height: 200px;
-        border-radius: 0.5rem;
-        background-color: #000;
-    }
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
-    .card-body {
-        padding: 1rem 1rem 1.25rem;
-    }
+.aspect-video {
+    aspect-ratio: 16 / 9;
+}
 
-    .video-title {
-        font-size: 1.3rem;
-        line-height: 1.2;
-        color: #276749;
-        margin-bottom: 0.5rem;
-    }
+.video-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .video-description {
-        font-size: 1rem;
-        line-height: 1.5;
-        color: #4a5568;
-        margin-top: 0.25rem;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-height: 6em;
-    }
+.video-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 
-    .video-description.fst-italic {
-        color: #718096;
-    }
+.play-button {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
 
-    .no-video-message {
-        font-family: 'Inter', sans-serif;
-        color: #2f855a;
-        background-color: #c6f6d5;
-        padding: 1rem;
-        border-radius: 0.25rem;
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-
-    /* Responsive container padding for large screens */
-    .custom-container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
-    @media (min-width: 768px) {
-        .custom-container {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-
-    @media (min-width: 992px) {
-        .custom-container {
-            padding-left: 3rem;
-            padding-right: 3rem;
-        }
-    }
-
-    @media (min-width: 1200px) {
-        .custom-container {
-            padding-left: 4rem;
-            padding-right: 4rem;
-        }
-    }
-
-    @media (min-width: 1400px) {
-        .custom-container {
-            padding-left: 5rem;
-            padding-right: 5rem;
-        }
-    }
+.group:hover .play-button {
+    opacity: 1;
+    transform: scale(1);
+}
 </style>
 @endpush
 
+@push('scripts')
+<script>
+function playVideo(button) {
+    const videoContainer = button.closest('.group');
+    const video = videoContainer.querySelector('video');
+    
+    if (video.paused) {
+        video.play();
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        `;
+    } else {
+        video.pause();
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        `;
+    }
+}
+
+// Pause all videos when scrolling out of view
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+                const video = entry.target.querySelector('video');
+                const button = entry.target.querySelector('.play-button');
+                if (video && !video.paused) {
+                    video.pause();
+                    if (button) {
+                        button.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        `;
+                    }
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.video-card .group').forEach(video => {
+        observer.observe(video);
+    });
+});
+</script>
+@endpush
 @endsection

@@ -1,168 +1,186 @@
 @extends('layouts.frontend')
 
-@section('title', 'Detail Eduwisata')
+@section('title', 'Jadwal Eduwisata')
 
 @section('content')
-<section class="py-10 bg-gray-50">
+<div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden">
+        <!-- Header Section -->
+        <div class="text-center mb-12 animate-slide-down">
+            <h1 class="text-4xl font-bold text-green-800 mb-4">{{ $eduwisata->name }}</h1>
+            <p class="text-gray-600 text-lg mb-4">Pilih jadwal yang sesuai dengan keinginan Anda</p>
+            <div class="w-24 h-1 bg-green-500 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Package Details -->
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden mb-12 animate-slide-up">
             <div class="md:flex">
                 <div class="md:w-1/2">
-                    @if($eduwisata->image && file_exists(public_path('storage/' . $eduwisata->image)))
-                        <img src="{{ asset('storage/' . $eduwisata->image) }}" alt="{{ $eduwisata->name }}"
-                             class="object-cover w-full h-96 md:h-full">
+                    @if($eduwisata->image)
+                        <img src="{{ asset('storage/' . $eduwisata->image) }}" 
+                             alt="{{ $eduwisata->name }}" 
+                             class="w-full h-full object-cover">
                     @else
-                        <img src="https://via.placeholder.com/600x400?text=No+Image"
-                             alt="Default Image"
-                             class="object-cover w-full h-96 md:h-full">
+                        <div class="w-full h-full min-h-[300px] bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-tree text-6xl text-gray-400"></i>
+                        </div>
                     @endif
                 </div>
-                <div class="md:w-1/2 p-6 flex flex-col justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ $eduwisata->name ?? 'Nama Tidak Diketahui' }}</h2>
-                        <p class="text-gray-600 mb-4">{{ $eduwisata->description ?? 'Deskripsi belum tersedia.' }}</p>
-                        
-                        <div class="mb-4">
-                            <h3 class="font-semibold text-gray-700 mb-2">Harga per Orang:</h3>
-                            <div class="text-gray-700 font-medium text-lg">
-                                Rp {{ number_format($eduwisata->harga, 0, ',', '.') }}
-                            </div>
-                        </div>
-
-                        <!-- Simpan harga dalam data attribute agar bisa diakses JS -->
-                        <div id="price" data-price="{{ $eduwisata->harga }}" class="hidden"></div>
-
-                        <div class="flex items-center gap-2 mb-4">
-                            <button id="minus" class="bg-gray-200 px-3 py-1 rounded text-lg">−</button>
-                            <input type="number" id="quantity" class="w-16 text-center border rounded px-2 py-1" value="0" min="0">
-                            <button id="plus" class="bg-gray-200 px-3 py-1 rounded text-lg">+</button>
-                        </div>
-
-                        <!-- Input tanggal -->
-                        <div class="mb-4">
-                            <label for="date" class="font-semibold text-gray-700 mb-2 block">Pilih Tanggal:</label>
-                            <input type="date" id="date" class="border rounded px-3 py-2 w-full" min="{{ date('Y-m-d') }}">
-                        </div>
-
-                        <div class="text-lg font-semibold text-green-600 mb-4">
-                            <span id="total">Rp 0</span>
+                <div class="p-8 md:w-1/2">
+                    <div class="uppercase tracking-wide text-sm text-green-600 font-semibold mb-1">Paket Eduwisata</div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ $eduwisata->name }}</h2>
+                    <p class="text-gray-600 mb-4">{{ $eduwisata->description }}</p>
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-800 text-lg font-semibold px-4 py-2 rounded-lg">
+                            Rp {{ number_format($eduwisata->harga, 0, ',', '.') }}
                         </div>
                     </div>
-
-                                        <!-- Tombol WhatsApp -->
-                    <div class="mt-4 flex justify-between items-center">
-                        <a href="{{ route('eduwisata') }}" class="text-sm text-gray-600 hover:text-gray-800">← Kembali</a>
-                        <button type="button" id="whatsapp-button" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                            Beli via WhatsApp
-                        </button>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-users mr-3 text-green-600"></i>
+                            <span>Minimal 5 orang per grup</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-clock mr-3 text-green-600"></i>
+                            <span>Durasi 2-3 jam</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-certificate mr-3 text-green-600"></i>
+                            <span>Sertifikat keikutsertaan</span>
+                        </div>
                     </div>
-                    <!-- Form Pemesanan Langsung -->
-                    <form action="{{ route('order.store') }}" method="POST" class="mt-6 border-t pt-4">
-                        @csrf
-                        <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
-                        
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700">Nama:</label>
-                            <input type="text" name="nama_pemesan" required class="form-input mt-1 w-full border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700">No. WA:</label>
-                            <input type="text" name="telepon" required class="form-input mt-1 w-full border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700">Jumlah orang:</label>
-                            <input type="number" name="jumlah_orang" min="1" required class="form-input mt-1 w-full border-gray-300 rounded-md">
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-                            Pesan Sekarang via Website
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
+
+        <!-- Schedule Form -->
+        <div class="max-w-2xl mx-auto animate-fade-in" style="--delay: 0.3s">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Pilih Jadwal Kunjungan</h3>
+                
+                <form action="{{ route('order.store') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="nama_pemesan" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
+                            <input type="text" id="nama_pemesan" name="nama_pemesan" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="telepon" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                            <input type="tel" id="telepon" name="telepon" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="jumlah_orang" class="block text-sm font-medium text-gray-700">Jumlah Peserta</label>
+                            <input type="number" id="jumlah_orang" name="jumlah_orang" min="5" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="tanggal_kunjungan" class="block text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
+                            <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" required min="{{ date('Y-m-d') }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Catatan Tambahan</label>
+                        <textarea id="keterangan" name="keterangan" rows="4"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between text-lg font-semibold">
+                            <span>Total Pembayaran:</span>
+                            <span class="text-green-600">Rp {{ number_format($eduwisata->harga, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300">
+                        Pesan Sekarang
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+.animate-slide-down {
+    animation: slideDown 1s ease-out forwards;
+}
+
+.animate-slide-up {
+    opacity: 0;
+    animation: slideUp 1s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+/* Form focus styles */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+/* Custom select arrow */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+</style>
+
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const minus = document.getElementById('minus');
-    const plus = document.getElementById('plus');
-    const quantityInput = document.getElementById('quantity');
-    const totalDisplay = document.getElementById('total');
-    const priceDiv = document.getElementById('price');
-    const dateInput = document.getElementById('date');
-    const buyButton = document.getElementById('whatsapp-button');
-
-    const price = Number(priceDiv.dataset.price) || 0;
-
-    function updateTotal() {
-        let qty = parseInt(quantityInput.value) || 0;
-        let total = qty * price;
-
-        totalDisplay.textContent = `Rp ${total.toLocaleString('id-ID')}`;
-    }
-
-    minus.addEventListener('click', () => {
-        let qty = parseInt(quantityInput.value) || 0;
-        if (qty > 0) {
-            quantityInput.value = qty - 1;
-            updateTotal();
+document.addEventListener('DOMContentLoaded', function() {
+    const jumlahPesertaInput = document.getElementById('jumlah_peserta');
+    const tanggalInput = document.getElementById('tanggal');
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    tanggalInput.min = today;
+    
+    // Validate minimum participants
+    jumlahPesertaInput.addEventListener('change', function() {
+        if (this.value < 5) {
+            alert('Minimal peserta adalah 5 orang');
+            this.value = 5;
         }
     });
-
-    plus.addEventListener('click', () => {
-        let qty = parseInt(quantityInput.value) || 0;
-        quantityInput.value = qty + 1;
-        updateTotal();
-    });
-
-    quantityInput.addEventListener('input', updateTotal);
-
-    buyButton.addEventListener('click', () => {
-        const qty = parseInt(quantityInput.value) || 0;
-        const date = dateInput.value;
-        const name = "{{ $eduwisata->name }}";
-        const priceFormatted = price.toLocaleString('id-ID');
-        const total = qty * price;
-
-        if (qty <= 0) {
-            alert('Silakan pilih jumlah orang terlebih dahulu.');
-            return;
-        }
-
-        if (!date) {
-            alert('Silakan pilih tanggal terlebih dahulu.');
-            return;
-        }
-
-        // Format tanggal agar lebih mudah dibaca (optional)
-        const dateObj = new Date(date);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const dateFormatted = dateObj.toLocaleDateString('id-ID', options);
-
-        // Format pesan WhatsApp
-        const message = 
-`Halo, saya ingin memesan paket Eduwisata:
-- Paket: ${name}
-- Harga per orang: Rp ${priceFormatted}
-- Jumlah orang: ${qty}
-- Total harga: Rp ${total.toLocaleString('id-ID')}
-- Tanggal kunjungan: ${dateFormatted}`;
-
-        // Nomor WhatsApp tujuan (ubah sesuai nomor yang diinginkan, pakai format internasional tanpa tanda +)
-        const waNumber = "628553020204";
-
-        // Encode message agar URL valid
-        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
-
-        // Buka WhatsApp di tab baru
-        window.open(waUrl, '_blank');
-    });
-
-    updateTotal(); // initial update
 });
 </script>
+@endpush
 @endsection

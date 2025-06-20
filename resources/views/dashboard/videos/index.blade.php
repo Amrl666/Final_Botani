@@ -30,7 +30,7 @@
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 animate-fade-in" style="--delay: 0.1s">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 animate-fade-in" style="--delay: 0.2s">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 animate-fade-in" style="--delay: 0.3s">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
@@ -85,7 +85,7 @@
     <!-- Videos Grid -->
     <div class="row g-4">
         @forelse($videos as $video)
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4 animate-slide-up" style="--delay: {{ $loop->iteration * 0.1 }}s">
                 <div class="card h-100 video-card">
                     <div class="video-thumbnail-container">
                         <img src="{{ $video->thumbnail ?? 'https://via.placeholder.com/640x360' }}" 
@@ -149,7 +149,7 @@
                 </div>
             </div>
         @empty
-            <div class="col-12">
+            <div class="col-12 animate-fade-in" style="--delay: 0.5s">
                 <div class="card">
                     <div class="card-body text-center py-5">
                         <div class="mb-3">
@@ -173,6 +173,51 @@
 </div>
 
 <style>
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+.animate-slide-up {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+}
+
+/* Stats Icons */
 .stats-icon {
     width: 48px;
     height: 48px;
@@ -181,17 +226,41 @@
     justify-content: center;
     border-radius: 12px;
     font-size: 24px;
+    transition: all 0.3s ease;
 }
 
+.stats-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Video Cards */
 .video-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
 }
 
 .video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.video-card:hover::before {
+    left: 100%;
 }
 
 .video-thumbnail-container {
@@ -207,6 +276,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail {
+    transform: scale(1.05);
 }
 
 .video-duration {
@@ -218,6 +292,7 @@
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 14px;
+    z-index: 2;
 }
 
 .video-overlay {
@@ -231,7 +306,8 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: all 0.3s ease;
+    z-index: 3;
 }
 
 .video-card:hover .video-overlay {
@@ -244,8 +320,8 @@
 }
 
 .video-actions .btn {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -253,12 +329,14 @@
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.9);
     color: #333;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .video-actions .btn:hover {
     transform: scale(1.1);
     background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .video-meta {
@@ -267,9 +345,114 @@
     gap: 0.5rem;
 }
 
+.video-views {
+    display: flex;
+    align-items: center;
+}
+
+/* Badge Styles */
+.badge {
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+/* Card Styles */
 .card {
     border: none;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .video-actions .btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .video-duration {
+        font-size: 12px;
+        padding: 2px 6px;
+    }
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem 0 0 -0.5rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Focus styles for accessibility */
+.video-actions .btn:focus,
+.btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 </style>
 
@@ -279,7 +462,53 @@
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+    });
+
+    // Add loading states to forms
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function() {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.classList.add('loading');
+                    submitBtn.disabled = true;
+                }
+            });
+        });
+
+        // Add hover effects to video cards
+        const videoCards = document.querySelectorAll('.video-card');
+        videoCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(el => {
+            observer.observe(el);
+        });
+    });
 </script>
 @endpush
 @endsection

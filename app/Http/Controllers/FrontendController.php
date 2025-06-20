@@ -18,7 +18,7 @@ class FrontendController extends Controller
         $eduwisata = Eduwisata::with('schedules')->first();
         $galleries = Gallery::latest()->take(6)->get();
 
-        return view('frontend.index', compact(
+        return view('Frontend.index', compact(
             'latestBlogs',
             'products',
             'prestasi',

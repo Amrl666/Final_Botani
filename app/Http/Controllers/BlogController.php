@@ -81,11 +81,11 @@ class BlogController extends Controller
     public function index_fr()
     {
         $blogs = Blog::latest()->paginate(6);
-        return view('frontend.blog.index', compact('blogs'));
+        return view('Frontend.blog.index', compact('blogs'));
     }
 
     public function show_fr(Blog $blog)
     {
-        return view('frontend.blog.show', compact('blog'));
+        return view('Frontend.blog.show', compact('blog'));
     }
 }

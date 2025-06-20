@@ -8,6 +8,6 @@ class PerijinanControler extends Controller
 {
     public function index_fr()
     {
-        return view('frontend.perijinan.index');
+        return view('Frontend.perijinan.index');
     }
 }
