@@ -2,31 +2,53 @@
 @section('title', 'Riwayat Pemesanan Produk')
 
 @section('content')
-<div class="container py-4">
-    <h4 class="mb-4">Riwayat Pemesanan Produk</h4>
-    <table class="table table-bordered">
-        <thead class="table-secondary">
-            <tr>
-                <th>Tanggal</th>
-                <th>Produk</th>
-                <th>Total</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($orders as $order)
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade {
+        animation: fadeIn 0.6s ease-out forwards;
+        animation-delay: var(--delay, 0s);
+        opacity: 0;
+    }
+
+    .table-container {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="container py-5 animate-fade" style="--delay: 0.1s">
+    <h2 class="mb-4 text-center font-bold text-xl text-gray-800">Riwayat Pemesanan Produk</h2>
+    <div class="table-container">
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
                 <tr>
-                    <td>{{ $order->created_at->format('d M Y') }}</td>
-                    <td>{{ $order->produk->name ?? '-' }}</td>
-                    <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
-                    <td>{{ ucfirst($order->status) }}</td>
+                    <th>Tanggal</th>
+                    <th>Produk</th>
+                    <th>Total</th>
+                    <th>Status</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted">Belum ada pemesanan.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse($orders as $order)
+                    <tr>
+                        <td>{{ $order->created_at->format('d M Y') }}</td>
+                        <td>{{ $order->produk->name ?? '-' }}</td>
+                        <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                        <td><span class="badge bg-secondary">{{ ucfirst($order->status) }}</span></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Belum ada pemesanan.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
