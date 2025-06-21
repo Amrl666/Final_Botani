@@ -14,6 +14,7 @@ use App\Http\Controllers\PerijinanControler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Session;
+use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +118,14 @@ Route::post('/login-wa', function (\Illuminate\Http\Request $request) {
         'telepon' => 'required|regex:/^[0-9]{10,15}$/'
     ]);
 
+    // Cek apakah nomor WA pernah digunakan untuk pemesanan
+    $exists = Order::where('telepon', $request->telepon)->exists();
+
+    if (!$exists) {
+        return back()->withErrors(['telepon' => 'Nomor ini belum pernah digunakan untuk pemesanan.']);
+    }
+
     session(['telepon' => $request->telepon]);
     return redirect('/')->with('success', 'Login berhasil!');
 })->name('login.wa.submit');
+    

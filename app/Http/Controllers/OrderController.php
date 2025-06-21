@@ -22,9 +22,10 @@ class OrderController extends Controller
             'tanggal_kunjungan' => 'nullable|date',
             'produk_id'         => 'nullable|exists:products,id',
             'eduwisata_id'      => 'nullable|exists:eduwisatas,id',
+            'keterangan'        => 'nullable|string|max:255'
         ]);
 
-
+        // Hitung total_harga
         if (!empty($data['eduwisata_id'])) {
             $jumlah = $data['jumlah_orang'] ?? 0;
             $harga = 14000;
@@ -36,19 +37,40 @@ class OrderController extends Controller
             $data['total_harga'] = $harga * $jumlah;
 
         } elseif (!empty($data['produk_id'])) {
-            $produk = Product::find($data['produk_id']);
+            $produk = \App\Models\Product::find($data['produk_id']);
             $jumlah = $data['jumlah'] ?? 1;
             $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
         }
 
-        Order::create($data);
+        $order = Order::create($data);
+
+        // Simpan session untuk tracking riwayat user
         session()->put('telepon', $data['telepon']);
 
-        $message = !empty($data['eduwisata_id']) 
-            ? 'Pesanan eduwisata berhasil direkam.'
-            : 'Pesanan produk berhasil direkam.';
+        // --- Generate pesan WhatsApp ---
+        $nama     = $data['nama_pemesan'];
+        $telepon  = $data['telepon'];
+        $alamat   = $data['alamat'] ?? '-';
+        $jumlah   = $data['jumlah_orang'] ?? $data['jumlah'] ?? 0;
+        $tanggal  = $data['tanggal_kunjungan'] ?? '-';
+       $produk = $data['produk_id'] ?? null
+        ? (\App\Models\Product::find($data['produk_id'])->name ?? 'Produk')
+        : (\App\Models\Eduwisata::find($data['eduwisata_id'])->name ?? 'Eduwisata');
+        $harga    = $data['total_harga'];
 
-        return redirect()->back()->with('success', $message);
+        $waText = "Halo Admin, saya ingin memesan *$produk*:\n" .
+                "- Nama: $nama\n" .
+                "- No HP: $telepon\n" .
+                "- Alamat: $alamat\n" .
+                "- Jumlah: $jumlah\n" .
+                "- Tanggal: $tanggal\n" .
+                "- Total: Rp " . number_format($harga, 0, ',', '.');
+
+        $waNumber = '628553020204'; // <- Ganti dengan nomor admin
+        $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
+
+        // ✅ Redirect ke WhatsApp
+        return redirect()->away($waUrl);
     }
 
     public function index(Request $request)
