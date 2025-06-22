@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\EduwisataController;
 use App\Http\Controllers\PerijinanControler;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +33,14 @@ Route::get('/', [FrontendController::class, 'index']);
 // Halaman kontak
 Route::get('/contact', [ContactController::class, 'index']);
 Route::post('/contact/send', [ContactController::class, 'store']);
+
+// Cart routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::put('/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.count');
 
 // Middleware otentikasi untuk dashboard
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -106,6 +115,7 @@ Route::get('eduwisata/schedule', [EduwisataController::class, 'schedule_fr'])->n
 Route::get('/eduwisata/{eduwisata}/schedule', [EduwisataController::class, 'scheduleDetail'])->name('eduwisata.schedule.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::post('/order/checkout-cart', [OrderController::class, 'checkoutFromCart'])->name('order.checkout-cart');
 Route::get('/riwayat/produk/{telepon}', [OrderController::class, 'riwayatProduk'])->name('riwayat.produk');
 Route::get('/riwayat/eduwisata/{telepon}', [OrderController::class, 'riwayatEduwisata'])->name('riwayat.eduwisata');
 Route::get('/logout-riwayat', function () {

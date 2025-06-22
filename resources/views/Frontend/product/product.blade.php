@@ -65,11 +65,40 @@
                     </div>
 
                     @if($product->stock > 0)
-                        <form action="{{ route('order.store') }}" method="POST" class="space-y-6">
-                            @csrf
-                            <input type="hidden" name="produk_id" value="{{ $product->id }}">
-                            
-                            <div class="space-y-4">
+                        <!-- Add to Cart Section -->
+                        <div class="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                            <h3 class="text-lg font-semibold text-green-800 mb-3">Tambah ke Keranjang</h3>
+                            <form action="{{ route('cart.add') }}" method="POST" class="flex items-center space-x-3">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                
+                                <div class="flex items-center space-x-2">
+                                    <label for="cart_quantity" class="text-sm font-medium text-gray-700">Jumlah:</label>
+                                    <input type="number" 
+                                           name="quantity" 
+                                           id="cart_quantity" 
+                                           min="1" 
+                                           max="{{ $product->stock }}"
+                                           value="1"
+                                           class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <span class="text-sm text-gray-500">kg</span>
+                                </div>
+                                
+                                <button type="submit" 
+                                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 flex items-center space-x-2">
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Tambah ke Keranjang</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Direct Order Section -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Atau Pesan Langsung</h3>
+                            <form action="{{ route('order.store') }}" method="POST" class="space-y-4">
+                                @csrf
+                                <input type="hidden" name="produk_id" value="{{ $product->id }}">
+                                
                                 <div class="flex flex-col space-y-2">
                                     <label for="nama_pemesan" class="text-sm font-medium text-gray-700">Nama Pemesan</label>
                                     <input type="text" 
@@ -107,13 +136,13 @@
                                            required
                                            class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
                                 </div>
-                            </div>
 
-                            <button type="submit" 
-                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
-                                Pesan Sekarang
-                            </button>
-                        </form>
+                                <button type="submit" 
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
+                                    Pesan Sekarang
+                                </button>
+                            </form>
+                        </div>
                     @else
                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                             <p class="text-red-800 font-medium">Maaf, stok produk ini sedang habis</p>
@@ -183,12 +212,21 @@ button[type="submit"]:active {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const jumlahInput = document.getElementById('jumlah');
+    const cartQuantityInput = document.getElementById('cart_quantity');
     const maxStock = {{ $product->stock }};
     
     if (jumlahInput) {
         jumlahInput.addEventListener('input', () => {
             if (parseInt(jumlahInput.value) > maxStock) {
                 jumlahInput.value = maxStock;
+            }
+        });
+    }
+
+    if (cartQuantityInput) {
+        cartQuantityInput.addEventListener('input', () => {
+            if (parseInt(cartQuantityInput.value) > maxStock) {
+                cartQuantityInput.value = maxStock;
             }
         });
     }

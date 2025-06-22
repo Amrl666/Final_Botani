@@ -26,82 +26,98 @@
 
                 <div class="p-8">
                     @if($orders->count() > 0)
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="border-b-2 border-gray-100">
-                                        <th class="text-left py-4 px-6 font-semibold text-gray-700">
-                                            <div class="flex items-center">
-                                                <i class="fas fa-calendar-alt mr-2 text-green-500"></i>
-                                                Tanggal
+                        <div class="space-y-6">
+                            @foreach($orders as $index => $order)
+                                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 animate-slide-up" 
+                                     style="--delay: {{ $index * 0.1 }}s">
+                                    
+                                    <!-- Order Header -->
+                                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-shopping-cart text-green-600"></i>
                                             </div>
-                                        </th>
-                                        <th class="text-left py-4 px-6 font-semibold text-gray-700">
-                                            <div class="flex items-center">
-                                                <i class="fas fa-box mr-2 text-green-500"></i>
-                                                Produk
+                                            <div>
+                                                <div class="font-semibold text-gray-900">
+                                                    Order #{{ $order->id }}
+                                                </div>
+                                                <div class="text-sm text-gray-500">
+                                                    {{ $order->created_at->format('d M Y H:i') }}
+                                                </div>
                                             </div>
-                                        </th>
-                                        <th class="text-left py-4 px-6 font-semibold text-gray-700">
-                                            <div class="flex items-center">
-                                                <i class="fas fa-money-bill-wave mr-2 text-green-500"></i>
-                                                Total
+                                        </div>
+                                        
+                                        <div class="text-right">
+                                            <div class="font-bold text-green-600 text-lg">
+                                                Rp {{ number_format($order->total_harga, 0, ',', '.') }}
                                             </div>
-                                        </th>
-                                        <th class="text-left py-4 px-6 font-semibold text-gray-700">
-                                            <div class="flex items-center">
-                                                <i class="fas fa-info-circle mr-2 text-green-500"></i>
-                                                Status
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($orders as $index => $order)
-                                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors duration-300 animate-slide-up" 
-                                            style="--delay: {{ $index * 0.1 }}s">
-                                            <td class="py-4 px-6">
-                                                <div class="flex items-center">
-                                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                                        <i class="fas fa-calendar text-green-600"></i>
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                                                @if($order->status == 'menunggu') bg-yellow-100 text-yellow-800
+                                                @elseif($order->status == 'disetujui') bg-blue-100 text-blue-800
+                                                @elseif($order->status == 'selesai') bg-green-100 text-green-800
+                                                @elseif($order->status == 'ditolak') bg-red-100 text-red-800
+                                                @else bg-gray-100 text-gray-800 @endif">
+                                                <i class="fas fa-circle mr-2 text-xs"></i>
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Order Items -->
+                                    @if($order->orderItems->count() > 0)
+                                        <div class="space-y-3">
+                                            <h4 class="font-semibold text-gray-800 mb-3">Produk yang Dipesan:</h4>
+                                            @foreach($order->orderItems as $item)
+                                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                    <div class="flex items-center space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                            <i class="fas fa-box text-blue-600"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-medium text-gray-900">{{ $item->product->name }}</div>
+                                                            <div class="text-sm text-gray-500">{{ $item->quantity }} kg x Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="font-medium text-gray-900">{{ $order->created_at->format('d M Y') }}</div>
-                                                        <div class="text-sm text-gray-500">{{ $order->created_at->format('H:i') }}</div>
+                                                    <div class="text-right">
+                                                        <div class="font-semibold text-green-600">
+                                                            Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                <div class="flex items-center">
-                                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                                        <i class="fas fa-box text-blue-600"></i>
-                                                    </div>
-                                                    <span class="font-medium text-gray-900">{{ $order->produk->name ?? '-' }}</span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <!-- Legacy single product display -->
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-box text-blue-600"></i>
                                                 </div>
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                <div class="flex items-center">
-                                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
-                                                        <i class="fas fa-money-bill-wave text-yellow-600"></i>
-                                                    </div>
-                                                    <span class="font-bold text-green-600">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</span>
+                                                <div>
+                                                    <div class="font-medium text-gray-900">{{ $order->produk->name ?? 'Produk' }}</div>
+                                                    <div class="text-sm text-gray-500">{{ $order->jumlah ?? 0 }} kg</div>
                                                 </div>
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                                                    @if($order->status == 'pending') bg-yellow-100 text-yellow-800
-                                                    @elseif($order->status == 'confirmed') bg-blue-100 text-blue-800
-                                                    @elseif($order->status == 'completed') bg-green-100 text-green-800
-                                                    @elseif($order->status == 'cancelled') bg-red-100 text-red-800
-                                                    @else bg-gray-100 text-gray-800 @endif">
-                                                    <i class="fas fa-circle mr-2 text-xs"></i>
-                                                    {{ ucfirst($order->status) }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Order Details -->
+                                    <div class="mt-4 pt-4 border-t border-gray-100">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                            <div>
+                                                <span class="text-gray-500">Alamat:</span>
+                                                <span class="text-gray-900">{{ $order->alamat ?? '-' }}</span>
+                                            </div>
+                                            @if($order->keterangan)
+                                                <div>
+                                                    <span class="text-gray-500">Keterangan:</span>
+                                                    <span class="text-gray-900">{{ $order->keterangan }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     @else
                         <div class="text-center py-12">
@@ -153,10 +169,10 @@
     animation-delay: var(--delay, 0s);
 }
 
-/* Table hover effects */
-tbody tr:hover {
+/* Card hover effects */
+.border:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Status badge animations */
@@ -199,10 +215,6 @@ tbody tr:hover {
     
     .h-10 {
         height: 2rem;
-    }
-    
-    .text-xl {
-        font-size: 1.125rem;
     }
 }
 </style>

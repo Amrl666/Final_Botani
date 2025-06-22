@@ -322,14 +322,33 @@
                     <tbody>
                         @forelse($orders as $order)
                             <tr>
-                                <td>{{ $order->nama_pemesan }}</td>
-                                <td>{{ $order->telepon }}</td>
-                                <td>{{ $order->alamat ?? '-' }}</td>
-                                <td>{{ $order->jumlah_orang ?? '-' }}</td>
-                                <td>{{ $order->eduwisata->name ?? '-' }}</td>
+                                <td class="order-details">
+                                    <div class="fw-bold">{{ $order->nama_pemesan }}</div>
+                                    <div class="text-muted small">{{ $order->telepon }}</div>
+                                    <div class="text-muted small">{{ $order->alamat ?? 'Tidak ada alamat' }}</div>
+                                </td>
+                                <td>
+                                    @if($order->orderItems->isNotEmpty())
+                                        <ul class="list-unstyled mb-0 small">
+                                            @foreach($order->orderItems as $item)
+                                                <li>- {{ $item->product->name }} ({{ $item->quantity }} kg)</li>
+                                            @endforeach
+                                        </ul>
+                                    @elseif($order->produk)
+                                        <div class="fw-bold">{{ $order->produk->name }}</div>
+                                        <div class="small text-muted">{{ $order->jumlah ?? 0 }} kg</div>
+                                    @elseif($order->eduwisata)
+                                        <div class="fw-bold">{{ $order->eduwisata->name }}</div>
+                                        <div class="small text-muted">{{ $order->jumlah_orang ?? 0 }} orang</div>
+                                    @else
+                                        <span class="text-muted small">N/A</span>
+                                    @endif
+                                </td>
                                 <td>{{ $order->tanggal_kunjungan ? date('d M Y', strtotime($order->tanggal_kunjungan)) : '-' }}</td>
                                 <td>{{ $order->keterangan ?? '-' }}</td>
-                                <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                                <td>
+                                    <div class="fw-bold">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</div>
+                                </td>
                                 <td><span class="badge bg-secondary">{{ ucfirst($order->status) }}</span></td>
                                 <td>
                                     <form method="POST" action="{{ route('order.update', $order) }}">

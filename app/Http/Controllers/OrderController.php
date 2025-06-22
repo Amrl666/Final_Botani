@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\Eduwisata;
 use Illuminate\Http\Request;
@@ -77,9 +79,87 @@ class OrderController extends Controller
         return redirect()->away($waUrl);
     }
 
+    // New method for checkout from cart
+    public function checkoutFromCart(Request $request)
+    {
+        $request->validate([
+            'nama_pemesan'      => 'required|string|max:100',
+            'telepon'           => 'required|string|max:20',
+            'alamat'            => 'required|string|max:255',
+            'keterangan'        => 'nullable|string|max:255'
+        ]);
+
+        $sessionId = session()->getId();
+        $cartItems = CartItem::with('product')
+            ->where('session_id', $sessionId)
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return back()->with('error', 'Keranjang belanja kosong!');
+        }
+
+        // Calculate total
+        $totalHarga = $cartItems->sum(function ($item) {
+            return $item->quantity * $item->product->price;
+        });
+
+        // Create order
+        $order = Order::create([
+            'nama_pemesan' => $request->nama_pemesan,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'total_harga' => $totalHarga,
+            'status' => 'menunggu',
+            'keterangan' => $request->keterangan
+        ]);
+
+        // Create order items
+        foreach ($cartItems as $cartItem) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $cartItem->product_id,
+                'quantity' => $cartItem->quantity,
+                'price_per_unit' => $cartItem->product->price,
+                'subtotal' => $cartItem->quantity * $cartItem->product->price
+            ]);
+        }
+
+        // Clear cart
+        CartItem::where('session_id', $sessionId)->delete();
+
+        // Save session for tracking
+        session()->put('telepon', $request->telepon);
+
+        // Generate WhatsApp message for multiple products
+        $nama = $request->nama_pemesan;
+        $telepon = $request->telepon;
+        $alamat = $request->alamat;
+        $keterangan = $request->keterangan ?? '-';
+
+        $waText = "Halo Admin, saya ingin memesan *Multiple Produk*:\n" .
+                "- Nama: $nama\n" .
+                "- No HP: $telepon\n" .
+                "- Alamat: $alamat\n" .
+                "- Keterangan: $keterangan\n\n";
+
+        $waText .= "*Detail Produk:*\n";
+        foreach ($cartItems as $item) {
+            $waText .= "• {$item->product->name}: {$item->quantity} kg x Rp " . 
+                      number_format($item->product->price, 0, ',', '.') . 
+                      " = Rp " . number_format($item->subtotal, 0, ',', '.') . "\n";
+        }
+
+        $waText .= "\n*Total: Rp " . number_format($totalHarga, 0, ',', '.') . "*";
+
+        $waNumber = '628553020204';
+        $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
+
+        return redirect()->away($waUrl);
+    }
+
     public function index(Request $request)
     {
-        $query = Order::with(['produk', 'eduwisata']);
+        $query = Order::with(['produk', 'eduwisata', 'orderItems.product']);
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -107,7 +187,7 @@ class OrderController extends Controller
 
    public function exportManual()
     {
-        $orders = Order::with(['produk', 'eduwisata'])->latest()->get();
+        $orders = Order::with(['produk', 'eduwisata', 'orderItems.product'])->latest()->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -131,22 +211,40 @@ class OrderController extends Controller
         // Isi data baris
         $row = 2;
         foreach ($orders as $order) {
-            $jenis = $order->produk->name ?? ($order->eduwisata->name ?? '-');
-            $jumlah = $order->produk_id
-                ? (($order->jumlah ?? 0) . ' kg')
-                : (($order->jumlah_orang ?? 0) . ' org');
+            if ($order->orderItems->isNotEmpty()) {
+                // Multiple products order
+                foreach ($order->orderItems as $item) {
+                    $sheet->setCellValue('A' . $row, $order->nama_pemesan);
+                    $sheet->setCellValue('B' . $row, $order->telepon);
+                    $sheet->setCellValue('C' . $row, $order->alamat ?? '-');
+                    $sheet->setCellValue('D' . $row, $item->quantity . ' kg');
+                    $sheet->setCellValue('E' . $row, $item->product->name);
+                    $sheet->setCellValue('F' . $row, $item->subtotal);
+                    $sheet->setCellValue('G' . $row, ucfirst($order->status));
+                    $sheet->setCellValue('H' . $row, $order->created_at->format('Y-m-d'));
+                    $sheet->setCellValue('I' . $row, $order->tanggal_kunjungan ?? '-');
+                    $sheet->setCellValue('J' . $row, $order->keterangan ?? '-');
+                    $row++;
+                }
+            } else {
+                // Single product/eduwisata order
+                $jenis = $order->produk->name ?? ($order->eduwisata->name ?? '-');
+                $jumlah = $order->produk_id
+                    ? (($order->jumlah ?? 0) . ' kg')
+                    : (($order->jumlah_orang ?? 0) . ' org');
 
-            $sheet->setCellValue('A' . $row, $order->nama_pemesan);
-            $sheet->setCellValue('B' . $row, $order->telepon);
-            $sheet->setCellValue('C' . $row, $order->alamat ?? '-');
-            $sheet->setCellValue('D' . $row, $jumlah);
-            $sheet->setCellValue('E' . $row, $jenis);
-            $sheet->setCellValue('F' . $row, $order->total_harga);
-            $sheet->setCellValue('G' . $row, ucfirst($order->status));
-            $sheet->setCellValue('H' . $row, $order->created_at->format('Y-m-d'));
-            $sheet->setCellValue('I' . $row, $order->tanggal_kunjungan ?? '-');
-            $sheet->setCellValue('J' . $row, $order->keterangan ?? '-');
-            $row++;
+                $sheet->setCellValue('A' . $row, $order->nama_pemesan);
+                $sheet->setCellValue('B' . $row, $order->telepon);
+                $sheet->setCellValue('C' . $row, $order->alamat ?? '-');
+                $sheet->setCellValue('D' . $row, $jumlah);
+                $sheet->setCellValue('E' . $row, $jenis);
+                $sheet->setCellValue('F' . $row, $order->total_harga);
+                $sheet->setCellValue('G' . $row, ucfirst($order->status));
+                $sheet->setCellValue('H' . $row, $order->created_at->format('Y-m-d'));
+                $sheet->setCellValue('I' . $row, $order->tanggal_kunjungan ?? '-');
+                $sheet->setCellValue('J' . $row, $order->keterangan ?? '-');
+                $row++;
+            }
         }
 
         $writer = new Xlsx($spreadsheet);
@@ -157,16 +255,17 @@ class OrderController extends Controller
         return response()->download($temp_file, $filename)->deleteFileAfterSend(true);
     }
 
-
     public function riwayatProduk($telepon)
     {
-        $orders = Order::with(['produk' => function($query) {
-                $query->select('id', 'name', 'price');
-            }])
+        $orders = Order::with(['orderItems.product', 'produk'])
             ->where('telepon', $telepon)
-            ->whereNotNull('produk_id')
+            ->where(function ($query) {
+                $query->whereHas('orderItems')
+                      ->orWhereNotNull('produk_id');
+            })
             ->latest()
             ->get();
+
         return view('Frontend.orders.riwayat_produk', compact('orders'));
     }
 

@@ -370,10 +370,29 @@
                         </span>
                     </div>
 
-                    <a href="{{ route('product.show', $product->id) }}" 
-                       class="view-detail-btn">
-                        <i class="fas fa-eye me-2"></i>Lihat Detail
-                    </a>
+                    <div class="flex space-x-2">
+                        <a href="{{ route('product.show', $product->id) }}" 
+                           class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-center">
+                            <i class="fas fa-eye me-2"></i>Detail
+                        </a>
+                        
+                        @if($product->stock > 0)
+                            <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" 
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                    <i class="fas fa-cart-plus me-1"></i>Keranjang
+                                </button>
+                            </form>
+                        @else
+                            <button disabled 
+                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg cursor-not-allowed">
+                                <i class="fas fa-times me-1"></i>Habis
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
             @empty
