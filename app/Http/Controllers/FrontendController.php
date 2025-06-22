@@ -14,7 +14,7 @@ class FrontendController extends Controller
     {
         $latestBlogs = Blog::latest()->take(3)->get();
         $products = Product::latest()->take(4)->get();
-        $prestasi = Prestasi::all();;
+        $prestasi = Prestasi::latest()->take(6)->get();
         $eduwisata = Eduwisata::with('schedules')->first();
         $galleries = Gallery::latest()->take(6)->get();
 

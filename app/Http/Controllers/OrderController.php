@@ -25,8 +25,14 @@ class OrderController extends Controller
             'keterangan'        => 'nullable|string|max:255'
         ]);
 
-        // Hitung total_harga
+        // Hitung total_harga dan ambil data produk/eduwisata dalam satu query
+        $produk = null;
+        $eduwisata = null;
+        $namaItem = 'Produk';
+
         if (!empty($data['eduwisata_id'])) {
+            $eduwisata = Eduwisata::find($data['eduwisata_id']);
+            $namaItem = $eduwisata->name ?? 'Eduwisata';
             $jumlah = $data['jumlah_orang'] ?? 0;
             $harga = 14000;
             if ($jumlah >= 20) {
@@ -37,7 +43,8 @@ class OrderController extends Controller
             $data['total_harga'] = $harga * $jumlah;
 
         } elseif (!empty($data['produk_id'])) {
-            $produk = \App\Models\Product::find($data['produk_id']);
+            $produk = Product::find($data['produk_id']);
+            $namaItem = $produk->name ?? 'Produk';
             $jumlah = $data['jumlah'] ?? 1;
             $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
         }
@@ -53,12 +60,9 @@ class OrderController extends Controller
         $alamat   = $data['alamat'] ?? '-';
         $jumlah   = $data['jumlah_orang'] ?? $data['jumlah'] ?? 0;
         $tanggal  = $data['tanggal_kunjungan'] ?? '-';
-       $produk = $data['produk_id'] ?? null
-        ? (\App\Models\Product::find($data['produk_id'])->name ?? 'Produk')
-        : (\App\Models\Eduwisata::find($data['eduwisata_id'])->name ?? 'Eduwisata');
         $harga    = $data['total_harga'];
 
-        $waText = "Halo Admin, saya ingin memesan *$produk*:\n" .
+        $waText = "Halo Admin, saya ingin memesan *$namaItem*:\n" .
                 "- Nama: $nama\n" .
                 "- No HP: $telepon\n" .
                 "- Alamat: $alamat\n" .
@@ -156,18 +160,24 @@ class OrderController extends Controller
 
     public function riwayatProduk($telepon)
     {
-        $orders = Order::with('produk')
+        $orders = Order::with(['produk' => function($query) {
+                $query->select('id', 'name', 'price');
+            }])
             ->where('telepon', $telepon)
             ->whereNotNull('produk_id')
+            ->latest()
             ->get();
         return view('Frontend.orders.riwayat_produk', compact('orders'));
     }
 
     public function riwayatEduwisata($telepon)
     {
-        $orders = Order::with('eduwisata')
+        $orders = Order::with(['eduwisata' => function($query) {
+                $query->select('id', 'name', 'harga');
+            }])
             ->where('telepon', $telepon)
             ->whereNotNull('eduwisata_id')
+            ->latest()
             ->get();
         return view('Frontend.orders.riwayat_eduwisata', compact('orders'));
     }

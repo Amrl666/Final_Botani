@@ -46,6 +46,101 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Page Loading Animation */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            animation: logoFloat 2s ease-in-out infinite;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .loader-logo .text-green {
+            color: var(--primary-color);
+        }
+
+        .loader-logo .text-black {
+            color: var(--text-color);
+        }
+
+        .loader-text {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            font-weight: 500;
+            text-align: center;
+            animation: textPulse 2s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .loader-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .loader-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: dotBounce 1.4s ease-in-out infinite;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+        }
+
+        .loader-dot:nth-child(1) { animation-delay: 0s; }
+        .loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Loading Animations */
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Page Transition Effects */
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .page-transition.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Navbar Styles */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
@@ -319,6 +414,19 @@
 </head>
 <body class="font-sans antialiased bg-gray-100 text-gray-800">
 
+    {{-- Page Loading Screen --}}
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-logo">
+            <span class="text-green">BO</span><span class="text-black">TANI</span>
+        </div>
+        <div class="loader-text">Memuat halaman...</div>
+        <div class="loader-dots">
+            <div class="loader-dot"></div>
+            <div class="loader-dot"></div>
+            <div class="loader-dot"></div>
+        </div>
+    </div>
+
     {{-- Navbar --}}
     <nav class="navbar">
         <div class="container mx-auto px-4 py-4">
@@ -430,7 +538,7 @@
     </nav>
 
     {{-- Main Content --}}
-    <main class="animate-fade-in">
+    <main class="animate-fade-in page-transition" id="mainContent">
         @if(session('success'))
             <div class="container mx-auto px-4 mt-4">
                 <div class="alert alert-success">
@@ -459,6 +567,64 @@
     @livewireScripts
 
     <script>
+        // Page Loading Management
+        let isLoading = false;
+        const pageLoader = document.getElementById('pageLoader');
+        const mainContent = document.getElementById('mainContent');
+
+        // Show loading screen
+        function showLoading() {
+            if (isLoading) return;
+            isLoading = true;
+            pageLoader.classList.remove('hidden');
+            mainContent.classList.remove('loaded');
+        }
+
+        // Hide loading screen
+        function hideLoading() {
+            isLoading = false;
+            pageLoader.classList.add('hidden');
+            mainContent.classList.add('loaded');
+        }
+
+        // Initial page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading time for better UX
+            setTimeout(() => {
+                hideLoading();
+            }, 1500);
+        });
+
+        // Handle page transitions
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.includes('#') && !link.href.includes('javascript:') && !link.target) {
+                // Don't show loading for external links or special links
+                if (link.href.startsWith(window.location.origin) && !link.href.includes('logout')) {
+                    e.preventDefault();
+                    showLoading();
+                    
+                    // Navigate to the page
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 300);
+                }
+            }
+        });
+
+        // Handle form submissions
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (form.method === 'post' || form.method === 'POST') {
+                showLoading();
+            }
+        });
+
+        // Handle browser back/forward
+        window.addEventListener('beforeunload', function() {
+            showLoading();
+        });
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
@@ -512,10 +678,27 @@
             });
         });
 
-        // Add loading animation
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.add('loaded');
-        });
+        // Add loading animation for dynamic content
+        function addLoadingToElement(element) {
+            element.style.opacity = '0.6';
+            element.style.pointerEvents = 'none';
+        }
+
+        function removeLoadingFromElement(element) {
+            element.style.opacity = '1';
+            element.style.pointerEvents = 'auto';
+        }
+
+        // Handle AJAX requests (if any)
+        if (typeof $ !== 'undefined') {
+            $(document).ajaxStart(function() {
+                showLoading();
+            });
+            
+            $(document).ajaxStop(function() {
+                hideLoading();
+            });
+        }
     </script>
 </body>
 </html>

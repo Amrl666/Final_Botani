@@ -75,7 +75,7 @@ class PrestasiController extends Controller
     // Frontend Method
     public function index_fr()
     {
-        $prestasi = Prestasi::latest()->get(); // atau latest() tergantung kebutuhan
+        $prestasi = Prestasi::latest()->paginate(12);
         return view('Frontend.prestasi.index', compact('prestasi'));
     }
 

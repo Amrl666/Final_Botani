@@ -43,6 +43,101 @@
       overflow-x: hidden;
     }
 
+    /* Page Loading Animation for Admin */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      animation: logoFloat 2s ease-in-out infinite;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .loader-logo .text-green {
+      color: var(--primary-color);
+    }
+
+    .loader-logo .text-black {
+      color: var(--text-color);
+    }
+
+    .loader-text {
+      font-size: 1rem;
+      color: var(--text-color);
+      font-weight: 500;
+      text-align: center;
+      animation: textPulse 2s ease-in-out infinite;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .loader-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .loader-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      animation: dotBounce 1.4s ease-in-out infinite;
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+    }
+
+    .loader-dot:nth-child(1) { animation-delay: 0s; }
+    .loader-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Loading Animations */
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes textPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    /* Page Transition Effects */
+    .page-transition {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+
+    .page-transition.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* Sidebar Styles */
     #sidebar {
       min-height: 100vh;
@@ -568,6 +663,19 @@
   @stack('styles')
 </head>
 <body>
+  {{-- Page Loading Screen --}}
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-logo">
+      <span class="text-green">BO</span><span class="text-black">TANI</span>
+    </div>
+    <div class="loader-text">Memuat dashboard...</div>
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+  </div>
+
   <div class="container-fluid p-0">
     <div class="row g-0">
       <!-- Sidebar -->
@@ -648,8 +756,8 @@
         </div>
       </nav>
 
-      <!-- Main content -->
-      <main id="main-content">
+      <!-- Main Content -->
+      <main class="page-transition" id="mainContent">
         <div class="page-header">
           <h1>@yield('title')</h1>
           <nav aria-label="breadcrumb">
@@ -697,30 +805,91 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
   <script>
-    // Sidebar toggle functionality
+    // Page Loading Management
+    let isLoading = false;
+    const pageLoader = document.getElementById('pageLoader');
+    const mainContent = document.getElementById('mainContent');
+
+    // Show loading screen
+    function showLoading() {
+      if (isLoading) return;
+      isLoading = true;
+      pageLoader.classList.remove('hidden');
+      mainContent.classList.remove('loaded');
+    }
+
+    // Hide loading screen
+    function hideLoading() {
+      isLoading = false;
+      pageLoader.classList.add('hidden');
+      mainContent.classList.add('loaded');
+    }
+
+    // Initial page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulate loading time for better UX
+      setTimeout(() => {
+        hideLoading();
+      }, 1200);
+    });
+
+    // Handle page transitions
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a');
+      if (link && link.href && !link.href.includes('#') && !link.href.includes('javascript:') && !link.target) {
+        // Don't show loading for external links or special links
+        if (link.href.startsWith(window.location.origin) && !link.href.includes('logout')) {
+          e.preventDefault();
+          showLoading();
+          
+          // Navigate to the page
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 300);
+        }
+      }
+    });
+
+    // Handle form submissions
+    document.addEventListener('submit', function(e) {
+      const form = e.target;
+      if (form.method === 'post' || form.method === 'POST') {
+        showLoading();
+      }
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('beforeunload', function() {
+      showLoading();
+    });
+
+    // Sidebar toggle function
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
-      const main = document.getElementById('main-content');
-      const toggleBtn = document.querySelector('.sidebar-toggle i');
+      const main = document.querySelector('main');
       
       sidebar.classList.toggle('collapsed');
       main.classList.toggle('expanded');
       
-      if (sidebar.classList.contains('collapsed')) {
-        toggleBtn.classList.remove('fa-bars');
-        toggleBtn.classList.add('fa-chevron-right');
-      } else {
-        toggleBtn.classList.remove('fa-chevron-right');
-        toggleBtn.classList.add('fa-bars');
-      }
-      
-      // Save state to localStorage
+      // Store sidebar state in localStorage
       localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     }
+
+    // Restore sidebar state on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const main = document.querySelector('main');
+      const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      
+      if (sidebarCollapsed) {
+        sidebar.classList.add('collapsed');
+        main.classList.add('expanded');
+      }
+    });
 
     // Mobile sidebar toggle
     function toggleMobileSidebar() {
@@ -728,93 +897,35 @@
       sidebar.classList.toggle('show');
     }
 
-    // Restore sidebar state on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebar = document.getElementById('sidebar');
-      const main = document.getElementById('main-content');
-      const toggleBtn = document.querySelector('.sidebar-toggle i');
-      
-      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-      
-      if (isCollapsed) {
-        sidebar.classList.add('collapsed');
-        main.classList.add('expanded');
-        toggleBtn.classList.remove('fa-bars');
-        toggleBtn.classList.add('fa-chevron-right');
-      }
-    });
-
     // Close mobile sidebar when clicking outside
     document.addEventListener('click', function(event) {
       const sidebar = document.getElementById('sidebar');
-      const sidebarToggle = document.querySelector('.sidebar-toggle');
-      
-      if (window.innerWidth <= 768) {
-        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-          sidebar.classList.remove('show');
-        }
+      if (window.innerWidth <= 768 && !sidebar.contains(event.target)) {
+        sidebar.classList.remove('show');
       }
     });
 
-    // Add loading states to forms
-    document.addEventListener('DOMContentLoaded', function() {
-      const forms = document.querySelectorAll('form');
-      forms.forEach(form => {
-        form.addEventListener('submit', function() {
-          const submitBtn = this.querySelector('button[type="submit"]');
-          if (submitBtn) {
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-          }
-        });
+    // Handle AJAX requests (if any)
+    if (typeof $ !== 'undefined') {
+      $(document).ajaxStart(function() {
+        showLoading();
       });
-
-      // Auto-hide alerts after 5 seconds
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(alert => {
-        setTimeout(() => {
-          alert.style.opacity = '0';
-          setTimeout(() => {
-            alert.remove();
-          }, 300);
-        }, 5000);
+      
+      $(document).ajaxStop(function() {
+        hideLoading();
       });
+    }
 
-      // Add hover effects to cards
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
-        });
-      });
-    });
+    // Add loading animation for dynamic content
+    function addLoadingToElement(element) {
+      element.style.opacity = '0.6';
+      element.style.pointerEvents = 'none';
+    }
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Add page transition effects
-    window.addEventListener('beforeunload', function() {
-      document.body.style.opacity = '0';
-    });
-
-    window.addEventListener('load', function() {
-      document.body.style.opacity = '1';
-    });
+    function removeLoadingFromElement(element) {
+      element.style.opacity = '1';
+      element.style.pointerEvents = 'auto';
+    }
   </script>
   
   @stack('scripts')

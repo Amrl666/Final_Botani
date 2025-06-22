@@ -79,7 +79,7 @@ class EduwisataController extends Controller
 
     public function schedule(Eduwisata $eduwisata)
     {
-        $schedules = $eduwisata->schedules()->orderBy('date')->get();
+        $schedules = $eduwisata->schedules()->with('eduwisata')->orderBy('date')->get();
         return view('dashboard.eduwisata.schedule', compact('eduwisata', 'schedules'));
     }
 
