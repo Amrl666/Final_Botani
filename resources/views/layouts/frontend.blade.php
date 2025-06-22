@@ -432,7 +432,10 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="logo">
+                <a href="{{ url('/') }}" class="logo flex items-center space-x-2">
+                    <img src="{{ asset('images/logo/logobotani.png') }}" 
+                        alt="BO TANI Logo" 
+                        class="w-10 h-10 object-contain drop-shadow-lg">
                     <span class="text-green-500">BO</span><span class="text-black">TANI</span>
                 </a>
 

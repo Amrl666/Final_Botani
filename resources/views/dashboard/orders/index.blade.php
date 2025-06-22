@@ -301,86 +301,120 @@
     </div>
 
      <!-- Orders Table -->
-    <div class="card border-0 shadow-sm animate-scale-in" style="--delay: 0.2s">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>Nama</th>
-                            <th>Telepon</th>
-                            <th>Alamat</th>
-                            <th>Jumlah Orang</th>
-                            <th>Eduwisata</th>
-                            <th>Tanggal Kunjungan</th>
-                            <th>Keterangan</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($orders as $order)
+        <div class="card border-0 shadow-sm animate-scale-in" style="--delay: 0.2s">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-primary">
                             <tr>
-                                <td class="order-details">
-                                    <div class="fw-bold">{{ $order->nama_pemesan }}</div>
-                                    <div class="text-muted small">{{ $order->telepon }}</div>
-                                    <div class="text-muted small">{{ $order->alamat ?? 'Tidak ada alamat' }}</div>
-                                </td>
-                                <td>
-                                    @if($order->orderItems->isNotEmpty())
-                                        <ul class="list-unstyled mb-0 small">
-                                            @foreach($order->orderItems as $item)
-                                                <li>- {{ $item->product->name }} ({{ $item->quantity }} kg)</li>
-                                            @endforeach
-                                        </ul>
-                                    @elseif($order->produk)
-                                        <div class="fw-bold">{{ $order->produk->name }}</div>
-                                        <div class="small text-muted">{{ $order->jumlah ?? 0 }} kg</div>
-                                    @elseif($order->eduwisata)
-                                        <div class="fw-bold">{{ $order->eduwisata->name }}</div>
-                                        <div class="small text-muted">{{ $order->jumlah_orang ?? 0 }} orang</div>
-                                    @else
-                                        <span class="text-muted small">N/A</span>
-                                    @endif
-                                </td>
-                                <td>{{ $order->tanggal_kunjungan ? date('d M Y', strtotime($order->tanggal_kunjungan)) : '-' }}</td>
-                                <td>{{ $order->keterangan ?? '-' }}</td>
-                                <td>
-                                    <div class="fw-bold">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</div>
-                                </td>
-                                <td><span class="badge bg-secondary">{{ ucfirst($order->status) }}</span></td>
-                                <td>
-                                    <form method="POST" action="{{ route('order.update', $order) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <select name="status" class="form-select form-select-sm mb-1">
-                                            @foreach(['menunggu','disetujui','ditolak','selesai'] as $s)
-                                                <option value="{{ $s }}" {{ $order->status == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button class="btn btn-sm btn-primary">Update</button>
-                                    </form>
-                                </td>
+                                <th>Nama</th>
+                                <th>Telepon</th>
+                                <th>Alamat</th>
+                                <th>Jumlah Orang</th>
+                                <th>Eduwisata</th>
+                                <th>Tanggal Kunjungan</th>
+                                <th>Keterangan</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="text-center text-muted">Tidak ada data ditemukan.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse($orders as $order)
+                                <tr>
+                                    <td>{{ $order->nama_pemesan }}</td>
+                                    <td>{{ $order->telepon }}</td>
+                                    <td>{{ $order->alamat ?? 'Tidak ada alamat' }}</td>
+                                    <td>
+                                        {{ $order->jumlah_orang ?? '-' }}
+                                    </td>
+                                    <td>
+                                        @if($order->orderItems->isNotEmpty())
+                                            <ul class="list-unstyled mb-0 small">
+                                                @foreach($order->orderItems as $item)
+                                                    <li>- {{ $item->product->name }} ({{ $item->quantity }} kg)</li>
+                                                @endforeach
+                                            </ul>
+                                        @elseif($order->produk)
+                                            <div class="fw-bold">{{ $order->produk->name }}</div>
+                                            <div class="small text-muted">{{ $order->jumlah ?? 0 }} kg</div>
+                                        @elseif($order->eduwisata)
+                                            <div class="fw-bold">{{ $order->eduwisata->name }}</div>
+                                        @else
+                                            <span class="text-muted small">N/A</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $order->tanggal_kunjungan ? date('d M Y', strtotime($order->tanggal_kunjungan)) : '-' }}</td>
+                                    <td>{{ $order->keterangan ?? '-' }}</td>
+                                    <td>
+                                        <div class="fw-bold">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge status-{{ strtolower($order->status) }}">{{ ucfirst($order->status) }}</span>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{{ route('order.update', $order) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="status" class="form-select form-select-sm mb-1">
+                                                @foreach(['menunggu','disetujui','ditolak','selesai'] as $s)
+                                                    <option value="{{ $s }}" {{ $order->status == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+                                                @endforeach
+                                            </select>
+                                            <button class="btn btn-sm btn-primary">Update</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="10" class="text-center text-muted">Tidak ada data ditemukan.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Pagination -->
+        <!-- Pagination -->
+        <!-- Pagination -->
     @if($orders->hasPages())
-        <div class="d-flex justify-content-center mt-4 animate-fade-in" style="--delay: 0.9s">
-            {{ $orders->links() }}
+        <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination pagination-lg shadow-sm">
+                            {{-- Tombol Sebelumnya --}}
+                            @if ($orders->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">‹</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $orders->previousPageUrl() }}" rel="prev">‹</a>
+                                </li>
+                            @endif
+
+                            {{-- Angka Halaman --}}
+                            @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
+                                <li class="page-item {{ $orders->currentPage() == $page ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            {{-- Tombol Selanjutnya --}}
+                            @if ($orders->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $orders->nextPageUrl() }}" rel="next">›</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">›</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            @endif
         </div>
-    @endif
-</div>
 
 <style>
 .avatar-circle {
