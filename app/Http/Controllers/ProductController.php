@@ -88,9 +88,21 @@ class ProductController extends Controller
     }
 
     // Menampilkan produk di frontend
-    public function index_fr()
+    public function index_fr(Request $request)
     {
-        $products = Product::latest()->paginate(8);
+        $query = Product::query();
+
+        if ($request->filter == 'featured') {
+            $query->where('featured', true);
+        } elseif ($request->filter == 'new') {
+            $query->latest();
+        } elseif ($request->filter == 'available') {
+            $query->where('stock', '>', 0);
+        } else {
+            $query->latest(); // Default sorting
+        }
+
+        $products = $query->paginate(8)->appends($request->query());
         return view('Frontend.product.index', compact('products'));
     }
     public function show(Product $product)

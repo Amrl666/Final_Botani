@@ -170,8 +170,14 @@ class OrderController extends Controller
         }
 
         if ($request->filled('jenis')) {
-            if ($request->jenis == 'produk') $query->whereNotNull('produk_id');
-            elseif ($request->jenis == 'eduwisata') $query->whereNotNull('eduwisata_id');
+            if ($request->jenis == 'produk') {
+                $query->where(function ($q) {
+                    $q->whereNotNull('produk_id')
+                      ->orWhereHas('orderItems');
+                });
+            } elseif ($request->jenis == 'eduwisata') {
+                $query->whereNotNull('eduwisata_id');
+            }
         }
 
         $orders = $query->latest()->paginate(10);

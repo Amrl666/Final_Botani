@@ -242,7 +242,9 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Total Pendapatan</h6>
-                        <h2 class="mb-0">Rp {{ number_format($orders->sum('total_harga'), 0, ',', '.') }}</h2>
+                        <h2 class="mb-0">
+                            Rp {{ number_format($orders->where('status', 'disetujui')->sum('total_harga'), 0, ',', '.') }}
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -310,8 +312,8 @@
                                 <th>Nama</th>
                                 <th>Telepon</th>
                                 <th>Alamat</th>
-                                <th>Jumlah Orang</th>
-                                <th>Eduwisata</th>
+                                <th>Jumlah</th>
+                                <th>Pesanan</th>
                                 <th>Tanggal Kunjungan</th>
                                 <th>Keterangan</th>
                                 <th>Total</th>
@@ -324,7 +326,7 @@
                                 <tr>
                                     <td>{{ $order->nama_pemesan }}</td>
                                     <td>{{ $order->telepon }}</td>
-                                    <td>{{ $order->alamat ?? 'Tidak ada alamat' }}</td>
+                                    <td>{{ $order->alamat ?? '-' }}</td>
                                     <td>
                                         {{ $order->jumlah_orang ?? '-' }}
                                     </td>

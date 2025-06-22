@@ -52,9 +52,42 @@
         </div>
 
         {{-- Pagination --}}
-        <div class="mt-12 animate-fade-in" style="--delay: 0.5s">
-            {{ $blogs->links() }}
-        </div>
+        @if($blogs->hasPages())
+            <div class="mt-12 flex justify-center animate-fade-in" style="--delay: 0.5s">
+                <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+                    {{-- Previous Page Link --}}
+                    @if ($blogs->onFirstPage())
+                        <span class="px-4 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-l-md cursor-not-allowed">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                    @else
+                        <a href="{{ $blogs->previousPageUrl() }}" class="px-4 py-2 border border-gray-300 bg-white text-green-600 hover:bg-green-50 rounded-l-md transition">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @foreach ($blogs->getUrlRange(1, $blogs->lastPage()) as $page => $url)
+                        @if ($page == $blogs->currentPage())
+                            <span class="px-4 py-2 border-t border-b border-gray-300 bg-green-600 text-white font-bold">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-green-600 hover:bg-green-50 transition">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    {{-- Next Page Link --}}
+                    @if ($blogs->hasMorePages())
+                        <a href="{{ $blogs->nextPageUrl() }}" class="px-4 py-2 border border-gray-300 bg-white text-green-600 hover:bg-green-50 rounded-r-md transition">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    @else
+                        <span class="px-4 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-r-md cursor-not-allowed">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    @endif
+                </nav>
+            </div>
+        @endif
     </div>
 </div>
 

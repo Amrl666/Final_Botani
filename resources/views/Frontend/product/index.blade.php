@@ -315,18 +315,22 @@
 
         <!-- Filter Section -->
         <div class="mb-8 flex flex-wrap gap-4 justify-center animate-fade-in" style="--delay: 0.2s">
-            <button class="filter-btn active" data-filter="all">
+            <a href="{{ route('product.index_fr') }}" 
+               class="filter-btn {{ !request('filter') ? 'active' : '' }}">
                 <i class="fas fa-th-large me-2"></i>Semua Produk
-            </button>
-            <button class="filter-btn" data-filter="featured">
+            </a>
+            <a href="{{ route('product.index_fr', ['filter' => 'featured']) }}" 
+               class="filter-btn {{ request('filter') == 'featured' ? 'active' : '' }}">
                 <i class="fas fa-star me-2"></i>Produk Unggulan
-            </button>
-            <button class="filter-btn" data-filter="new">
+            </a>
+            <a href="{{ route('product.index_fr', ['filter' => 'new']) }}"
+               class="filter-btn {{ request('filter') == 'new' ? 'active' : '' }}">
                 <i class="fas fa-clock me-2"></i>Produk Terbaru
-            </button>
-            <button class="filter-btn" data-filter="available">
+            </a>
+            <a href="{{ route('product.index_fr', ['filter' => 'available']) }}"
+               class="filter-btn {{ request('filter') == 'available' ? 'active' : '' }}">
                 <i class="fas fa-check-circle me-2"></i>Tersedia
-            </button>
+            </a>
         </div>
 
         <!-- Products Grid -->
@@ -408,8 +412,39 @@
 
         <!-- Pagination -->
         @if($products->hasPages())
-            <div class="mt-12 animate-fade-in" style="--delay: 0.5s">
-                {{ $products->links() }}
+            <div class="mt-12 flex justify-center animate-fade-in" style="--delay: 0.5s">
+                <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+                    {{-- Previous Page Link --}}
+                    @if ($products->onFirstPage())
+                        <span class="px-4 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-l-md cursor-not-allowed">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="px-4 py-2 border border-gray-300 bg-white text-green-600 hover:bg-green-50 rounded-l-md transition">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                        @if ($page == $products->currentPage())
+                            <span class="px-4 py-2 border-t border-b border-gray-300 bg-green-600 text-white font-bold">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-green-600 hover:bg-green-50 transition">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    {{-- Next Page Link --}}
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="px-4 py-2 border border-gray-300 bg-white text-green-600 hover:bg-green-50 rounded-r-md transition">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    @else
+                        <span class="px-4 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-r-md cursor-not-allowed">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    @endif
+                </nav>
             </div>
         @endif
     </div>
@@ -418,38 +453,14 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
-            
-            const filter = button.dataset.filter;
-            
-            // Add animation to product cards
-            productCards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-                card.classList.remove('animate-scale-in');
-                void card.offsetWidth; // Trigger reflow
-                card.classList.add('animate-scale-in');
-            });
-            
-            // Here you can add filtering logic
-            // Example: You can use AJAX to fetch filtered products
-            // or filter the existing products on the page
-        });
-    });
 
     // Add intersection observer for lazy loading animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('animate-scale-in');
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
