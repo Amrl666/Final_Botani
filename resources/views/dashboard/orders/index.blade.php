@@ -197,7 +197,7 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Total Pesanan</h6>
-                        <h2 class="mb-0">{{ $orders->count() }}</h2>
+                        <h3 class="mb-0">{{ $orders->count() }}</h3>
                     </div>
                 </div>
             </div>
@@ -212,7 +212,7 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Menunggu</h6>
-                        <h2 class="mb-0">{{ $orders->where('status', 'menunggu')->count() }}</h2>
+                        <h3 class="mb-0">{{ $orders->where('status', 'menunggu')->count() }}</h3>
                     </div>
                 </div>
             </div>
@@ -227,7 +227,7 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Disetujui</h6>
-                        <h2 class="mb-0">{{ $orders->where('status', 'disetujui')->count() }}</h2>
+                        <h3 class="mb-0">{{ $orders->where('status', 'disetujui')->count() }}</h3>
                     </div>
                 </div>
             </div>
@@ -242,9 +242,9 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Total Pendapatan</h6>
-                        <h2 class="mb-0">
+                        <h3 class="mb-0">
                             Rp {{ number_format($orders->where('status', 'disetujui')->sum('total_harga'), 0, ',', '.') }}
-                        </h2>
+                        </h>
                     </div>
                 </div>
             </div>

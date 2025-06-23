@@ -448,42 +448,51 @@
                     <a href="{{ route('gallery') }}" class="nav-link">Galeri</a>
                     <a href="{{ route('videos') }}" class="nav-link">Video</a>
                     <a href="{{ route('perijinan') }}" class="nav-link">Perijinan</a>
-                    <a href="{{ route('profile') }}" class="nav-link">Profil</a>
-                    <a href="{{ route('contact.index') }}" class="nav-link">Kontak</a>
+                    <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">Profile</a>
+                    <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('contact') }}">Kontak</a>
 
-                    {{-- User Session Dropdown --}}
-                    @if(session()->has('telepon'))
-                        <div class="user-dropdown">
-                            <button class="user-button">
-                                <i class="fas fa-user-circle text-xl"></i>
-                                <span class="text-sm md:text-base">{{ session('telepon') }}</span>
-                                <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-                            </button>
-                            
-                            <div class="dropdown-menu">
-                                <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
-                                   class="dropdown-item">
-                                   <i class="fas fa-shopping-bag mr-2"></i>
-                                   Riwayat Produk
-                                </a>
-                                <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
-                                   class="dropdown-item">
-                                   <i class="fas fa-graduation-cap mr-2"></i>
-                                   Riwayat Eduwisata
-                                </a>
-                                <a href="{{ route('logout.riwayat') }}"
-                                   class="dropdown-item logout">
-                                   <i class="fas fa-sign-out-alt mr-2"></i>
-                                   Keluar Riwayat
-                                </a>
-                            </div>
-                        </div>
-                    @else
-                        <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
-                            <i class="fas fa-history mr-2"></i>
-                            Lihat Riwayat
+                    <!-- Right Side Actions -->
+                    <div class="hidden md:flex items-center gap-4">
+                        <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-green-600 p-2">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
+                                0
+                            </span>
                         </a>
-                    @endif
+
+                        @if (Session::has('telepon'))
+                            <div class="relative group">
+                                <a href="#" class="nav-link-special">
+                                    <i class="fas fa-user-circle text-xl"></i>
+                                    <span class="text-sm md:text-base">{{ session('telepon') }}</span>
+                                    <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
+                                </a>
+                                
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
+                                       class="dropdown-item">
+                                       <i class="fas fa-shopping-bag mr-2"></i>
+                                       Riwayat Produk
+                                    </a>
+                                    <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
+                                       class="dropdown-item">
+                                       <i class="fas fa-graduation-cap mr-2"></i>
+                                       Riwayat Eduwisata
+                                    </a>
+                                    <a href="{{ route('logout.riwayat') }}"
+                                       class="dropdown-item logout">
+                                       <i class="fas fa-sign-out-alt mr-2"></i>
+                                       Keluar Riwayat
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
+                                <i class="fas fa-history mr-2"></i>
+                                Lihat Riwayat
+                            </a>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- <!-- Mobile Menu Button -->
@@ -701,6 +710,64 @@
             $(document).ajaxStop(function() {
                 hideLoading();
             });
+        }
+
+        // Page loading and transition scripts
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageLoader = document.getElementById('pageLoader');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            // Hide loader after a minimum duration
+            setTimeout(() => {
+                pageLoader.classList.add('hidden');
+            }, 500); // Minimum 0.5s loading screen
+
+            // Show content with transition
+            if(pageTransition) {
+                pageTransition.classList.add('loaded');
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if(menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Update cart count
+            updateCartCount();
+        });
+
+        // Function to update cart count
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            if (!cartCountElement) return;
+
+            fetch('{{ route('cart.count') }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > 0) {
+                        cartCountElement.textContent = data.count;
+                        cartCountElement.classList.remove('hidden');
+                    } else {
+                        cartCountElement.classList.add('hidden');
+                    }
+                })
+                .catch(error => console.error('Error fetching cart count:', error));
         }
     </script>
 </body>
