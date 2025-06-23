@@ -5,6 +5,7 @@
 @section('content')
 <div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
+        <!-- Breadcrumb -->
         <nav class="mb-8 animate-slide-down">
             <ol class="flex items-center space-x-2 text-sm text-gray-500">
                 <li>
@@ -23,18 +24,19 @@
 
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+                <!-- Product Image -->
                 <div class="animate-slide-right">
                     <div class="relative aspect-square rounded-xl overflow-hidden group">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}"
-                                alt="{{ $product->name }}"
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <img src="{{ asset('storage/' . $product->image) }}" 
+                                 alt="{{ $product->name }}" 
+                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
                         @else
                             <div class="w-full h-full bg-gray-100 flex items-center justify-center">
                                 <i class="fas fa-seedling text-6xl text-gray-400"></i>
                             </div>
                         @endif
-
+                        
                         @if($product->featured)
                             <div class="absolute top-4 left-4">
                                 <span class="bg-yellow-400 text-yellow-900 text-sm font-bold px-4 py-2 rounded-full">
@@ -45,9 +47,10 @@
                     </div>
                 </div>
 
+                <!-- Product Info -->
                 <div class="animate-slide-left">
                     <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $product->name }}</h1>
-
+                    
                     <div class="flex items-center space-x-4 mb-6">
                         <span class="text-3xl font-bold text-green-600">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
@@ -62,72 +65,63 @@
                     </div>
 
                     @if($product->stock > 0)
-                        <div class="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                            <h3 class="text-lg font-semibold text-green-800 mb-3">Pilih Jumlah</h3>
-                            <div class="flex items-center space-x-3 mb-4">
-                                <label for="quantity" class="text-sm font-medium text-gray-700">Jumlah:</label>
-                                <input type="number"
-                                       name="quantity"
-                                       id="quantity"
-                                       min="1"
-                                       max="{{ $product->stock }}"
-                                       value="1"
-                                       class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center">
-                                <span class="text-sm text-gray-500">kg</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                                <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="quantity" id="cart_quantity_hidden">
-                                    <button type="submit"
-                                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center space-x-2">
-                                        <i class="fas fa-cart-plus"></i>
-                                        <span>Tambah ke Keranjang</span>
-                                    </button>
-                                </form>
-                                <a href="javascript:void(0);"
-                                   id="orderNowLink"
-                                   class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 text-center"
-                                   data-base-url="{{ route('order.now.form', [$product->id]) }}">
-                                    <i class="fas fa-shopping-bag"></i>
-                                    <span>Pesan Sekarang</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div id="directOrderFormContainer" class="mt-8 border-t pt-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Formulir Pemesanan Langsung</h3>
+                      
+                        <!-- Direct Order Section -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pesan Langsung</h3>
                             <form action="{{ route('order.store') }}" method="POST" class="space-y-4">
                                 @csrf
                                 <input type="hidden" name="produk_id" value="{{ $product->id }}">
-                                <input type="hidden" name="jumlah" id="order_quantity_hidden">
+                                
                                 <div class="flex flex-col space-y-2">
                                     <label for="nama_pemesan" class="text-sm font-medium text-gray-700">Nama Pemesan</label>
-                                    <input type="text"
-                                           name="nama_pemesan"
-                                           id="nama_pemesan"
+                                    <input type="text" 
+                                           name="nama_pemesan" 
+                                           id="nama_pemesan" 
                                            required
                                            class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
                                 </div>
+
                                 <div class="flex flex-col space-y-2">
                                     <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
-                                    <input type="tel"
-                                           name="telepon"
-                                           id="telepon"
+                                    <input type="tel" 
+                                           name="telepon" 
+                                           id="telepon" 
                                            required
                                            class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
                                 </div>
+
                                 <div class="flex flex-col space-y-2">
                                     <label for="alamat" class="text-sm font-medium text-gray-700">Alamat Pengiriman</label>
-                                    <textarea name="alamat"
-                                              id="alamat"
-                                              rows="3"
+                                    <textarea name="alamat" 
+                                              id="alamat" 
+                                              rows="3" 
                                               required
                                               class="form-textarea rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200"></textarea>
                                 </div>
-                                <button type="submit"
+
+                                <div class="flex flex-col space-y-2">
+                                    <label for="jumlah" class="text-sm font-medium text-gray-700">Jumlah (Kg)</label>
+                                    <input type="number" 
+                                    name="jumlah" 
+                                    id="jumlah" 
+                                    min="1" 
+                                    max="{{ $product->stock }}"
+                                    value="{{ old('jumlah', $jumlah ?? 1) }}"
+                                    required
+                                    class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                </div>
+
+                                <div class="flex flex-col space-y-2">
+                                    <label class="text-sm font-medium text-gray-700">Total Harga</label>
+                                    <div id="totalHarga" class="font-bold text-green-700 text-lg">
+                                        Rp {{ number_format(($jumlah ?? 1) * $product->price, 0, ',', '.') }}
+                                    </div>
+                                </div>
+
+                                <button type="submit" 
                                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
-                                    Konfirmasi Pesanan
+                                    Pesan Sekarang
                                 </button>
                             </form>
                         </div>
@@ -198,41 +192,40 @@ button[type="submit"]:active {
 
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const jumlahInput = document.getElementById('jumlah');
+    const cartQuantityInput = document.getElementById('cart_quantity');
+    const maxStock = {{ $product->stock }};
+    
+    if (jumlahInput) {
+        jumlahInput.addEventListener('input', () => {
+            if (parseInt(jumlahInput.value) > maxStock) {
+                jumlahInput.value = maxStock;
+            }
+        });
+    }
+
+    if (cartQuantityInput) {
+        cartQuantityInput.addEventListener('input', () => {
+            if (parseInt(cartQuantityInput.value) > maxStock) {
+                cartQuantityInput.value = maxStock;
+            }
+        });
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Script untuk tombol Pesan Sekarang
-    var orderNowLink = document.getElementById('orderNowLink');
-    var quantityInput = document.getElementById('quantity');
-    if(orderNowLink && quantityInput) {
-        orderNowLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            var jumlah = quantityInput.value || 1;
-            var baseUrl = orderNowLink.getAttribute('data-base-url');
-            var url = baseUrl + '?jumlah=' + encodeURIComponent(jumlah);
-            window.location.href = url;
-        });
-    } else {
-        console.log('orderNowLink atau quantityInput tidak ditemukan');
-    }
-
-    // Script untuk sinkronisasi jumlah ke keranjang (opsional)
-    var cartQuantityHiddenInput = document.getElementById('cart_quantity_hidden');
-    var orderQuantityHiddenInput = document.getElementById('order_quantity_hidden');
-    if(quantityInput && cartQuantityHiddenInput && orderQuantityHiddenInput) {
-        function syncQuantity() {
-            cartQuantityHiddenInput.value = quantityInput.value;
-            orderQuantityHiddenInput.value = quantityInput.value;
+    const jumlahInput = document.getElementById('jumlah');
+    const totalHargaDiv = document.getElementById('totalHarga');
+    const hargaProduk = {{ $product->price }};
+    if(jumlahInput && totalHargaDiv) {
+        function updateTotal() {
+            var qty = parseInt(jumlahInput.value) || 1;
+            var total = hargaProduk * qty;
+            totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
         }
-        quantityInput.addEventListener('input', syncQuantity);
-        syncQuantity();
-    }
-
-    // Script untuk form toggle (jika ada)
-    var orderNowButton = document.getElementById('orderNowButton');
-    var directOrderFormContainer = document.getElementById('directOrderFormContainer');
-    if(orderNowButton && directOrderFormContainer) {
-        orderNowButton.addEventListener('click', function() {
-            directOrderFormContainer.classList.toggle('hidden');
-        });
+        jumlahInput.addEventListener('input', updateTotal);
+        updateTotal();
     }
 });
 </script>

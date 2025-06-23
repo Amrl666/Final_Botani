@@ -412,6 +412,7 @@
         }
     </style>
 </head>
+
 <body class="font-sans antialiased bg-gray-100 text-gray-800">
 
     {{-- Page Loading Screen --}}
@@ -454,10 +455,11 @@
                     <!-- Right Side Actions -->
                     <div class="hidden md:flex items-center gap-4">
                         <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-green-600 p-2">
-                            <i class="fas fa-shopping-cart text-xl"></i>
                             <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
                                 0
                             </span>
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            
                         </a>
 
                         @if (Session::has('telepon'))
@@ -574,7 +576,7 @@
 
     {{-- Footer --}}
     @include('partials.footer')
-
+    @stack('scripts')
     @stack('modals')
     @livewireScripts
 

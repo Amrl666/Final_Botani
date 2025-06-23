@@ -138,4 +138,6 @@ Route::post('/login-wa', function (\Illuminate\Http\Request $request) {
     session(['telepon' => $request->telepon]);
     return redirect('/')->with('success', 'Login berhasil!');
 })->name('login.wa.submit');
+
+Route::get('/order-now/{product}', [App\Http\Controllers\OrderController::class, 'orderNowForm'])->name('order.now.form');
     

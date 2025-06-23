@@ -286,4 +286,11 @@ class OrderController extends Controller
             ->get();
         return view('Frontend.orders.riwayat_eduwisata', compact('orders'));
     }
+
+    public function orderNowForm($productId, Request $request)
+    {
+        $product = \App\Models\Product::findOrFail($productId);
+        $jumlah = $request->query('jumlah', 1); // default 1 jika tidak ada
+        return view('Frontend.product.order_now', compact('product', 'jumlah'));
+    }
 }
