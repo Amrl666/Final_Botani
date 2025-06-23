@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class VideoController extends Controller
 {
@@ -32,7 +34,7 @@ class VideoController extends Controller
         $validated = $request->validate([
             'name' => 'string|max:255',
             'title' => 'required|string|max:255',
-            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm:',
+            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm|max:512000', // max 500MB
             'description' => 'nullable|string',
         ], [
             'title.required' => 'Judul wajib diisi!',
@@ -40,7 +42,14 @@ class VideoController extends Controller
             'video.url' => 'Format URL tidak valid!',
         ]);
 
-         $validated['video'] = $request->file('video')->store('gallery_video', 'public');
+        if ($request->hasFile('video')) {
+            $validated['video'] = $request->file('video')->store('gallery_video', 'public');
+        } else {
+            return back()->with('error', 'File video gagal diupload.')->withInput();
+        }
+
+        // Pastikan hanya path relatif yang disimpan
+        $validated['video'] = ltrim(str_replace('public/', '', $validated['video']), '/');
 
         Video::create($validated);
 
@@ -63,9 +72,20 @@ class VideoController extends Controller
         $validated = $request->validate([
             'name' => 'string|max:255',
             'title' => 'required|string|max:255',
-            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm:',
+            'video' => 'nullable|mimes:mp4,ogx,oga,ogv,ogg,webm|max:512000',
             'description' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('video')) {
+            // Hapus file lama jika ada
+            if ($video->video && Storage::disk('public')->exists($video->video)) {
+                Storage::disk('public')->delete($video->video);
+            }
+            $validated['video'] = $request->file('video')->store('gallery_video', 'public');
+            $validated['video'] = ltrim(str_replace('public/', '', $validated['video']), '/');
+        } else {
+            unset($validated['video']); // Jangan update field video jika tidak ada file baru
+        }
 
         $video->update($validated);
 
@@ -77,6 +97,10 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
+        // Hapus file video dari storage jika ada
+        if ($video->video && Storage::disk('public')->exists($video->video)) {
+            Storage::disk('public')->delete($video->video);
+        }
         $video->delete();
         return redirect()->route('dashboard.videos.index')->with('success', 'Video deleted successfully.');
     }

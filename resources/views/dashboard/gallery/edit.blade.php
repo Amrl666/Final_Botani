@@ -30,7 +30,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form id="galleryForm" action="{{ route('dashboard.gallery.update') }}" method="POST" enctype="multipart/form-data">
+                    <form id="galleryForm" action="{{ route('dashboard.gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         

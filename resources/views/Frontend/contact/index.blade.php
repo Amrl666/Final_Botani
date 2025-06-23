@@ -86,10 +86,10 @@
                         </div>
 
                         <div class="form-group animate-slide-up" style="--delay: 0.2s">
-                            <label class="block text-gray-700 font-medium mb-2">Email</label>
-                            <input type="email" name="email" value="{{ old('email') }}" required
-                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-300 @error('email') border-red-500 @enderror">
-                            @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                            <label class="block text-gray-700 font-medium mb-2">Nomor WhatsApp</label>
+                            <input type="text" name="whatsapp" value="{{ old('whatsapp') }}" required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-300 @error('whatsapp') border-red-500 @enderror">
+                            @error('whatsapp') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <div class="form-group animate-slide-up" style="--delay: 0.3s">

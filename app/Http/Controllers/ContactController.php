@@ -16,7 +16,7 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email',
+            'whatsapp' => 'required',
             'subject' => 'required',
             'message' => 'required',
         ]);
@@ -36,6 +36,9 @@ class ContactController extends Controller
 
     public function showMessage(Contact $contact)
     {
+        if (is_null($contact->read_at)) {
+            $contact->update(['read_at' => now()]);
+        }
         return view('dashboard.contact.show', compact('contact'));
     }
 

@@ -88,21 +88,29 @@
             <div class="col-md-6 col-lg-4 animate-slide-up" style="--delay: {{ $loop->iteration * 0.1 }}s">
                 <div class="card h-100 video-card">
                     <div class="video-thumbnail-container">
-                        <img src="{{ $video->thumbnail ?? 'https://via.placeholder.com/640x360' }}" 
-                             class="card-img-top video-thumbnail" 
-                             alt="{{ $video->title }}">
+                        <video class="w-100" controls preload="metadata" poster="https://via.placeholder.com/640x360" style="background:#000; min-height:180px;">
+                            <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                         <div class="video-duration">
                             <i class="fas fa-play-circle"></i>
                         </div>
-                        <div class="video-overlay">
+                       
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">{{ $video->title }}</h5>
+                        <p class="card-text text-muted small mb-2">
+                            {{ Str::limit($video->description, 100) }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="video-meta">
+                                <span class="badge bg-primary">{{ $video->category }}</span>
+                                <small class="text-muted ms-2">
+                                    <i class="far fa-calendar-alt me-1"></i>
+                                    {{ $video->created_at->format('d M Y') }}
+                                </small>
+                            </div>
                             <div class="video-actions">
-                                <a href="{{ $video->url }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Watch Video"
-                                   target="_blank">
-                                    <i class="fas fa-play"></i>
-                                </a>
                                 <a href="{{ route('dashboard.videos.edit', $video) }}" 
                                    class="btn btn-light btn-sm" 
                                    data-bs-toggle="tooltip" 
@@ -122,27 +130,6 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">{{ $video->title }}</h5>
-                        <p class="card-text text-muted small mb-2">
-                            {{ Str::limit($video->description, 100) }}
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="video-meta">
-                                <span class="badge bg-primary">{{ $video->category }}</span>
-                                <small class="text-muted ms-2">
-                                    <i class="far fa-calendar-alt me-1"></i>
-                                    {{ $video->created_at->format('d M Y') }}
-                                </small>
-                            </div>
-                            <div class="video-views">
-                                <small class="text-muted">
-                                    <i class="fas fa-eye me-1"></i>
-                                    {{ number_format($video->views ?? 0) }}
-                                </small>
                             </div>
                         </div>
                     </div>
@@ -268,21 +255,15 @@
     overflow: hidden;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
 }
-
-.video-thumbnail {
+.video-thumbnail-container video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    z-index: 1;
 }
-
-.video-card:hover .video-thumbnail {
-    transform: scale(1.05);
-}
-
 .video-duration {
     position: absolute;
     top: 10px;
@@ -294,59 +275,23 @@
     font-size: 14px;
     z-index: 2;
 }
-
 .video-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: all 0.3s ease;
+    bottom: 10px;
+    left: 10px;
     z-index: 3;
-}
-
-.video-card:hover .video-overlay {
+    background: rgba(255,255,255,0.85);
+    border-radius: 8px;
+    padding: 4px 8px;
+    display: flex;
+    gap: 0.5rem;
     opacity: 1;
+    align-items: center;
+    pointer-events: auto;
 }
-
 .video-actions {
     display: flex;
     gap: 0.5rem;
-}
-
-.video-actions .btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.video-actions .btn:hover {
-    transform: scale(1.1);
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.video-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.video-views {
-    display: flex;
     align-items: center;
 }
 

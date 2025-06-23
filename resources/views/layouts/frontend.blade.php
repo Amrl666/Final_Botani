@@ -462,29 +462,30 @@
                             
                         </a>
 
-                        @if (Session::has('telepon'))
-                            <div class="relative group">
-                                <a href="#" class="nav-link-special">
+                         {{-- User Session Dropdown --}}
+                        @if(session()->has('telepon'))
+                            <div class="user-dropdown">
+                                <button class="user-button">
                                     <i class="fas fa-user-circle text-xl"></i>
                                     <span class="text-sm md:text-base">{{ session('telepon') }}</span>
                                     <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </a>
+                                </button>
                                 
                                 <div class="dropdown-menu">
                                     <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
-                                       class="dropdown-item">
-                                       <i class="fas fa-shopping-bag mr-2"></i>
-                                       Riwayat Produk
+                                    class="dropdown-item">
+                                    <i class="fas fa-shopping-bag mr-2"></i>
+                                    Riwayat Produk
                                     </a>
                                     <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
-                                       class="dropdown-item">
-                                       <i class="fas fa-graduation-cap mr-2"></i>
-                                       Riwayat Eduwisata
+                                    class="dropdown-item">
+                                    <i class="fas fa-graduation-cap mr-2"></i>
+                                    Riwayat Eduwisata
                                     </a>
                                     <a href="{{ route('logout.riwayat') }}"
-                                       class="dropdown-item logout">
-                                       <i class="fas fa-sign-out-alt mr-2"></i>
-                                       Keluar Riwayat
+                                    class="dropdown-item logout">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    Keluar Riwayat
                                     </a>
                                 </div>
                             </div>
@@ -550,6 +551,24 @@
             </div> --}} 
         </div>
     </nav>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('riwayatDropdownBtn');
+        var menu = document.getElementById('riwayatDropdownMenu');
+        if(btn && menu) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            });
+            document.addEventListener('click', function(e) {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.style.display = 'none';
+                }
+            });
+        }
+    });
+    </script>
 
     {{-- Main Content --}}
     <main class="animate-fade-in page-transition" id="mainContent">

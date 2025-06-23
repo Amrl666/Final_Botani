@@ -309,7 +309,7 @@
                                 </div>
                             </th>
                             <th><i class="fas fa-user me-2"></i>Nama</th>
-                            <th><i class="fas fa-envelope me-2"></i>Email</th>
+                            <th><i class="fab fa-whatsapp me-2"></i>WhatsApp</th>
                             <th><i class="fas fa-tag me-2"></i>Subjek</th>
                             <th><i class="fas fa-info-circle me-2"></i>Status</th>
                             <th><i class="fas fa-calendar me-2"></i>Tanggal</th>
@@ -317,7 +317,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($contacts as $contact)
+                       @forelse($contacts as $contact)
+                            @php
+                                // Normalisasi nomor WhatsApp, ganti awalan 0 menjadi 62
+                                $wa_number = preg_replace('/^0/', '62', $contact->whatsapp);
+                            @endphp
                             <tr class="animate-bounce-in" style="--delay: {{ $loop->iteration * 0.1 }}s">
                                 <td>
                                     <div class="form-check">
@@ -336,8 +340,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="mailto:{{ $contact->email }}" class="text-decoration-none">
-                                        <i class="fas fa-envelope text-primary me-2"></i>{{ $contact->email }}
+                                    <a href="https://wa.me/{{ $wa_number }}" class="text-decoration-none" target="_blank">
+                                        <i class="fab fa-whatsapp text-success me-2"></i>{{ $contact->whatsapp }}
                                     </a>
                                 </td>
                                 <td>
@@ -365,20 +369,21 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('dashboard.contact.show', $contact) }}" 
-                                           class="btn btn-outline-primary" 
-                                           data-bs-toggle="tooltip" 
-                                           title="Lihat Pesan">
+                                        class="btn btn-outline-primary" 
+                                        data-bs-toggle="tooltip" 
+                                        title="Lihat Pesan">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="mailto:{{ $contact->email }}?subject=Re: {{ $contact->subject }}" 
-                                           class="btn btn-outline-success" 
-                                           data-bs-toggle="tooltip" 
-                                           title="Balas">
-                                            <i class="fas fa-reply"></i>
+                                        <a href="https://wa.me/{{ $wa_number }}?text=Halo%20{{ urlencode($contact->name) }}" 
+                                        class="btn btn-outline-success" 
+                                        data-bs-toggle="tooltip" 
+                                        title="Balas via WhatsApp" 
+                                        target="_blank">
+                                            <i class="fab fa-whatsapp"></i>
                                         </a>
                                         <form action="{{ route('dashboard.contact.destroy', $contact) }}" 
-                                              method="POST" 
-                                              class="d-inline">
+                                            method="POST" 
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
