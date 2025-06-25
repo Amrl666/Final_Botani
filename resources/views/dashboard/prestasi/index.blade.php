@@ -11,104 +11,29 @@
             <p class="text-muted">Manage and showcase your achievements and awards</p>
         </div>
         <div class="d-flex gap-2">
-            <div class="dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" data-filter="all">All Achievements</a></li>
-                    <li><a class="dropdown-item" href="#" data-filter="recent">Recent Awards</a></li>
-                    <li><a class="dropdown-item" href="#" data-filter="featured">Featured</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#" data-filter="category">By Category</a></li>
-                </ul>
-            </div>
             <a href="{{ route('dashboard.prestasi.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Add New Achievement
             </a>
         </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="card h-100 stats-card animate-fade-in" style="--delay: 0.1s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-primary bg-opacity-10 text-primary">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Achievements</h6>
-                            <h2 class="card-title mb-0 counter">{{ $prestasis->total() }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 stats-card animate-fade-in" style="--delay: 0.2s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-success bg-opacity-10 text-success">
-                                <i class="fas fa-medal"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">This Year</h6>
-                            <h2 class="card-title mb-0 counter">{{ $prestasis->where('year', date('Y'))->count() }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 stats-card animate-fade-in" style="--delay: 0.3s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-info bg-opacity-10 text-info">
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Featured</h6>
-                            <h2 class="card-title mb-0 counter">{{ $prestasis->where('is_featured', true)->count() }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Search and Filter Section -->
     <div class="card mb-4 animate-fade-in" style="--delay: 0.4s">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" class="form-control search-input" placeholder="Search achievements..." id="searchInput">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <select class="form-select" id="yearFilter">
                         <option value="">All Years</option>
                         @for($year = date('Y'); $year >= date('Y') - 10; $year--)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endfor
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" id="categoryFilter">
-                        <option value="">All Categories</option>
-                        <option value="competition">Competition</option>
-                        <option value="award">Award</option>
-                        <option value="recognition">Recognition</option>
-                        <option value="certification">Certification</option>
                     </select>
                 </div>
             </div>

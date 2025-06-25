@@ -10,92 +10,30 @@
             <h1 class="h3 mb-0">Blog Management</h1>
             <p class="text-muted">Manage and organize your blog content</p>
         </div>
+        
         <div class="d-flex gap-2">
             <a href="{{ route('dashboard.blog.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Create Post
             </a>
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" onclick="filterPosts('all')">All Posts</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterPosts('published')">Published</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterPosts('draft')">Drafts</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterPosts('featured')">Featured</a></li>
-                </ul>
-            </div>
         </div>
     </div>
 
     <!-- Stats Cards -->
     <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2 animate-fade-in" style="--delay: 0.1s">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Posts
+        <div class="col-12">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="stats-card animate-fade-in" style="--delay: 0.1s">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="stats-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $blogs->count() }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-newspaper fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2 animate-fade-in" style="--delay: 0.2s">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Published
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted mb-1">Total Posts</h6>
+                                <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $blogs->count() }}</div>
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $blogs->where('status', 'published')->count() }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2 animate-fade-in" style="--delay: 0.3s">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Drafts
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $blogs->where('status', 'draft')->count() }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-edit fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2 animate-fade-in" style="--delay: 0.4s">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Featured
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $blogs->where('is_featured', true)->count() }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-star fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -113,7 +51,7 @@
         </div>
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search posts...">
                         <label for="searchInput">
@@ -121,22 +59,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-floating">
-                        <select class="form-select" id="categoryFilter">
-                            <option value="">All Categories</option>
-                            <option value="news">News</option>
-                            <option value="tutorial">Tutorial</option>
-                            <option value="guide">Guide</option>
-                            <option value="story">Story</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label for="categoryFilter">
-                            <i class="fas fa-tags me-2"></i>Category
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" id="statusFilter">
                             <option value="">All Status</option>
@@ -149,6 +72,8 @@
                         </label>
                     </div>
                 </div>
+            </a>
+        </div>
             </div>
         </div>
     </div>
@@ -322,22 +247,36 @@
     padding: 2rem;
 }
 
+
+
 /* Stats Cards */
-.border-left-primary {
-    border-left: 4px solid var(--primary-color) !important;
-}
+.stats-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem; /* Default padding */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
-.border-left-success {
-    border-left: 4px solid #28a745 !important;
-}
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
 
-.border-left-warning {
-    border-left: 4px solid #ffc107 !important;
-}
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 24px;
+        transition: transform 0.3s ease;
+    }
 
-.border-left-info {
-    border-left: 4px solid #17a2b8 !important;
-}
+    .stats-card:hover .stats-icon {
+        transform: scale(1.1);
+    }
 
 /* Blog Card Styles */
 .blog-card {

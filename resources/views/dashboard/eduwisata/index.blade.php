@@ -76,21 +76,13 @@
     <div class="card mb-4 animate-fade-in" style="--delay: 0.4s">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" class="form-control search-input" placeholder="Search programs..." id="searchInput">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-select" id="categoryFilter">
-                        <option value="">All Categories</option>
-                        <option value="nature">Nature</option>
-                        <option value="culture">Culture</option>
-                        <option value="education">Education</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <select class="form-select" id="statusFilter">
                         <option value="">All Status</option>
                         <option value="active">Active</option>

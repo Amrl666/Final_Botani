@@ -10,20 +10,6 @@
             <h1 class="h3 mb-0">Product Management</h1>
             <p class="text-muted">Manage your product catalog and inventory</p>
         </div>
-        <div class="d-flex gap-2">
-            <div class="dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" data-filter="all">All Products</a></li>
-                    <li><a class="dropdown-item" href="#" data-filter="in-stock">In Stock</a></li>
-                    <li><a class="dropdown-item" href="#" data-filter="low-stock">Low Stock</a></li>
-                    <li><a class="dropdown-item" href="#" data-filter="out-of-stock">Out of Stock</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#" data-filter="category">By Category</a></li>
-                </ul>
-            </div>
             <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Add New Product
             </a>
@@ -106,22 +92,13 @@
     <div class="card mb-4 animate-fade-in" style="--delay: 0.5s">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" class="form-control search-input" placeholder="Search products..." id="searchInput">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-select" id="categoryFilter">
-                        <option value="">All Categories</option>
-                        <option value="vegetables">Vegetables</option>
-                        <option value="fruits">Fruits</option>
-                        <option value="herbs">Herbs</option>
-                        <option value="seeds">Seeds</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <select class="form-select" id="stockFilter">
                         <option value="">All Stock Levels</option>
                         <option value="in-stock">In Stock</option>
