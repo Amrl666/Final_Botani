@@ -144,11 +144,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h5 class="card-title mb-0">{{ $eduwisata->name }}</h5>
-                        </div>
-                        <p class="card-text text-muted mb-3">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            {{ $eduwisata->location }}
-                        </p>
+                            <h5 class="card-text text-muted mb-3" style="color: green;"> Rp. {{ $eduwisata->harga }} </h5>                        
+                        </div> 
                         <div class="program-meta">
                             <div class="meta-item">
                                 <i class="fas fa-clock me-1"></i>
