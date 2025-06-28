@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Eduwisata')
+@section('title', 'Ubah Eduwisata')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Eduwisata Program</h1>
-            <p class="text-muted">Update educational tourism program details</p>
+            <h1 class="h3 mb-0">Ubah Program Eduwisata</h1>
+            <p class="text-muted">Perbarui detail program wisata edukasi</p>
         </div>
         <div class="d-flex gap-2">
             <button type="submit" form="eduwisataForm" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Update Program
+                <i class="fas fa-save me-2"></i>Perbarui Program
             </button>
             <a href="{{ route('dashboard.eduwisata.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Programs
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Program
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2 text-primary"></i>
-                        Edit Program: {{ $eduwisata->name }}
+                        Ubah Program: {{ $eduwisata->name }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -43,12 +43,12 @@
                                         class="form-control @error('name') is-invalid @enderror" 
                                         id="name" 
                                         name="name" 
-                                        placeholder="Enter program name"
+                                        placeholder="Masukkan nama program"
                                         value="{{ old('name', $eduwisata->name) }}" 
                                         required
                                     >
                                     <label for="name">
-                                        <i class="fas fa-map-marker-alt me-2"></i>Program Name
+                                        <i class="fas fa-map-marker-alt me-2"></i>Nama Program
                                     </label>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -63,13 +63,13 @@
                                         class="form-control @error('description') is-invalid @enderror" 
                                         id="description" 
                                         name="description" 
-                                        placeholder="Enter program description"
+                                        placeholder="Masukkan deskripsi program"
                                         rows="4"
                                         style="height: 120px;"
                                         required
                                     >{{ old('description', $eduwisata->description) }}</textarea>
                                     <label for="description">
-                                        <i class="fas fa-align-left me-2"></i>Description
+                                        <i class="fas fa-align-left me-2"></i>Deskripsi
                                     </label>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Provide a detailed description of the educational tourism program
+                                    Berikan deskripsi detail tentang program wisata edukasi
                                 </div>
                             </div>
 
@@ -89,14 +89,14 @@
                                         class="form-control @error('harga') is-invalid @enderror" 
                                         id="harga" 
                                         name="harga" 
-                                        placeholder="Enter price"
+                                        placeholder="Masukkan harga"
                                         value="{{ old('harga', $eduwisata->harga ?? '') }}" 
                                         min="0"
                                         step="1000"
                                         required
                                     >
                                     <label for="harga">
-                                        <i class="fas fa-tag me-2"></i>Price (Rp)
+                                        <i class="fas fa-tag me-2"></i>Harga (Rp)
                                     </label>
                                     @error('harga')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -112,12 +112,12 @@
                                         class="form-control @error('location') is-invalid @enderror" 
                                         id="location" 
                                         name="location" 
-                                        placeholder="Enter location"
+                                        placeholder="Masukkan lokasi"
                                         value="{{ old('location', $eduwisata->location ?? '') }}" 
                                         required
                                     >
                                     <label for="location">
-                                        <i class="fas fa-map-pin me-2"></i>Location
+                                        <i class="fas fa-map-pin me-2"></i>Lokasi
                                     </label>
                                     @error('location')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -135,7 +135,7 @@
                                                      alt="{{ $eduwisata->name }}" 
                                                      class="preview-img">
                                                 <div class="image-overlay">
-                                                    <span class="badge bg-primary">Current Image</span>
+                                                    <span class="badge bg-primary">Gambar Saat Ini</span>
                                                 </div>
                                             </div>
                                         @endif
@@ -150,7 +150,7 @@
                                                 accept="image/*"
                                             >
                                             <label for="image">
-                                                <i class="fas fa-image me-2"></i>Update Image (Optional)
+                                                <i class="fas fa-image me-2"></i>Perbarui Gambar (Opsional)
                                             </label>
                                         </div>
                                         @error('image')
@@ -164,15 +164,15 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('type') is-invalid @enderror" id="type" name="type">
-                                        <option value="">Select program type</option>
-                                        <option value="field_trip" {{ old('type', $eduwisata->type) == 'field_trip' ? 'selected' : '' }}>Field Trip</option>
+                                        <option value="">Pilih jenis program</option>
+                                        <option value="field_trip" {{ old('type', $eduwisata->type) == 'field_trip' ? 'selected' : '' }}>Kunjungan Lapangan</option>
                                         <option value="workshop" {{ old('type', $eduwisata->type) == 'workshop' ? 'selected' : '' }}>Workshop</option>
-                                        <option value="tour" {{ old('type', $eduwisata->type) == 'tour' ? 'selected' : '' }}>Educational Tour</option>
+                                        <option value="tour" {{ old('type', $eduwisata->type) == 'tour' ? 'selected' : '' }}>Tur Edukatif</option>
                                         <option value="seminar" {{ old('type', $eduwisata->type) == 'seminar' ? 'selected' : '' }}>Seminar</option>
-                                        <option value="other" {{ old('type', $eduwisata->type) == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="other" {{ old('type', $eduwisata->type) == 'other' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     <label for="type">
-                                        <i class="fas fa-graduation-cap me-2"></i>Program Type
+                                        <i class="fas fa-graduation-cap me-2"></i>Jenis Program
                                     </label>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -188,11 +188,11 @@
                                         class="form-control @error('duration') is-invalid @enderror" 
                                         id="duration" 
                                         name="duration" 
-                                        placeholder="e.g., 2 hours, 1 day"
+                                        placeholder="misal: 2 jam, 1 hari"
                                         value="{{ old('duration', $eduwisata->duration ?? '') }}" 
                                     >
                                     <label for="duration">
-                                        <i class="fas fa-clock me-2"></i>Duration
+                                        <i class="fas fa-clock me-2"></i>Durasi
                                     </label>
                                     @error('duration')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -519,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
         }
     });
 

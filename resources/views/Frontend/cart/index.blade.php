@@ -43,7 +43,7 @@
                             <div class="flex-1">
                                 <h3 class="text-lg font-semibold text-gray-800">{{ $item->product->name }}</h3>
                                 <p class="text-gray-600 text-sm">{{ $item->product->description }}</p>
-                                <p class="text-green-600 font-semibold">Rp {{ number_format($item->product->price, 0, ',', '.') }}/kg</p>
+                                <p class="text-green-600 font-semibold">Rp {{ number_format($item->product->price, 0, ',', '.') }}/{{ $item->product->unit ?? 'satuan' }}</p>
                             </div>
 
                             <div class="flex items-center space-x-2">
@@ -53,11 +53,12 @@
                                     <input type="number"
                                             name="quantity"
                                             value="{{ $item->quantity }}"
-                                            min="1"
+                                            min="{{ $item->product->min_increment ?? 1 }}"
                                             max="{{ $item->product->stock }}"
+                                            step="{{ $item->product->min_increment ?? 1 }}"
                                             class="w-16 px-2 py-1 border border-gray-300 rounded text-center">
                                             <button type="submit" class=" hover:text-white hover:bg-green-700 font-semibold py-2 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
-                                                <i class="fas fa-sync-alt"></i> <span>Update</span>
+                                                <i class="fas fa-sync-alt"></i> <span>Perbarui</span>
                                             </button>
                                 </form>
                             </div>
@@ -66,7 +67,7 @@
                                 <p class="text-lg font-bold text-green-600">
                                     Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                                 </p>
-                                <p class="text-sm text-gray-500">{{ $item->quantity }} kg</p>
+                                <p class="text-sm text-gray-500">{{ $item->quantity }} {{ $item->product->unit ?? 'satuan' }}</p>
                             </div>
 
                             <form action="{{ route('cart.remove', $item->id) }}" method="POST">

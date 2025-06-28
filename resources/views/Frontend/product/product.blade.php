@@ -53,7 +53,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
                         <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            Stok: {{ $product->stock }}
+                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                         </span>
                     </div>
 
@@ -69,11 +69,12 @@
                                 <input type="number"
                                        name="quantity"
                                        id="quantity"
-                                       min="1"
+                                       min="{{ $product->min_increment ?? 1 }}"
                                        max="{{ $product->stock }}"
-                                       value="1"
+                                       value="{{ $product->min_increment ?? 1 }}"
+                                       step="{{ $product->min_increment ?? 1 }}"
                                        class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center">
-                                <span class="text-sm text-gray-500">kg</span>
+                                <span class="text-sm text-gray-500">{{ $product->unit ?? 'satuan' }}</span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                                 <form action="{{ route('cart.add') }}" method="POST" class="flex-1">

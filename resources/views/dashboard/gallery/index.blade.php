@@ -1,6 +1,6 @@
     @extends('layouts.app')
 
-    @section('title', 'Gallery Management')
+    @section('title', 'Manajemen Galeri')
 
     @section('content')
     <style>
@@ -322,16 +322,15 @@
     </style>
 
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-4 animate-fade-in" style="--delay: 0.1s">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 class="h3 mb-0">Gallery Management</h1>
-                <p class="text-muted">Kelola galeri foto dan konten media Anda</p>
+                <h1 class="h3 mb-0">Manajemen Galeri</h1>
+                <p class="text-muted">Kelola foto dan gambar galeri</p>
             </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('dashboard.gallery.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>Tambah Gambar
-                </a>
-            </div>
+            <a href="{{ route('dashboard.gallery.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Tambah Foto
+            </a>
         </div>
 
         <div class="row g-4 mb-4">

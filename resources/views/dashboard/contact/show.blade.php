@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Message Details')
+@section('title', 'Detail Pesan')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Message Details</h1>
-            <p class="text-muted">View and manage message information</p>
+            <h1 class="h3 mb-0">Detail Pesan</h1>
+            <p class="text-muted">Lihat dan kelola informasi pesan</p>
         </div>
         <div class="d-flex gap-2">
             <a href="mailto:{{ $contact->email }}" class="btn btn-primary">
-                <i class="fas fa-reply me-2"></i>Reply via Email
+                <i class="fas fa-reply me-2"></i>Balas via Email
             </a>
             <a href="{{ route('dashboard.contact.messages') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Messages
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Pesan
             </a>
         </div>
     </div>
@@ -68,28 +68,28 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-bolt me-2 text-primary"></i>
-                        Quick Actions
+                        Aksi Cepat
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <button class="btn btn-outline-primary" onclick="markAsRead()">
-                            <i class="fas fa-check me-2"></i>Mark as Read
+                            <i class="fas fa-check me-2"></i>Tandai Sudah Dibaca
                         </button>
                         <button class="btn btn-outline-success" onclick="markAsImportant()">
-                            <i class="fas fa-star me-2"></i>Mark as Important
+                            <i class="fas fa-star me-2"></i>Tandai Penting
                         </button>
                         <button class="btn btn-outline-info" onclick="archiveMessage()">
-                            <i class="fas fa-archive me-2"></i>Archive Message
+                            <i class="fas fa-archive me-2"></i>Arsipkan Pesan
                         </button>
                         <a href="mailto:{{ $contact->email }}?subject=Re: {{ $contact->subject }}" class="btn btn-outline-warning">
-                            <i class="fas fa-reply me-2"></i>Reply via Email
+                            <i class="fas fa-reply me-2"></i>Balas via Email
                         </a>
                         <form action="{{ route('dashboard.contact.destroy', $contact) }}" method="POST" class="d-grid">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this message?')">
-                                <i class="fas fa-trash me-2"></i>Delete Message
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus pesan ini?')">
+                                <i class="fas fa-trash me-2"></i>Hapus Pesan
                             </button>
                         </form>
                     </div>
@@ -101,26 +101,26 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2 text-primary"></i>
-                        Message Information
+                        Informasi Pesan
                     </h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-hashtag me-2"></i>Message ID
+                                <i class="fas fa-hashtag me-2"></i>ID Pesan
                             </span>
                             <span class="text-dark fw-bold">#{{ $contact->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-user me-2"></i>Sender Name
+                                <i class="fas fa-user me-2"></i>Nama Pengirim
                             </span>
                             <span class="text-dark">{{ $contact->name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-envelope me-2"></i>Email Address
+                                <i class="fas fa-envelope me-2"></i>Alamat Email
                             </span>
                             <span class="text-dark">{{ $contact->email }}</span>
                         </li>
@@ -128,23 +128,23 @@
                             <span class="text-muted">
                                 <i class="fas fa-tag me-2"></i>Status
                             </span>
-                            <span class="badge bg-warning">Unread</span>
+                            <span class="badge bg-warning">Belum Dibaca</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-calendar me-2"></i>Received
+                                <i class="fas fa-calendar me-2"></i>Diterima
                             </span>
                             <span class="text-dark">{{ $contact->created_at->format('M j, Y') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-clock me-2"></i>Time
+                                <i class="fas fa-clock me-2"></i>Waktu
                             </span>
                             <span class="text-dark">{{ $contact->created_at->format('g:i a') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-globe me-2"></i>IP Address
+                                <i class="fas fa-globe me-2"></i>Alamat IP
                             </span>
                             <span class="text-dark">192.168.1.1</span>
                         </li>
@@ -500,20 +500,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // Action functions
 function markAsRead() {
     // Add your mark as read logic here
-    showAlert('Message marked as read!', 'success');
-    updateStatus('Read');
+    showAlert('Pesan ditandai sudah dibaca!', 'success');
+    updateStatus('Dibaca');
 }
 
 function markAsImportant() {
     // Add your mark as important logic here
-    showAlert('Message marked as important!', 'success');
-    updateStatus('Important');
+    showAlert('Pesan ditandai penting!', 'success');
+    updateStatus('Penting');
 }
 
 function archiveMessage() {
     // Add your archive logic here
-    showAlert('Message archived!', 'success');
-    updateStatus('Archived');
+    showAlert('Pesan diarsipkan!', 'success');
+    updateStatus('Arsip');
 }
 
 function updateStatus(status) {
@@ -548,14 +548,14 @@ function showAlert(message, type) {
 // Copy email to clipboard
 function copyEmail() {
     navigator.clipboard.writeText('{{ $contact->email }}').then(() => {
-        showAlert('Email copied to clipboard!', 'success');
+        showAlert('Email disalin ke clipboard!', 'success');
     });
 }
 
 // Copy message content
 function copyMessage() {
     navigator.clipboard.writeText('{{ $contact->message }}').then(() => {
-        showAlert('Message content copied to clipboard!', 'success');
+        showAlert('Konten pesan disalin ke clipboard!', 'success');
     });
 }
 </script>

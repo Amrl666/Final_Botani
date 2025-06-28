@@ -1,20 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Achievement Management')
+@section('title', 'Manajemen Prestasi')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Achievement Management</h1>
-            <p class="text-muted">Manage and showcase your achievements and awards</p>
+            <h1 class="h3 mb-0">Manajemen Prestasi</h1>
+            <p class="text-muted">Kelola prestasi dan pencapaian</p>
         </div>
-        <div class="d-flex gap-2">
-            <a href="{{ route('dashboard.prestasi.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Add New Achievement
-            </a>
-        </div>
+        <a href="{{ route('dashboard.prestasi.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Tambah Prestasi
+        </a>
     </div>
 
 
@@ -25,7 +23,7 @@
                 <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="form-control search-input" placeholder="Search achievements..." id="searchInput">
+                        <input type="text" class="form-control search-input" placeholder="Cari prestasi..." id="searchInput">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -88,9 +86,9 @@
                                 <button type="submit" 
                                         class="btn btn-outline-danger btn-sm" 
                                         data-bs-toggle="tooltip" 
-                                        title="Delete Achievement"
-                                        onclick="return confirm('Are you sure you want to delete this achievement?')">
-                                    <i class="fas fa-trash me-1"></i>Delete
+                                        title="Hapus Prestasi"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus prestasi ini?')">
+                                    <i class="fas fa-trash me-1"></i>Hapus
                                 </button>
                             </form>
                         </div>
@@ -688,12 +686,12 @@ function exportAchievements() {
 function bulkDelete() {
     const selectedItems = document.querySelectorAll('input[name="selected_achievements"]:checked');
     if (selectedItems.length === 0) {
-        showAlert('Please select achievements to delete', 'warning');
+        showAlert('Silakan pilih prestasi untuk dihapus', 'warning');
         return;
     }
     
-    if (confirm(`Are you sure you want to delete ${selectedItems.length} achievements?`)) {
-        showAlert('Deleting selected achievements...', 'info');
+    if (confirm(`Apakah Anda yakin ingin menghapus ${selectedItems.length} prestasi?`)) {
+        showAlert('Menghapus prestasi yang dipilih...', 'info');
         // Add your bulk delete logic here
     }
 }

@@ -19,7 +19,7 @@ class OrderController extends Controller
             'nama_pemesan'      => 'required|string|max:100',
             'telepon'           => 'required|string|max:20',
             'alamat'            => 'nullable|string|max:255',
-            'jumlah'            => 'nullable|integer|min:1',
+            'jumlah'            => 'nullable|numeric|min:0.01',
             'jumlah_orang'      => 'nullable|integer|min:1',
             'tanggal_kunjungan' => 'nullable|date',
             'produk_id'         => 'nullable|exists:products,id',
@@ -48,6 +48,10 @@ class OrderController extends Controller
             $produk = Product::find($data['produk_id']);
             $namaItem = $produk->name ?? 'Produk';
             $jumlah = $data['jumlah'] ?? 1;
+            // Check if quantity is valid based on min_increment
+            if ($produk && $jumlah % $produk->min_increment != 0) {
+                return back()->with('error', "Jumlah harus kelipatan {$produk->min_increment} {$produk->unit}.");
+            }
             $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
         }
 
@@ -64,11 +68,15 @@ class OrderController extends Controller
         $tanggal  = $data['tanggal_kunjungan'] ?? '-';
         $harga    = $data['total_harga'];
 
+        // Add unit to the message
+        $unit = $produk ? $produk->unit : 'orang';
+        $jumlahText = $jumlah . ' ' . $unit;
+
         $waText = "Halo Admin, saya ingin memesan *$namaItem*:\n" .
                 "- Nama: $nama\n" .
                 "- No HP: $telepon\n" .
                 "- Alamat: $alamat\n" .
-                "- Jumlah: $jumlah\n" .
+                "- Jumlah: $jumlahText\n" .
                 "- Tanggal: $tanggal\n" .
                 "- Total: Rp " . number_format($harga, 0, ',', '.');
 
@@ -144,7 +152,8 @@ class OrderController extends Controller
 
         $waText .= "*Detail Produk:*\n";
         foreach ($cartItems as $item) {
-            $waText .= "• {$item->product->name}: {$item->quantity} kg x Rp " . 
+            $unit = $item->product->unit;
+            $waText .= "• {$item->product->name}: {$item->quantity} {$unit} x Rp " . 
                       number_format($item->product->price, 0, ',', '.') . 
                       " = Rp " . number_format($item->subtotal, 0, ',', '.') . "\n";
         }
@@ -220,10 +229,11 @@ class OrderController extends Controller
             if ($order->orderItems->isNotEmpty()) {
                 // Multiple products order
                 foreach ($order->orderItems as $item) {
+                    $unit = $item->product->unit;
                     $sheet->setCellValue('A' . $row, $order->nama_pemesan);
                     $sheet->setCellValue('B' . $row, $order->telepon);
                     $sheet->setCellValue('C' . $row, $order->alamat ?? '-');
-                    $sheet->setCellValue('D' . $row, $item->quantity . ' kg');
+                    $sheet->setCellValue('D' . $row, $item->quantity . ' ' . $unit);
                     $sheet->setCellValue('E' . $row, $item->product->name);
                     $sheet->setCellValue('F' . $row, $item->subtotal);
                     $sheet->setCellValue('G' . $row, ucfirst($order->status));
@@ -235,9 +245,10 @@ class OrderController extends Controller
             } else {
                 // Single product/eduwisata order
                 $jenis = $order->produk->name ?? ($order->eduwisata->name ?? '-');
+                $unit = $order->produk ? $order->produk->unit : 'org';
                 $jumlah = $order->produk_id
-                    ? (($order->jumlah ?? 0) . ' kg')
-                    : (($order->jumlah_orang ?? 0) . ' org');
+                    ? (($order->jumlah ?? 0) . ' ' . $unit)
+                    : (($order->jumlah_orang ?? 0) . ' ' . $unit);
 
                 $sheet->setCellValue('A' . $row, $order->nama_pemesan);
                 $sheet->setCellValue('B' . $row, $order->telepon);
@@ -290,7 +301,7 @@ class OrderController extends Controller
     public function orderNowForm($productId, Request $request)
     {
         $product = \App\Models\Product::findOrFail($productId);
-        $jumlah = $request->query('jumlah', 1); // default 1 jika tidak ada
+        $jumlah = $request->query('jumlah', $product->min_increment);
         return view('Frontend.product.order_now', compact('product', 'jumlah'));
     }
 }

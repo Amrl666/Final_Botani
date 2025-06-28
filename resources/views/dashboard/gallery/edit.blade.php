@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Gallery Item')
+@section('title', 'Ubah Item Galeri')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Gallery Item</h1>
-            <p class="text-muted">Update gallery item details and image</p>
+            <h1 class="h3 mb-0">Ubah Item Galeri</h1>
+            <p class="text-muted">Perbarui detail item galeri dan gambar</p>
         </div>
         <div class="d-flex gap-2">
             <button type="submit" form="galleryForm" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Update Item
+                <i class="fas fa-save me-2"></i>Perbarui Item
             </button>
             <a href="{{ route('dashboard.gallery.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Gallery
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Galeri
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2 text-primary"></i>
-                        Edit Item: {{ $gallery->title }}
+                        Ubah Item: {{ $gallery->title }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -45,12 +45,12 @@
                                         class="form-control @error('title') is-invalid @enderror" 
                                         id="title" 
                                         name="title" 
-                                        placeholder="Enter gallery title"
+                                        placeholder="Masukkan judul galeri"
                                         value="{{ old('title', $gallery->title) }}" 
                                         required
                                     >
                                     <label for="title">
-                                        <i class="fas fa-heading me-2"></i>Gallery Title
+                                        <i class="fas fa-heading me-2"></i>Judul Galeri
                                     </label>
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -68,9 +68,9 @@
                                                      alt="{{ $gallery->title }}" 
                                                      class="preview-img">
                                                 <div class="image-overlay">
-                                                    <span class="badge bg-primary">Current Image</span>
+                                                    <span class="badge bg-primary">Gambar Saat Ini</span>
                                                     <button type="button" class="btn btn-light btn-sm" onclick="openImageModal('{{ asset('storage/' . $gallery->image) }}', '{{ $gallery->title }}')">
-                                                        <i class="fas fa-expand-alt me-1"></i>View
+                                                        <i class="fas fa-expand-alt me-1"></i>Lihat
                                                     </button>
                                                 </div>
                                             </div>
@@ -86,12 +86,12 @@
                                                 accept="image/*"
                                             >
                                             <label for="image">
-                                                <i class="fas fa-image me-2"></i>Update Image (Optional)
+                                                <i class="fas fa-image me-2"></i>Perbarui Gambar (Opsional)
                                             </label>
                                         </div>
                                         <div class="form-text">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Recommended size: 1200x800 pixels, Max size: 5MB
+                                            Ukuran yang disarankan: 1200x800 piksel, Ukuran maks: 5MB
                                         </div>
                                         @error('image')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -112,7 +112,7 @@
                                         required
                                     >
                                     <label for="description">
-                                        <i class="fas fa-calendar me-2"></i>Gallery Date
+                                        <i class="fas fa-calendar me-2"></i>Tanggal Galeri
                                     </label>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -124,15 +124,15 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Select category</option>
-                                        <option value="events" {{ old('category', $gallery->category) == 'events' ? 'selected' : '' }}>Events</option>
-                                        <option value="activities" {{ old('category', $gallery->category) == 'activities' ? 'selected' : '' }}>Activities</option>
-                                        <option value="facilities" {{ old('category', $gallery->category) == 'facilities' ? 'selected' : '' }}>Facilities</option>
-                                        <option value="products" {{ old('category', $gallery->category) == 'products' ? 'selected' : '' }}>Products</option>
-                                        <option value="other" {{ old('category', $gallery->category) == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="">Pilih kategori</option>
+                                        <option value="events" {{ old('category', $gallery->category) == 'events' ? 'selected' : '' }}>Acara</option>
+                                        <option value="activities" {{ old('category', $gallery->category) == 'activities' ? 'selected' : '' }}>Kegiatan</option>
+                                        <option value="facilities" {{ old('category', $gallery->category) == 'facilities' ? 'selected' : '' }}>Fasilitas</option>
+                                        <option value="products" {{ old('category', $gallery->category) == 'products' ? 'selected' : '' }}>Produk</option>
+                                        <option value="other" {{ old('category', $gallery->category) == 'other' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Category
+                                        <i class="fas fa-tags me-2"></i>Kategori
                                     </label>
                                     @error('category')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -147,12 +147,12 @@
                                         class="form-control @error('alt_text') is-invalid @enderror" 
                                         id="alt_text" 
                                         name="alt_text" 
-                                        placeholder="Enter image description"
+                                        placeholder="Masukkan deskripsi gambar"
                                         rows="3"
                                         style="height: 100px;"
                                     >{{ old('alt_text', $gallery->alt_text ?? '') }}</textarea>
                                     <label for="alt_text">
-                                        <i class="fas fa-align-left me-2"></i>Image Description (Optional)
+                                        <i class="fas fa-align-left me-2"></i>Deskripsi Gambar (Opsional)
                                     </label>
                                     @error('alt_text')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Provide a description for accessibility and SEO purposes
+                                    Berikan deskripsi untuk aksesibilitas dan tujuan SEO
                                 </div>
                             </div>
 
@@ -168,8 +168,8 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                        <option value="active" {{ old('status', $gallery->status ?? 'active') == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option value="inactive" {{ old('status', $gallery->status ?? 'inactive') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="active" {{ old('status', $gallery->status ?? 'active') == 'active' ? 'selected' : '' }}>Aktif</option>
+                                        <option value="inactive" {{ old('status', $gallery->status ?? 'inactive') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
                                         <option value="draft" {{ old('status', $gallery->status ?? 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
                                     </select>
                                     <label for="status">
@@ -193,7 +193,7 @@
                                         {{ old('featured', $gallery->featured ?? false) ? 'checked' : '' }}
                                     >
                                     <label class="form-check-label" for="featured">
-                                        <i class="fas fa-star me-2"></i>Featured Image
+                                        <i class="fas fa-star me-2"></i>Gambar Unggulan
                                     </label>
                                 </div>
                             </div>
@@ -560,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
         }
     });
 
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select a valid image file');
+                alert('Silakan pilih file gambar yang valid');
                 this.value = '';
                 return;
             }

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Video Management')
+@section('title', 'Manajemen Video')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Video Management</h1>
-            <p class="text-muted">Manage and organize your video content</p>
+            <h1 class="h3 mb-0">Manajemen Video</h1>
+            <p class="text-muted">Kelola video dan konten multimedia</p>
         </div>
         <div class="d-flex gap-2">
             <div class="dropdown">
@@ -22,7 +22,7 @@
                 </ul>
             </div>
             <a href="{{ route('dashboard.videos.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Add New Video
+                <i class="fas fa-plus me-2"></i>Tambah Video
             </a>
         </div>
     </div>
@@ -126,7 +126,7 @@
                                             class="btn btn-light btn-sm" 
                                             data-bs-toggle="tooltip" 
                                             title="Delete"
-                                            onclick="return confirm('Are you sure you want to delete this video?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus video ini?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

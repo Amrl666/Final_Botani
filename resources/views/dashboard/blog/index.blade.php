@@ -1,21 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Blog Management')
+@section('title', 'Manajemen Blog')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Blog Management</h1>
-            <p class="text-muted">Manage and organize your blog content</p>
+            <h1 class="h3 mb-0">Manajemen Blog</h1>
+            <p class="text-muted">Kelola artikel dan konten blog</p>
         </div>
-        
-        <div class="d-flex gap-2">
-            <a href="{{ route('dashboard.blog.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Create Post
-            </a>
-        </div>
+        <a href="{{ route('dashboard.blog.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Tambah Artikel
+        </a>
     </div>
 
     <!-- Stats Cards -->
@@ -51,11 +48,11 @@
         </div>
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search posts...">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Cari artikel...">
                         <label for="searchInput">
-                            <i class="fas fa-search me-2"></i>Search Posts
+                            <i class="fas fa-search me-2"></i>Cari Artikel
                         </label>
                     </div>
                 </div>
@@ -606,16 +603,16 @@ function filterPosts(filter) {
 }
 
 function publishBlog(id) {
-    if (confirm('Are you sure you want to publish this blog post?')) {
+    if (confirm('Apakah Anda yakin ingin mempublikasikan artikel blog ini?')) {
         // Add your publish logic here
-        showAlert(`Blog post ${id} published successfully!`, 'success');
+        showAlert(`Artikel blog ${id} berhasil dipublikasikan!`, 'success');
     }
 }
 
 function deleteBlog(id) {
-    if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+    if (confirm('Apakah Anda yakin ingin menghapus artikel blog ini? Tindakan ini tidak dapat dibatalkan.')) {
         // Add your delete logic here
-        showAlert(`Blog post ${id} deleted successfully!`, 'success');
+        showAlert(`Artikel blog ${id} berhasil dihapus!`, 'success');
     }
 }
 

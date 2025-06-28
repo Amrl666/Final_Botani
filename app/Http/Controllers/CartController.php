@@ -27,7 +27,7 @@ class CartController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|numeric|min:0.01'
         ]);
 
         $product = Product::findOrFail($request->product_id);
@@ -35,6 +35,11 @@ class CartController extends Controller
         // Check stock availability
         if ($product->stock < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi untuk jumlah yang diminta.');
+        }
+
+        // Check if quantity is valid based on min_increment
+        if ($request->quantity % $product->min_increment != 0) {
+            return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
         }
 
         $sessionId = session()->getId();
@@ -66,13 +71,18 @@ class CartController extends Controller
     public function update(Request $request, CartItem $cartItem)
     {
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|numeric|min:0.01'
         ]);
 
         $product = $cartItem->product;
         
         if ($product->stock < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi untuk jumlah yang diminta.');
+        }
+
+        // Check if quantity is valid based on min_increment
+        if ($request->quantity % $product->min_increment != 0) {
+            return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
         }
 
         $cartItem->update(['quantity' => $request->quantity]);

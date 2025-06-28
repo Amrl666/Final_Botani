@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Blog Post')
+@section('title', 'Ubah Artikel Blog')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Blog Post</h1>
-            <p class="text-muted">Update your blog post content and settings</p>
+            <h1 class="h3 mb-0">Ubah Artikel Blog</h1>
+            <p class="text-muted">Perbarui konten dan pengaturan artikel blog Anda</p>
         </div>
         <div class="d-flex gap-2">
             <button form="editPostForm" type="submit" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Save Changes
+                <i class="fas fa-save me-2"></i>Simpan Perubahan
             </button>
             <a href="{{ route('dashboard.blog.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Posts
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Artikel
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2 text-primary"></i>
-                        Edit Post: {{ $blog->title }}
+                        Ubah Artikel: {{ $blog->title }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -43,12 +43,12 @@
                                         class="form-control @error('title') is-invalid @enderror" 
                                         id="title" 
                                         name="title" 
-                                        placeholder="Enter blog title"
+                                        placeholder="Masukkan judul blog"
                                         value="{{ old('title', $blog->title) }}" 
                                         required
                                     >
                                     <label for="title">
-                                        <i class="fas fa-heading me-2"></i>Blog Title
+                                        <i class="fas fa-heading me-2"></i>Judul Blog
                                     </label>
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -66,7 +66,7 @@
                                                      alt="{{ $blog->title }}" 
                                                      class="preview-img">
                                                 <div class="image-overlay">
-                                                    <span class="badge bg-primary">Current Image</span>
+                                                    <span class="badge bg-primary">Gambar Saat Ini</span>
                                                 </div>
                                             </div>
                                         @endif
@@ -81,7 +81,7 @@
                                                 accept="image/*"
                                             >
                                             <label for="image">
-                                                <i class="fas fa-image me-2"></i>Update Image (Optional)
+                                                <i class="fas fa-image me-2"></i>Perbarui Gambar (Opsional)
                                             </label>
                                         </div>
                                         @error('image')
@@ -98,13 +98,13 @@
                                         class="form-control @error('content') is-invalid @enderror" 
                                         id="content" 
                                         name="content" 
-                                        placeholder="Enter blog content"
+                                        placeholder="Masukkan konten blog"
                                         rows="8"
                                         style="height: 300px;"
                                         required
                                     >{{ old('content', $blog->content) }}</textarea>
                                     <label for="content">
-                                        <i class="fas fa-align-left me-2"></i>Blog Content
+                                        <i class="fas fa-align-left me-2"></i>Konten Blog
                                     </label>
                                     @error('content')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Use markdown formatting for better content structure
+                                    Gunakan pemformatan markdown untuk struktur konten yang lebih baik
                                 </div>
                             </div>
 
@@ -120,15 +120,15 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Select category</option>
-                                        <option value="news" {{ old('category', $blog->category) == 'news' ? 'selected' : '' }}>News</option>
+                                        <option value="">Pilih kategori</option>
+                                        <option value="news" {{ old('category', $blog->category) == 'news' ? 'selected' : '' }}>Berita</option>
                                         <option value="tutorial" {{ old('category', $blog->category) == 'tutorial' ? 'selected' : '' }}>Tutorial</option>
-                                        <option value="guide" {{ old('category', $blog->category) == 'guide' ? 'selected' : '' }}>Guide</option>
-                                        <option value="update" {{ old('category', $blog->category) == 'update' ? 'selected' : '' }}>Update</option>
-                                        <option value="other" {{ old('category', $blog->category) == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="guide" {{ old('category', $blog->category) == 'guide' ? 'selected' : '' }}>Panduan</option>
+                                        <option value="update" {{ old('category', $blog->category) == 'update' ? 'selected' : '' }}>Pembaruan</option>
+                                        <option value="other" {{ old('category', $blog->category) == 'other' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Category
+                                        <i class="fas fa-tags me-2"></i>Kategori
                                     </label>
                                     @error('category')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -141,8 +141,8 @@
                                 <div class="form-floating">
                                     <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
                                         <option value="draft" {{ old('status', $blog->status ?? 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        <option value="published" {{ old('status', $blog->status ?? 'published') == 'published' ? 'selected' : '' }}>Published</option>
-                                        <option value="archived" {{ old('status', $blog->status ?? 'archived') == 'archived' ? 'selected' : '' }}>Archived</option>
+                                        <option value="published" {{ old('status', $blog->status ?? 'published') == 'published' ? 'selected' : '' }}>Dipublikasikan</option>
+                                        <option value="archived" {{ old('status', $blog->status ?? 'archived') == 'archived' ? 'selected' : '' }}>Diarsipkan</option>
                                     </select>
                                     <label for="status">
                                         <i class="fas fa-toggle-on me-2"></i>Status
@@ -157,10 +157,10 @@
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-2 mt-4 pt-4 border-top">
                             <a href="{{ route('dashboard.blog.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Cancel
+                                <i class="fas fa-times me-2"></i>Batal
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Update Post
+                                <i class="fas fa-save me-2"></i>Perbarui Artikel
                             </button>
                         </div>
                     </form>
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
         }
     });
 

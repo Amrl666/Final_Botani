@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Create Blog Post')
+@section('title', 'Buat Artikel Blog')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Create New Blog Post</h1>
-            <p class="text-muted">Write and publish engaging content</p>
+            <h1 class="h3 mb-0">Buat Artikel Blog Baru</h1>
+            <p class="text-muted">Tulis dan publikasikan konten yang menarik</p>
         </div>
         <a href="{{ route('dashboard.blog.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Blog
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Blog
         </a>
     </div>
 
@@ -23,13 +23,13 @@
                         @csrf
                         
                         <div class="mb-4">
-                            <label for="title" class="form-label">Post Title</label>
+                            <label for="title" class="form-label">Judul Artikel</label>
                             <input type="text" 
                                    class="form-control @error('title') is-invalid @enderror" 
                                    id="title" 
                                    name="title" 
                                    value="{{ old('title') }}"
-                                   placeholder="Enter post title"
+                                   placeholder="Masukkan judul artikel"
                                    required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -37,7 +37,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="image" class="form-label">Featured Image</label>
+                            <label for="image" class="form-label">Gambar Utama</label>
                             <div class="image-upload-wrapper">
                                 <input type="file" 
                                        class="form-control @error('image') is-invalid @enderror" 
@@ -47,7 +47,7 @@
                                        onchange="previewImage(event)">
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Optional. Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                    Opsional. Format yang didukung: JPG, PNG, GIF (Ukuran maks: 5MB)
                                 </small>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -56,26 +56,26 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="content" class="form-label">Content</label>
+                            <label for="content" class="form-label">Konten</label>
                             <textarea class="form-control @error('content') is-invalid @enderror" 
                                       id="content" 
                                       name="content" 
                                       rows="10"
-                                      placeholder="Write your blog post content here..."
+                                      placeholder="Tulis konten artikel blog Anda di sini..."
                                       required>{{ old('content') }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <small class="text-muted d-block mt-2">
                                 <i class="fas fa-lightbulb me-1"></i>
-                                You can use HTML tags for formatting
+                                Anda dapat menggunakan tag HTML untuk pemformatan
                             </small>
                         </div>
                         
                         <div class="d-flex justify-content-end gap-2">
                             <button type="reset" class="btn btn-light">Reset</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-2"></i>Publish Post
+                                <i class="fas fa-paper-plane me-2"></i>Publikasikan Artikel
                             </button>
                         </div>
                     </form>
@@ -86,28 +86,28 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">Post Preview</h5>
+                    <h5 class="card-title mb-0">Pratinjau Artikel</h5>
                 </div>
                 <div class="card-body">
                     <div class="image-preview-container mb-3">
                         <div id="previewPlaceholder" class="text-center py-5">
                             <i class="fas fa-image fa-3x text-muted mb-3"></i>
-                            <p class="text-muted mb-0">Featured image preview</p>
+                            <p class="text-muted mb-0">Pratinjau gambar utama</p>
                         </div>
                         <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
                     </div>
                     <div class="post-info">
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Title:</span>
+                            <span>Judul:</span>
                             <span id="titlePreview" class="text-dark">--</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Content length:</span>
-                            <span id="contentLength">0 characters</span>
+                            <span>Panjang konten:</span>
+                            <span id="contentLength">0 karakter</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted">
-                            <span>Word count:</span>
-                            <span id="wordCount">0 words</span>
+                            <span>Jumlah kata:</span>
+                            <span id="wordCount">0 kata</span>
                         </div>
                     </div>
                 </div>
@@ -174,8 +174,8 @@ document.getElementById('title').addEventListener('input', function() {
 // Update preview when content changes
 document.getElementById('content').addEventListener('input', function() {
     const content = this.value;
-    document.getElementById('contentLength').textContent = content.length + ' characters';
-    document.getElementById('wordCount').textContent = content.trim().split(/\s+/).filter(word => word.length > 0).length + ' words';
+    document.getElementById('contentLength').textContent = content.length + ' karakter';
+    document.getElementById('wordCount').textContent = content.trim().split(/\s+/).filter(word => word.length > 0).length + ' kata';
 });
 </script>
 @endpush

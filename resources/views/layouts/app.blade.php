@@ -935,7 +935,7 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
+                        <span>Beranda</span>
                     </a>
                 </li>
                 <li class="nav-item mb-2">
@@ -953,19 +953,19 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('dashboard.gallery.index') }}" class="nav-link {{ request()->routeIs('dashboard.gallery.*') ? 'active' : '' }}">
                         <i class="fas fa-images"></i>
-                        <span>Gallery</span>
+                        <span>Galeri</span>
                     </a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="{{ route('dashboard.videos.index') }}" class="nav-link {{ request()->routeIs('dashboard.videos.*') ? 'active' : '' }}">
                         <i class="fas fa-video"></i>
-                        <span>Videos</span>
+                        <span>Video</span>
                     </a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="{{ route('dashboard.product.index') }}" class="nav-link {{ request()->routeIs('dashboard.product.*') ? 'active' : '' }}">
                         <i class="fas fa-box"></i>
-                        <span>Products</span>
+                        <span>Produk</span>
                     </a>
                 </li>
                 <li class="nav-item mb-2">
@@ -983,7 +983,7 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('dashboard.orders.index') }}" class="nav-link {{ request()->routeIs('dashboard.orders.*') ? 'active' : '' }}">
                         <i class="fas fa-shopping-cart"></i>
-                        <span>Orders</span>
+                        <span>Pesanan</span>
                     </a>
                 </li>
                 <li class="nav-item mt-4">
@@ -991,7 +991,7 @@
                         @csrf
                         <button type="submit" class="btn-link">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <span>Keluar</span>
                         </button>
                     </form>
                 </li>
@@ -1004,7 +1004,7 @@
             <h1>@yield('title')</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                 </ol>
             </nav>

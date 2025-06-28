@@ -370,7 +370,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
                         <span class="product-stock">
-                            <i class="fas fa-boxes me-1"></i>Stok: {{ $product->stock }}
+                            <i class="fas fa-boxes me-1"></i>Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                         </span>
                     </div>
 

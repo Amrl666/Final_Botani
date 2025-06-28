@@ -255,7 +255,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Products</h6>
+                            <h6 class="text-muted mb-1">Total Produk</h6>
                             <h2 class="mb-0">{{ \App\Models\Product::count() }}</h2>
                         </div>
                     </div>
@@ -274,7 +274,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Orders</h6>
+                            <h6 class="text-muted mb-1">Total Pesanan</h6>
                             <h2 class="mb-0">{{ \App\Models\Order::count() }}</h2>
                         </div>
                     </div>
@@ -293,7 +293,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Active Eduwisata</h6>
+                            <h6 class="text-muted mb-1">Eduwisata Aktif</h6>
                             <h2 class="mb-0">{{ \App\Models\Eduwisata::count() }}</h2>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">New Messages</h6>
+                            <h6 class="text-muted mb-1">Pesan Baru</h6>
                             <h2 class="mb-0">{{ \App\Models\Contact::count() }}</h2>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-sm animate-scale-in" style="--delay: 0.5s">
             <div class="card-header bg-white border-bottom-0 py-4">
-                <h5 class="card-title mb-0">Recent Activities</h5>
+                <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
             </div>
             <div class="card-body">
                 <div class="timeline">

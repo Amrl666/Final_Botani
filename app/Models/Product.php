@@ -10,11 +10,12 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'image', 'stock', 'featured'
+        'name', 'description', 'price', 'unit', 'min_increment', 'image', 'stock', 'featured'
     ];
     
     protected $casts = [
     'featured' => 'boolean',
+    'min_increment' => 'decimal:2',
     ];
 
 }

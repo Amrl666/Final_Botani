@@ -1,20 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Eduwisata Management')
+@section('title', 'Manajemen Eduwisata')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Eduwisata Management</h1>
-            <p class="text-muted">Manage educational tourism programs and schedules</p>
+            <h1 class="h3 mb-0">Manajemen Eduwisata</h1>
+            <p class="text-muted">Kelola program eduwisata dan jadwal</p>
         </div>
-        <div class="d-flex gap-2">
-            <a href="{{ route('dashboard.eduwisata.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Add New Program
-            </a>
-        </div>
+        <a href="{{ route('dashboard.eduwisata.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Tambah Program
+        </a>
     </div>
 
     <!-- Stats Cards -->
@@ -79,7 +77,7 @@
                 <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="form-control search-input" placeholder="Search programs..." id="searchInput">
+                        <input type="text" class="form-control search-input" placeholder="Cari program..." id="searchInput">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -130,8 +128,8 @@
                                     <button type="submit" 
                                             class="btn btn-light btn-sm" 
                                             data-bs-toggle="tooltip" 
-                                            title="Delete Program"
-                                            onclick="return confirm('Are you sure you want to delete this program?')">
+                                            title="Hapus Program"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -173,7 +171,7 @@
                                     @method('DELETE')
                                     <button type="submit" 
                                             class="btn btn-outline-danger btn-sm" 
-                                            onclick="return confirm('Are you sure you want to delete this program?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -713,7 +711,7 @@ function showAlert(message, type) {
 
 // Export programs function
 function exportPrograms() {
-    showAlert('Exporting programs...', 'info');
+    showAlert('Mengekspor program...', 'info');
     // Add your export logic here
 }
 
@@ -721,12 +719,12 @@ function exportPrograms() {
 function bulkDelete() {
     const selectedItems = document.querySelectorAll('input[name="selected_programs"]:checked');
     if (selectedItems.length === 0) {
-        showAlert('Please select programs to delete', 'warning');
+        showAlert('Silakan pilih program untuk dihapus', 'warning');
         return;
     }
     
-    if (confirm(`Are you sure you want to delete ${selectedItems.length} programs?`)) {
-        showAlert('Deleting selected programs...', 'info');
+    if (confirm(`Apakah Anda yakin ingin menghapus ${selectedItems.length} program?`)) {
+        showAlert('Menghapus program yang dipilih...', 'info');
         // Add your bulk delete logic here
     }
 }
