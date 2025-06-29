@@ -133,9 +133,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search schedules...">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Cari jadwal...">
                         <label for="searchInput">
-                            <i class="fas fa-search me-2"></i>Search
+                            <i class="fas fa-search me-2"></i>Cari
                         </label>
                     </div>
                 </div>
@@ -255,13 +255,13 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewSchedule({{ $schedule->id }})" title="View Details">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewSchedule({{ $schedule->id }})" title="Lihat Detail">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="editSchedule({{ $schedule->id }})" title="Edit Schedule">
+                                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="editSchedule({{ $schedule->id }})" title="Ubah Jadwal">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSchedule({{ $schedule->id }})" title="Delete Schedule">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSchedule({{ $schedule->id }})" title="Hapus Jadwal">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -275,10 +275,10 @@
                 <div class="text-center py-5">
                     <div class="empty-state">
                         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-                        <h5 class="text-muted">No Schedules Found</h5>
-                        <p class="text-muted">Start by adding your first educational tourism schedule.</p>
+                        <h5 class="text-muted">Tidak Ada Jadwal Ditemukan</h5>
+                        <p class="text-muted">Mulai dengan menambahkan jadwal wisata edukasi pertama Anda.</p>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
-                            <i class="fas fa-plus me-2"></i>Add First Schedule
+                            <i class="fas fa-plus me-2"></i>Tambah Jadwal Pertama
                         </button>
                     </div>
                 </div>
@@ -294,7 +294,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fas fa-plus me-2 text-primary"></i>
-                    Add New Schedule
+                    Tambah Jadwal Baru
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -304,7 +304,7 @@
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <select class="form-select" id="program_id" name="program_id" required>
-                                    <option value="">Select Program</option>
+                                    <option value="">Pilih Program</option>
                                     @foreach($programs as $program)
                                         <option value="{{ $program->id }}">{{ $program->name }}</option>
                                     @endforeach
@@ -318,7 +318,7 @@
                             <div class="form-floating">
                                 <input type="date" class="form-control" id="date" name="date" required>
                                 <label for="date">
-                                    <i class="fas fa-calendar me-2"></i>Date
+                                    <i class="fas fa-calendar me-2"></i>Tanggal
                                 </label>
                             </div>
                         </div>
@@ -326,7 +326,7 @@
                             <div class="form-floating">
                                 <input type="time" class="form-control" id="start_time" name="start_time" required>
                                 <label for="start_time">
-                                    <i class="fas fa-clock me-2"></i>Start Time
+                                    <i class="fas fa-clock me-2"></i>Waktu Mulai
                                 </label>
                             </div>
                         </div>
@@ -334,31 +334,31 @@
                             <div class="form-floating">
                                 <input type="time" class="form-control" id="end_time" name="end_time" required>
                                 <label for="end_time">
-                                    <i class="fas fa-clock me-2"></i>End Time
+                                    <i class="fas fa-clock me-2"></i>Waktu Selesai
                                 </label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter location">
+                                <input type="text" class="form-control" id="location" name="location" placeholder="Masukkan lokasi">
                                 <label for="location">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Location
+                                    <i class="fas fa-map-marker-alt me-2"></i>Lokasi
                                 </label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="number" class="form-control" id="max_participants" name="max_participants" placeholder="Enter max participants" min="1">
+                                <input type="number" class="form-control" id="max_participants" name="max_participants" placeholder="Masukkan maksimal peserta" min="1">
                                 <label for="max_participants">
-                                    <i class="fas fa-users me-2"></i>Max Participants
+                                    <i class="fas fa-users me-2"></i>Maksimal Peserta
                                 </label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control" id="notes" name="notes" placeholder="Enter additional notes" rows="3"></textarea>
+                                <textarea class="form-control" id="notes" name="notes" placeholder="Masukkan catatan tambahan" rows="3"></textarea>
                                 <label for="notes">
-                                    <i class="fas fa-sticky-note me-2"></i>Notes
+                                    <i class="fas fa-sticky-note me-2"></i>Catatan
                                 </label>
                             </div>
                         </div>
@@ -366,10 +366,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Cancel
+                        <i class="fas fa-times me-2"></i>Batal
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Save Schedule
+                        <i class="fas fa-save me-2"></i>Simpan Jadwal
                     </button>
                 </div>
             </form>
@@ -760,7 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = this.querySelector('button[type="submit"]');
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
 
             // Add your form submission logic here
             // For now, just show a success message
@@ -794,9 +794,9 @@ function editSchedule(id) {
 }
 
 function deleteSchedule(id) {
-    if (confirm('Are you sure you want to delete this schedule?')) {
+    if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
         // Add your delete logic here
-        showAlert(`Schedule ${id} deleted successfully!`, 'success');
+        showAlert(`Jadwal ${id} berhasil dihapus!`, 'success');
     }
 }
 

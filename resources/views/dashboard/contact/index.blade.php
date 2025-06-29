@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Messages')
+@section('title', 'Pesan Kontak')
 
 @section('content')
 <style>
@@ -227,7 +227,7 @@
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4 animate-fade-in" style="--delay: 0.1s">
         <div>
-            <h1 class="h3 mb-0">Contact Messages</h1>
+            <h1 class="h3 mb-0">Pesan Kontak</h1>
             <p class="text-muted">Kelola dan tanggapi pertanyaan pelanggan</p>
         </div>
         <div class="d-flex gap-2">

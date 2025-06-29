@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CartItem extends Model
 {
     protected $fillable = [
-        'session_id', 'user_id', 'product_id', 'quantity'
+        'session_id', 'user_id', 'customer_id', 'product_id', 'quantity'
     ];
 
     public function product(): BelongsTo
@@ -19,6 +19,11 @@ class CartItem extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     // Helper method to get subtotal

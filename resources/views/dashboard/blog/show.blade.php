@@ -145,8 +145,8 @@
                         <form action="{{ route('dashboard.blog.destroy', $blog) }}" method="POST" class="d-grid">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this post?')">
-                                <i class="fas fa-trash me-2"></i>Delete Post
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
+                                <i class="fas fa-trash me-2"></i>Hapus Artikel
                             </button>
                         </form>
                     </div>

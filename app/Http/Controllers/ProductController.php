@@ -28,13 +28,15 @@ class ProductController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'unit' => 'required|string|in:kg,gram,buah,ikat,pack,box,pcs',
+            'min_increment' => 'required|numeric|min:0.01',
             'stock' => 'required|integer',
             'image' => 'required|image',
             'featured' => 'nullable|boolean',
         ]);
 
         $data = $request->all();
-        $data['featured'] = $request->has('featured') ? 1 : 0;
+        $data['featured'] = $request->input('featured', 0);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('product_images', 'public');
@@ -58,10 +60,15 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'unit' => 'required|string|in:kg,gram,buah,ikat,pack,box,pcs',
+            'min_increment' => 'required|numeric|min:0.01',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stock' => 'required|integer',
-            'featured' => 'required|boolean',
+            'featured' => 'nullable|boolean',
         ]);
+
+        // Handle featured checkbox
+        $validated['featured'] = $request->input('featured', 0);
 
         if ($request->hasFile('image')) {
             if ($product->image) {
@@ -70,11 +77,35 @@ class ProductController extends Controller
             $validated['image'] = $request->file('image')->store('product_images', 'public');
         }
 
+        $oldStock = $product->stock;
         $product->update($validated);
+
+        // Check for low stock alert
+        if ($oldStock > 10 && $validated['stock'] <= 10) {
+            $this->sendStockAlert($product);
+        }
 
         return redirect()->route('dashboard.product.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
+    protected function sendStockAlert($product)
+    {
+        // Create notification for admin
+        if (class_exists('\App\Models\Notification')) {
+            \App\Models\Notification::create([
+                'type' => 'stock_alert',
+                'title' => 'Peringatan Stok Rendah',
+                'message' => "Produk {$product->name} memiliki stok rendah ({$product->stock} {$product->unit})",
+                'data' => ['product_id' => $product->id],
+            ]);
+        }
+
+        // Send WhatsApp alert if service is available
+        if (class_exists('\App\Services\WhatsAppService')) {
+            $whatsappService = app('\App\Services\WhatsAppService');
+            $whatsappService->sendStockAlert($product);
+        }
+    }
 
     // Menghapus produk
     public function destroy(Product $product)

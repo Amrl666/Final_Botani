@@ -53,7 +53,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
                         <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            Stok: {{ $product->stock }}
+                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                         </span>
                     </div>
 
@@ -69,30 +69,61 @@
                                 <input type="number"
                                        name="quantity"
                                        id="quantity"
-                                       min="1"
+                                       min="{{ $product->min_increment ?? 1 }}"
                                        max="{{ $product->stock }}"
-                                       value="1"
+                                       value="{{ $product->min_increment ?? 1 }}"
+                                       step="{{ $product->min_increment ?? 1 }}"
                                        class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center">
-                                <span class="text-sm text-gray-500">kg</span>
+                                <span class="text-sm text-gray-500">{{ $product->unit ?? 'satuan' }}</span>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                                <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
+                            <div class="flex space-x-3">
+                                <form action="{{ route('cart.add') }}" method="POST" class="flex-1" id="cartForm">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="quantity" id="cart_quantity_hidden">
-                                    <button type="submit"
-                                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center space-x-2">
-                                        <i class="fas fa-cart-plus"></i>
-                                        <span>Tambah ke Keranjang</span>
+                                    <input type="hidden" name="quantity" id="cart_quantity_hidden" value="{{ $product->min_increment ?? 1 }}">
+                                    <button type="submit" 
+                                            class="w-full bg-green-600 text-white py-3 px-4 rounded-md font-medium hover:bg-green-700 transition-colors">
+                                        Tambah ke Keranjang
                                     </button>
                                 </form>
-                                <a href="javascript:void(0);"
-                                   id="orderNowLink"
-                                   class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 text-center"
-                                   data-base-url="{{ route('order.now.form', [$product->id]) }}">
-                                    <i class="fas fa-shopping-bag"></i>
-                                    <span>Pesan Sekarang</span>
-                                </a>
+                                
+                                @auth('customer')
+                                    @if(auth('customer')->user()->wishlist->contains($product->id))
+                                        <form action="{{ route('customer.wishlist.remove', $product) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    class="bg-red-100 text-red-600 p-3 rounded-md hover:bg-red-200 transition-colors"
+                                                    title="Hapus dari Wishlist">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('customer.wishlist.add', $product) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" 
+                                                    class="bg-gray-100 text-gray-600 p-3 rounded-md hover:bg-gray-200 transition-colors"
+                                                    title="Tambah ke Wishlist">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @endif
+                                @else
+                                    <form action="{{ route('wishlist.add', $product) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" 
+                                                class="bg-gray-100 text-gray-600 p-3 rounded-md hover:bg-gray-200 transition-colors"
+                                                title="Tambah ke Wishlist">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endauth
                             </div>
                         </div>
                         <div id="directOrderFormContainer" class="mt-8 border-t pt-6 hidden">
@@ -233,6 +264,23 @@ document.addEventListener('DOMContentLoaded', function() {
         orderNowButton.addEventListener('click', function() {
             directOrderFormContainer.classList.toggle('hidden');
         });
+    }
+
+    const quantityInput = document.getElementById('quantity');
+    const cartQuantityHidden = document.getElementById('cart_quantity_hidden');
+    const orderQuantityHidden = document.getElementById('order_quantity_hidden');
+    
+    if (quantityInput) {
+        quantityInput.addEventListener('change', function() {
+            const value = this.value;
+            if (cartQuantityHidden) cartQuantityHidden.value = value;
+            if (orderQuantityHidden) orderQuantityHidden.value = value;
+        });
+        
+        // Set initial values
+        const initialValue = quantityInput.value;
+        if (cartQuantityHidden) cartQuantityHidden.value = initialValue;
+        if (orderQuantityHidden) orderQuantityHidden.value = initialValue;
     }
 });
 </script>

@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Video')
+@section('title', 'Ubah Video')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Video</h1>
-            <p class="text-muted">Update video information and content</p>
+            <h1 class="h3 mb-0">Ubah Video</h1>
+            <p class="text-muted">Perbarui informasi dan konten video</p>
         </div>
         <a href="{{ route('dashboard.videos.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Videos
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Video
         </a>
     </div>
 
@@ -24,13 +24,13 @@
                         @method('PUT')
                         
                         <div class="mb-4">
-                            <label for="title" class="form-label">Video Title</label>
+                            <label for="title" class="form-label">Judul Video</label>
                             <input type="text" 
                                    class="form-control @error('title') is-invalid @enderror" 
                                    id="title" 
                                    name="title" 
                                    value="{{ old('title', $video->title) }}" 
-                                   placeholder="Enter video title"
+                                   placeholder="Masukkan judul video"
                                    required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="video" class="form-label">Video File</label>
+                            <label for="video" class="form-label">File Video</label>
                             <div class="video-upload-wrapper">
                                 <input type="file" 
                                        class="form-control @error('video') is-invalid @enderror" 
@@ -48,7 +48,7 @@
                                        onchange="previewVideo(event)">
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Leave empty to keep current video. Supported formats: MP4, WebM, Ogg
+                                    Kosongkan untuk mempertahankan video saat ini. Format yang didukung: MP4, WebM, Ogg
                                 </small>
                                 @error('video')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -57,21 +57,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label">Deskripsi</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" 
                                       id="description" 
                                       name="description" 
                                       rows="4"
-                                      placeholder="Enter video description">{{ old('description', $video->description) }}</textarea>
+                                      placeholder="Masukkan deskripsi video">{{ old('description', $video->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('dashboard.videos.index') }}" class="btn btn-light">Cancel</a>
+                            <a href="{{ route('dashboard.videos.index') }}" class="btn btn-light">Batal</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Update Video
+                                <i class="fas fa-save me-2"></i>Perbarui Video
                             </button>
                         </div>
                     </form>
@@ -82,27 +82,27 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">Current Video</h5>
+                    <h5 class="card-title mb-0">Video Saat Ini</h5>
                 </div>
                 <div class="card-body">
                     <div class="video-preview-container mb-3">
                         <video class="w-100" controls>
                             <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
-                            Your browser does not support the video tag.
+                            Browser Anda tidak mendukung tag video.
                         </video>
                     </div>
                     <div class="video-info">
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Title:</span>
+                            <span>Judul:</span>
                             <span class="text-dark">{{ $video->title }}</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Uploaded:</span>
+                            <span>Diupload:</span>
                             <span>{{ $video->created_at->format('d M Y') }}</span>
                         </div>
                         @if($video->description)
                         <div class="d-flex justify-content-between text-muted">
-                            <span>Description:</span>
+                            <span>Deskripsi:</span>
                             <span class="text-dark">{{ Str::limit($video->description, 50) }}</span>
                         </div>
                         @endif

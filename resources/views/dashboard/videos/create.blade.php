@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Add Video')
+@section('title', 'Tambah Video')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Add New Video</h1>
-            <p class="text-muted">Upload and manage your video content</p>
+            <h1 class="h3 mb-0">Tambah Video Baru</h1>
+            <p class="text-muted">Upload dan kelola konten video Anda</p>
         </div>
         <a href="{{ route('dashboard.videos.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Videos
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Video
         </a>
     </div>
 
@@ -21,7 +21,7 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-video me-2 text-primary"></i>
-                        Video Information
+                        Informasi Video
                     </h5>
                 </div>
                 <div class="card-body">
@@ -37,12 +37,12 @@
                                         class="form-control @error('title') is-invalid @enderror" 
                                         id="title" 
                                         name="title" 
-                                        placeholder="Enter video title"
+                                        placeholder="Masukkan judul video"
                                         value="{{ old('title') }}"
                                         required
                                     >
                                     <label for="title">
-                                        <i class="fas fa-heading me-2"></i>Video Title
+                                        <i class="fas fa-heading me-2"></i>Judul Video
                                     </label>
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -55,8 +55,8 @@
                                 <div class="upload-area" id="uploadArea">
                                     <div class="upload-content">
                                         <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                                        <h5>Upload Video File</h5>
-                                        <p class="text-muted">Drag and drop your video file here or click to browse</p>
+                                        <h5>Upload File Video</h5>
+                                        <p class="text-muted">Seret dan lepas file video Anda di sini atau klik untuk memilih</p>
                                         <input 
                                             type="file" 
                                             class="form-control @error('video') is-invalid @enderror" 
@@ -67,15 +67,15 @@
                                             style="display: none;"
                                         >
                                         <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('video').click()">
-                                            <i class="fas fa-folder-open me-2"></i>Choose File
+                                            <i class="fas fa-folder-open me-2"></i>Pilih File
                                         </button>
                                     </div>
                                     <div class="upload-preview" id="uploadPreview" style="display: none;">
                                         <div class="preview-content">
                                             <i class="fas fa-video fa-2x text-success"></i>
-                                            <h6 id="fileName">Video file selected</h6>
+                                            <h6 id="fileName">File video dipilih</h6>
                                             <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFile()">
-                                                <i class="fas fa-times me-1"></i>Remove
+                                                <i class="fas fa-times me-1"></i>Hapus
                                             </button>
                                         </div>
                                     </div>
@@ -92,12 +92,12 @@
                                         class="form-control @error('description') is-invalid @enderror" 
                                         id="description" 
                                         name="description" 
-                                        placeholder="Enter video description"
+                                        placeholder="Masukkan deskripsi video"
                                         rows="4"
                                         style="height: 120px;"
                                     >{{ old('description') }}</textarea>
                                     <label for="description">
-                                        <i class="fas fa-align-left me-2"></i>Description
+                                        <i class="fas fa-align-left me-2"></i>Deskripsi
                                     </label>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -109,15 +109,15 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Select category</option>
+                                        <option value="">Pilih kategori</option>
                                         <option value="tutorial" {{ old('category') == 'tutorial' ? 'selected' : '' }}>Tutorial</option>
-                                        <option value="presentation" {{ old('category') == 'presentation' ? 'selected' : '' }}>Presentation</option>
-                                        <option value="documentary" {{ old('category') == 'documentary' ? 'selected' : '' }}>Documentary</option>
-                                        <option value="interview" {{ old('category') == 'interview' ? 'selected' : '' }}>Interview</option>
-                                        <option value="other" {{ old('category') == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="presentation" {{ old('category') == 'presentation' ? 'selected' : '' }}>Presentasi</option>
+                                        <option value="documentary" {{ old('category') == 'documentary' ? 'selected' : '' }}>Dokumenter</option>
+                                        <option value="interview" {{ old('category') == 'interview' ? 'selected' : '' }}>Wawancara</option>
+                                        <option value="other" {{ old('category') == 'other' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Category
+                                        <i class="fas fa-tags me-2"></i>Kategori
                                     </label>
                                     @error('category')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -136,7 +136,7 @@
                                         accept="image/*"
                                     >
                                     <label for="thumbnail">
-                                        <i class="fas fa-image me-2"></i>Thumbnail (Optional)
+                                        <i class="fas fa-image me-2"></i>Thumbnail (Opsional)
                                     </label>
                                     @error('thumbnail')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -148,10 +148,10 @@
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-2 mt-4 pt-4 border-top">
                             <a href="{{ route('dashboard.videos.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Cancel
+                                <i class="fas fa-times me-2"></i>Batal
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Video
+                                <i class="fas fa-save me-2"></i>Simpan Video
                             </button>
                         </div>
                     </form>
@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add animation
             uploadPreview.style.animation = 'slideIn 0.3s ease-out';
         } else {
-            alert('Please select a valid video file.');
+            alert('Silakan pilih file video yang valid.');
             clearFile();
         }
     }
@@ -485,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
         }
     });
 

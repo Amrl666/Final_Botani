@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Achievement')
+@section('title', 'Ubah Prestasi')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Achievement</h1>
-            <p class="text-muted">Update achievement details and information</p>
+            <h1 class="h3 mb-0">Ubah Prestasi</h1>
+            <p class="text-muted">Perbarui detail prestasi dan informasi</p>
         </div>
         <div class="d-flex gap-2">
             <button type="submit" form="prestasiForm" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Update Achievement
+                <i class="fas fa-save me-2"></i>Perbarui Prestasi
             </button>
             <a href="{{ route('dashboard.prestasi.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Achievements
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Prestasi
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2 text-primary"></i>
-                        Edit Achievement: {{ $prestasi->title }}
+                        Ubah Prestasi: {{ $prestasi->title }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -43,12 +43,12 @@
                                         class="form-control @error('title') is-invalid @enderror" 
                                         id="title" 
                                         name="title" 
-                                        placeholder="Enter achievement title"
+                                        placeholder="Masukkan judul prestasi"
                                         value="{{ old('title', $prestasi->title) }}" 
                                         required
                                     >
                                     <label for="title">
-                                        <i class="fas fa-trophy me-2"></i>Achievement Title
+                                        <i class="fas fa-trophy me-2"></i>Judul Prestasi
                                     </label>
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -66,9 +66,9 @@
                                                      alt="{{ $prestasi->title }}" 
                                                      class="preview-img">
                                                 <div class="image-overlay">
-                                                    <span class="badge bg-primary">Current Image</span>
+                                                    <span class="badge bg-primary">Gambar Saat Ini</span>
                                                     <button type="button" class="btn btn-light btn-sm" onclick="openImageModal('{{ asset('storage/' . $prestasi->image) }}', '{{ $prestasi->title }}')">
-                                                        <i class="fas fa-expand-alt me-1"></i>View
+                                                        <i class="fas fa-expand-alt me-1"></i>Lihat
                                                     </button>
                                                 </div>
                                             </div>
@@ -84,12 +84,12 @@
                                                 accept="image/*"
                                             >
                                             <label for="image">
-                                                <i class="fas fa-image me-2"></i>Update Image (Optional)
+                                                <i class="fas fa-image me-2"></i>Perbarui Gambar (Opsional)
                                             </label>
                                         </div>
                                         <div class="form-text">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Recommended size: 800x600 pixels, Max size: 5MB
+                                            Ukuran yang disarankan: 800x600 piksel, Ukuran maks: 5MB
                                         </div>
                                         @error('image')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -105,13 +105,13 @@
                                         class="form-control @error('content') is-invalid @enderror" 
                                         id="content" 
                                         name="content" 
-                                        placeholder="Enter achievement description"
+                                        placeholder="Masukkan deskripsi prestasi"
                                         rows="5"
                                         style="height: 150px;"
                                         required
                                     >{{ old('content', $prestasi->content) }}</textarea>
                                     <label for="content">
-                                        <i class="fas fa-align-left me-2"></i>Achievement Description
+                                        <i class="fas fa-align-left me-2"></i>Deskripsi Prestasi
                                     </label>
                                     @error('content')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Provide a detailed description of the achievement
+                                    Berikan deskripsi detail tentang prestasi
                                 </div>
                             </div>
 
@@ -127,16 +127,16 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Select category</option>
-                                        <option value="academic" {{ old('category', $prestasi->category) == 'academic' ? 'selected' : '' }}>Academic</option>
-                                        <option value="sports" {{ old('category', $prestasi->category) == 'sports' ? 'selected' : '' }}>Sports</option>
-                                        <option value="arts" {{ old('category', $prestasi->category) == 'arts' ? 'selected' : '' }}>Arts & Culture</option>
-                                        <option value="technology" {{ old('category', $prestasi->category) == 'technology' ? 'selected' : '' }}>Technology</option>
-                                        <option value="community" {{ old('category', $prestasi->category) == 'community' ? 'selected' : '' }}>Community Service</option>
-                                        <option value="other" {{ old('category', $prestasi->category) == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="">Pilih kategori</option>
+                                        <option value="academic" {{ old('category', $prestasi->category) == 'academic' ? 'selected' : '' }}>Akademik</option>
+                                        <option value="sports" {{ old('category', $prestasi->category) == 'sports' ? 'selected' : '' }}>Olahraga</option>
+                                        <option value="arts" {{ old('category', $prestasi->category) == 'arts' ? 'selected' : '' }}>Seni & Budaya</option>
+                                        <option value="technology" {{ old('category', $prestasi->category) == 'technology' ? 'selected' : '' }}>Teknologi</option>
+                                        <option value="community" {{ old('category', $prestasi->category) == 'community' ? 'selected' : '' }}>Pelayanan Masyarakat</option>
+                                        <option value="other" {{ old('category', $prestasi->category) == 'other' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Category
+                                        <i class="fas fa-tags me-2"></i>Kategori
                                     </label>
                                     @error('category')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -152,14 +152,14 @@
                                         class="form-control @error('year') is-invalid @enderror" 
                                         id="year" 
                                         name="year" 
-                                        placeholder="Enter year"
+                                        placeholder="Masukkan tahun"
                                         value="{{ old('year', $prestasi->year ?? date('Y')) }}" 
                                         min="1900"
                                         max="{{ date('Y') + 1 }}"
                                         required
                                     >
                                     <label for="year">
-                                        <i class="fas fa-calendar me-2"></i>Year
+                                        <i class="fas fa-calendar me-2"></i>Tahun
                                     </label>
                                     @error('year')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -171,14 +171,14 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select @error('level') is-invalid @enderror" id="level" name="level">
-                                        <option value="">Select level</option>
-                                        <option value="local" {{ old('level', $prestasi->level) == 'local' ? 'selected' : '' }}>Local</option>
+                                        <option value="">Pilih tingkat</option>
+                                        <option value="local" {{ old('level', $prestasi->level) == 'local' ? 'selected' : '' }}>Lokal</option>
                                         <option value="regional" {{ old('level', $prestasi->level) == 'regional' ? 'selected' : '' }}>Regional</option>
-                                        <option value="national" {{ old('level', $prestasi->level) == 'national' ? 'selected' : '' }}>National</option>
-                                        <option value="international" {{ old('level', $prestasi->level) == 'international' ? 'selected' : '' }}>International</option>
+                                        <option value="national" {{ old('level', $prestasi->level) == 'national' ? 'selected' : '' }}>Nasional</option>
+                                        <option value="international" {{ old('level', $prestasi->level) == 'international' ? 'selected' : '' }}>Internasional</option>
                                     </select>
                                     <label for="level">
-                                        <i class="fas fa-globe me-2"></i>Level
+                                        <i class="fas fa-globe me-2"></i>Tingkat
                                     </label>
                                     @error('level')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -194,11 +194,11 @@
                                         class="form-control @error('position') is-invalid @enderror" 
                                         id="position" 
                                         name="position" 
-                                        placeholder="e.g., 1st Place, Gold Medal"
+                                        placeholder="misal: Juara 1, Medali Emas"
                                         value="{{ old('position', $prestasi->position ?? '') }}" 
                                     >
                                     <label for="position">
-                                        <i class="fas fa-medal me-2"></i>Position/Rank
+                                        <i class="fas fa-medal me-2"></i>Posisi/Peringkat
                                     </label>
                                     @error('position')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -646,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
         }
     });
 
@@ -669,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select a valid image file');
+                alert('Silakan pilih file gambar yang valid');
                 this.value = '';
                 return;
             }

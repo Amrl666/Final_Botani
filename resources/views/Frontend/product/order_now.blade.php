@@ -56,7 +56,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
                         <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            Stok: {{ $product->stock }}
+                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                         </span>
                     </div>
 
@@ -84,11 +84,21 @@
 
                                 <div class="flex flex-col space-y-2">
                                     <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
-                                    <input type="tel" 
-                                           name="telepon" 
-                                           id="telepon" 
-                                           required
-                                           class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                    @if(auth('customer')->check())
+                                        <input type="tel"
+                                               name="telepon"
+                                               id="telepon"
+                                               value="{{ auth('customer')->user()->phone }}"
+                                               readonly
+                                               class="form-input rounded-lg border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed">
+                                        <span class="text-xs text-gray-500">Nomor HP diambil dari profil Anda</span>
+                                    @else
+                                        <input type="tel"
+                                               name="telepon"
+                                               id="telepon"
+                                               required
+                                               class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                    @endif
                                 </div>
 
                                 <div class="flex flex-col space-y-2">
@@ -101,13 +111,14 @@
                                 </div>
 
                                 <div class="flex flex-col space-y-2">
-                                    <label for="jumlah" class="text-sm font-medium text-gray-700">Jumlah (Kg)</label>
+                                    <label for="jumlah" class="text-sm font-medium text-gray-700">Jumlah ({{ $product->unit ?? 'satuan' }})</label>
                                     <input type="number" 
                                     name="jumlah" 
                                     id="jumlah" 
-                                    min="1" 
+                                    min="{{ $product->min_increment ?? 1 }}" 
                                     max="{{ $product->stock }}"
-                                    value="{{ old('jumlah', $jumlah ?? 1) }}"
+                                    value="{{ old('jumlah', $jumlah ?? ($product->min_increment ?? 1)) }}"
+                                    step="{{ $product->min_increment ?? 1 }}"
                                     required
                                     class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
                                 </div>

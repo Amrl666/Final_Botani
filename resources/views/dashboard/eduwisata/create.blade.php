@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Add Eduwisata')
+@section('title', 'Tambah Eduwisata')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Add New Eduwisata</h1>
-            <p class="text-muted">Create educational tourism packages</p>
+            <h1 class="h3 mb-0">Tambah Eduwisata Baru</h1>
+            <p class="text-muted">Buat paket wisata edukasi</p>
         </div>
         <a href="{{ route('dashboard.eduwisata.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Eduwisata
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Eduwisata
         </a>
     </div>
 
@@ -23,13 +23,13 @@
                         @csrf
                         
                         <div class="mb-4">
-                            <label for="name" class="form-label">Package Name</label>
+                            <label for="name" class="form-label">Nama Paket</label>
                             <input type="text" 
                                    class="form-control @error('name') is-invalid @enderror" 
                                    id="name" 
                                    name="name" 
                                    value="{{ old('name') }}"
-                                   placeholder="Enter package name"
+                                   placeholder="Masukkan nama paket"
                                    required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -37,24 +37,24 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="description" class="form-label">Package Description</label>
+                            <label for="description" class="form-label">Deskripsi Paket</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" 
                                       id="description" 
                                       name="description" 
                                       rows="5"
-                                      placeholder="Describe the educational tourism package..."
+                                      placeholder="Jelaskan paket wisata edukasi..."
                                       required>{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <small class="text-muted d-block mt-2">
                                 <i class="fas fa-lightbulb me-1"></i>
-                                Include activities, duration, and what participants will learn
+                                Sertakan aktivitas, durasi, dan apa yang akan dipelajari peserta
                             </small>
                         </div>
                         
                         <div class="mb-4">
-                            <label for="harga" class="form-label">Price (Rp)</label>
+                            <label for="harga" class="form-label">Harga (Rp)</label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp</span>
                                 <input type="number" 
@@ -70,12 +70,12 @@
                             </div>
                             <small class="text-muted d-block mt-2">
                                 <i class="fas fa-info-circle me-1"></i>
-                                Price per person for this educational package
+                                Harga per orang untuk paket edukasi ini
                             </small>
                         </div>
                         
                         <div class="mb-4">
-                            <label for="image" class="form-label">Package Image</label>
+                            <label for="image" class="form-label">Gambar Paket</label>
                             <div class="image-upload-wrapper">
                                 <input type="file" 
                                        class="form-control @error('image') is-invalid @enderror" 
@@ -85,7 +85,7 @@
                                        onchange="previewImage(event)">
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Optional. Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                    Opsional. Format yang didukung: JPG, PNG, GIF (Ukuran maks: 5MB)
                                 </small>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -96,7 +96,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <button type="reset" class="btn btn-light">Reset</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Add Eduwisata
+                                <i class="fas fa-plus me-2"></i>Tambah Eduwisata
                             </button>
                         </div>
                     </form>
@@ -107,27 +107,27 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">Package Preview</h5>
+                    <h5 class="card-title mb-0">Pratinjau Paket</h5>
                 </div>
                 <div class="card-body">
                     <div class="image-preview-container mb-3">
                         <div id="previewPlaceholder" class="text-center py-5">
                             <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
-                            <p class="text-muted mb-0">Package image preview</p>
+                            <p class="text-muted mb-0">Pratinjau gambar paket</p>
                         </div>
                         <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
                     </div>
                     <div class="package-info">
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Name:</span>
+                            <span>Nama:</span>
                             <span id="namePreview" class="text-dark">--</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Price:</span>
+                            <span>Harga:</span>
                             <span id="pricePreview" class="text-success fw-bold">Rp 0</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted">
-                            <span>Description:</span>
+                            <span>Deskripsi:</span>
                             <span id="descPreview" class="text-dark">--</span>
                         </div>
                     </div>

@@ -59,3 +59,101 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Botani Final
+
+A Laravel-based e-commerce platform for agricultural products.
+
+## Features
+
+### Product Management
+- **Dynamic Product Units**: Products now support various units (kg, gram, buah, ikat, pack, box, pcs)
+- **Flexible Ordering**: Products can be ordered with custom minimum increments (e.g., 0.5 kg, 1 piece)
+- **Stock Management**: Real-time stock tracking with unit-specific quantities
+- **Featured Products**: Highlight special products on the homepage
+
+### Order System
+- **WhatsApp Integration**: Direct order placement via WhatsApp
+- **Cart Management**: Add, update, and remove items from cart
+- **Order History**: Track order status and history
+- **Multiple Product Orders**: Order multiple products in a single transaction
+
+### User Management
+- **Authentication**: User registration and login
+- **Profile Management**: Update user information and preferences
+- **Order Tracking**: View order history and status
+
+## Database Changes
+
+### New Product Fields
+- `unit`: Product unit (kg, gram, buah, ikat, pack, box, pcs)
+- `min_increment`: Minimum quantity that can be ordered
+
+### Migration
+Run the following commands to apply database changes:
+
+```bash
+php artisan migrate
+php artisan db:seed --class=UpdateProductsWithUnitsSeeder
+```
+
+## Product Units Supported
+
+| Unit | Description | Example Use |
+|------|-------------|-------------|
+| kg | Kilogram | Rice, vegetables by weight |
+| gram | Gram | Spices, small quantities |
+| buah | Piece/Fruit | Individual fruits |
+| ikat | Bundle | Vegetables tied together |
+| pack | Pack | Packaged items |
+| box | Box | Bulk items in boxes |
+| pcs | Pieces | Individual items |
+
+## Ordering Rules
+
+- **Minimum Increment**: Each product has a minimum increment (e.g., 0.5 kg, 1 piece)
+- **Quantity Validation**: Orders must be in multiples of the minimum increment
+- **Stock Validation**: Cannot order more than available stock
+- **Unit Display**: All prices and quantities display with appropriate units
+
+## API Endpoints
+
+### Products
+- `GET /products` - List all products
+- `POST /products` - Create new product
+- `PUT /products/{id}` - Update product
+- `DELETE /products/{id}` - Delete product
+
+### Orders
+- `POST /orders` - Create new order
+- `GET /orders` - List orders (admin)
+- `PUT /orders/{id}` - Update order status
+
+### Cart
+- `POST /cart/add` - Add item to cart
+- `PUT /cart/{id}` - Update cart item
+- `DELETE /cart/{id}` - Remove cart item
+- `POST /cart/clear` - Clear cart
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies: `composer install`
+3. Copy environment file: `cp .env.example .env`
+4. Generate application key: `php artisan key:generate`
+5. Configure database in `.env`
+6. Run migrations: `php artisan migrate`
+7. Seed database: `php artisan db:seed`
+8. Start development server: `php artisan serve`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.

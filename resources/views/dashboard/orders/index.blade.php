@@ -355,16 +355,33 @@
                                         <span class="badge status-{{ strtolower($order->status) }}">{{ ucfirst($order->status) }}</span>
                                     </td>
                                     <td>
-                                        <form method="POST" action="{{ route('order.update', $order) }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <select name="status" class="form-select form-select-sm mb-1">
-                                                @foreach(['menunggu','disetujui','ditolak','selesai'] as $s)
-                                                    <option value="{{ $s }}" {{ $order->status == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-                                                @endforeach
-                                            </select>
-                                            <button class="btn btn-sm btn-primary">Update</button>
-                                        </form>
+                                        <div class="d-flex flex-column gap-1">
+                                            <form method="POST" action="{{ route('order.update', $order) }}" class="mb-1">
+                                                @csrf
+                                                @method('PUT')
+                                                <select name="status" class="form-select form-select-sm mb-1">
+                                                    @foreach(['menunggu','disetujui','ditolak','selesai','menunggu_konfirmasi'] as $s)
+                                                        <option value="{{ $s }}" {{ $order->status == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <button class="btn btn-sm btn-primary w-100">Update Status</button>
+                                            </form>
+                                            
+                                            @if($order->status === 'disetujui' && !$order->delivery)
+                                                <a href="{{ route('dashboard.delivery.create', $order) }}" 
+                                                   class="btn btn-sm btn-success w-100">
+                                                    <i class="fas fa-truck me-1"></i>Buat Pengiriman
+                                                </a>
+                                            @elseif($order->delivery)
+                                                <a href="{{ route('dashboard.delivery.show', $order->delivery) }}" 
+                                                   class="btn btn-sm btn-info w-100">
+                                                    <i class="fas fa-eye me-1"></i>Lihat Pengiriman
+                                                </a>
+                                                <small class="text-muted">
+                                                    {{ $order->delivery->tracking_number }}
+                                                </small>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @empty

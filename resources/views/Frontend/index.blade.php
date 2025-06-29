@@ -199,8 +199,48 @@
                 <h3 class="text-xl font-semibold text-center text-gray-800">Kontak</h3>
             </a>
         </div>
+        
+        <!-- Tracking Section -->
+        <div class="mt-12 text-center">
+            <div class="bg-white bg-opacity-10 rounded-lg p-8 backdrop-blur-sm">
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    <i class="fas fa-truck mr-2"></i>
+                    Lacak Pengiriman
+                </h3>
+                <p class="text-white text-lg mb-6">
+                    Masukkan nomor tracking untuk melacak status pengiriman pesanan Anda
+                </p>
+                <form id="trackingForm" class="max-w-md mx-auto">
+                    <div class="flex">
+                        <input type="text" 
+                               id="trackingNumber"
+                               name="tracking_number" 
+                               placeholder="Masukkan nomor tracking..." 
+                               class="flex-1 px-4 py-3 rounded-l-lg border-0 focus:ring-2 focus:ring-green-300"
+                               required>
+                        <button type="submit" 
+                                class="bg-green-600 text-white px-6 py-3 rounded-r-lg hover:bg-green-700 transition-colors">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="text-white text-sm mt-3">
+                    Contoh: TRK2024120112345678
+                </p>
+            </div>
+        </div>
     </div>
 </section>
+
+<script>
+document.getElementById('trackingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const trackingNumber = document.getElementById('trackingNumber').value.trim();
+    if (trackingNumber) {
+        window.location.href = "{{ route('delivery.track', 'TRACKING_NUMBER') }}".replace('TRACKING_NUMBER', trackingNumber);
+    }
+});
+</script>
 
 {{-- About Section --}}
 <section class="py-16 bg-gray-50">

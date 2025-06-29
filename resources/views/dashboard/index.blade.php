@@ -255,7 +255,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Products</h6>
+                            <h6 class="text-muted mb-1">Total Produk</h6>
                             <h2 class="mb-0">{{ \App\Models\Product::count() }}</h2>
                         </div>
                     </div>
@@ -274,7 +274,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Orders</h6>
+                            <h6 class="text-muted mb-1">Total Pesanan</h6>
                             <h2 class="mb-0">{{ \App\Models\Order::count() }}</h2>
                         </div>
                     </div>
@@ -293,7 +293,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Active Eduwisata</h6>
+                            <h6 class="text-muted mb-1">Eduwisata Aktif</h6>
                             <h2 class="mb-0">{{ \App\Models\Eduwisata::count() }}</h2>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">New Messages</h6>
+                            <h6 class="text-muted mb-1">Pesan Baru</h6>
                             <h2 class="mb-0">{{ \App\Models\Contact::count() }}</h2>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-sm animate-scale-in" style="--delay: 0.5s">
             <div class="card-header bg-white border-bottom-0 py-4">
-                <h5 class="card-title mb-0">Recent Activities</h5>
+                <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
             </div>
             <div class="card-body">
                 <div class="timeline">
@@ -383,4 +383,42 @@
         </div>
     </div>
 </div>
+
+<div class="mt-4">
+    <h2 class="text-2xl font-semibold mb-4">Aksi Cepat</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="{{ route('dashboard.products.index') }}" class="bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors">
+            <div class="flex items-center">
+                <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <div>
+                    <h3 class="text-lg font-semibold">Produk</h3>
+                    <p class="text-sm opacity-90">Kelola produk</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="{{ route('dashboard.stock.index') }}" class="bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors">
+            <div class="flex items-center">
+                <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h3 class="text-lg font-semibold">Stok</h3>
+                    <p class="text-sm opacity-90">Kelola inventori</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h2 class="text-2xl font-semibold mb-4">Analisa Stok</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 @endsection

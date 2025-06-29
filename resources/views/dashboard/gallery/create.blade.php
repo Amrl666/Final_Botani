@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Add Gallery Item')
+@section('title', 'Tambah Item Galeri')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Add New Gallery Item</h1>
-            <p class="text-muted">Upload and organize gallery images</p>
+            <h1 class="h3 mb-0">Tambah Item Galeri Baru</h1>
+            <p class="text-muted">Upload dan atur gambar galeri</p>
         </div>
         <a href="{{ route('dashboard.gallery.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Gallery
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Galeri
         </a>
     </div>
 
@@ -23,13 +23,13 @@
                         @csrf
                         
                         <div class="mb-4">
-                            <label for="title" class="form-label">Image Title</label>
+                            <label for="title" class="form-label">Judul Gambar</label>
                             <input type="text" 
                                    class="form-control @error('title') is-invalid @enderror" 
                                    id="title" 
                                    name="title" 
                                    value="{{ old('title') }}"
-                                   placeholder="Enter image title"
+                                   placeholder="Masukkan judul gambar"
                                    required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -37,7 +37,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="image" class="form-label">Image File</label>
+                            <label for="image" class="form-label">File Gambar</label>
                             <div class="image-upload-wrapper">
                                 <input type="file" 
                                        class="form-control @error('image') is-invalid @enderror" 
@@ -48,7 +48,7 @@
                                        required>
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                    Format yang didukung: JPG, PNG, GIF (Ukuran maks: 5MB)
                                 </small>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -57,7 +57,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="description" class="form-label">Gallery Date</label>
+                            <label for="description" class="form-label">Tanggal Galeri</label>
                             <input type="date" 
                                    class="form-control @error('description') is-invalid @enderror" 
                                    id="description" 
@@ -72,7 +72,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <button type="reset" class="btn btn-light">Reset</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-cloud-upload-alt me-2"></i>Add to Gallery
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Tambah ke Galeri
                             </button>
                         </div>
                     </form>
@@ -83,23 +83,23 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">Image Preview</h5>
+                    <h5 class="card-title mb-0">Pratinjau Gambar</h5>
                 </div>
                 <div class="card-body">
                     <div class="image-preview-container mb-3">
                         <div id="previewPlaceholder" class="text-center py-5">
                             <i class="fas fa-image fa-3x text-muted mb-3"></i>
-                            <p class="text-muted mb-0">Image preview will appear here</p>
+                            <p class="text-muted mb-0">Pratinjau gambar akan muncul di sini</p>
                         </div>
                         <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
                     </div>
                     <div class="image-info d-none" id="imageInfo">
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>File size:</span>
+                            <span>Ukuran file:</span>
                             <span id="imageSize">-- KB</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted">
-                            <span>Dimensions:</span>
+                            <span>Dimensi:</span>
                             <span id="imageDimensions">-- x --</span>
                         </div>
                     </div>

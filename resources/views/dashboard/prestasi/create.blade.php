@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Create New Prestasi')
+@section('title', 'Buat Prestasi Baru')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Create New Prestasi</h1>
-            <p class="text-muted">Add new achievements and accomplishments</p>
+            <h1 class="h3 mb-0">Buat Prestasi Baru</h1>
+            <p class="text-muted">Tambah prestasi dan pencapaian baru</p>
         </div>
         <a href="{{ route('dashboard.prestasi.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Prestasi
+            <i class="fas fa-arrow-left me-2"></i>Kembali ke Prestasi
         </a>
     </div>
 
@@ -23,14 +23,14 @@
                         @csrf
                         
                         <div class="mb-4">
-                            <label for="title" class="form-label">Achievement Title</label>
+                            <label for="title" class="form-label">Judul Prestasi</label>
                             <input 
                                 type="text" 
                                 class="form-control @error('title') is-invalid @enderror" 
                                 id="title" 
                                 name="title" 
                                 value="{{ old('title') }}"
-                                placeholder="Enter achievement title"
+                                placeholder="Masukkan judul prestasi"
                                 required
                             >
                             @error('title')
@@ -39,7 +39,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="image" class="form-label">Achievement Image</label>
+                            <label for="image" class="form-label">Gambar Prestasi</label>
                             <div class="image-upload-wrapper">
                                 <input 
                                     type="file" 
@@ -51,7 +51,7 @@
                                 >
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Optional. Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                                    Opsional. Format yang didukung: JPG, PNG, GIF (Ukuran maks: 5MB)
                                 </small>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -60,13 +60,13 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="content" class="form-label">Achievement Details</label>
+                            <label for="content" class="form-label">Detail Prestasi</label>
                             <textarea 
                                 class="form-control @error('content') is-invalid @enderror" 
                                 id="content" 
                                 name="content" 
                                 rows="8"
-                                placeholder="Describe the achievement details..."
+                                placeholder="Jelaskan detail prestasi..."
                                 required
                             >{{ old('content') }}</textarea>
                             @error('content')
@@ -74,14 +74,14 @@
                             @enderror
                             <small class="text-muted d-block mt-2">
                                 <i class="fas fa-lightbulb me-1"></i>
-                                Include details about the achievement, date, and significance
+                                Sertakan detail tentang prestasi, tanggal, dan signifikansinya
                             </small>
                         </div>
                         
                         <div class="d-flex justify-content-end gap-2">
                             <button type="reset" class="btn btn-light">Reset</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-trophy me-2"></i>Create Achievement
+                                <i class="fas fa-trophy me-2"></i>Buat Prestasi
                             </button>
                         </div>
                     </form>
@@ -92,28 +92,28 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">Achievement Preview</h5>
+                    <h5 class="card-title mb-0">Pratinjau Prestasi</h5>
                 </div>
                 <div class="card-body">
                     <div class="image-preview-container mb-3">
                         <div id="previewPlaceholder" class="text-center py-5">
                             <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
-                            <p class="text-muted mb-0">Achievement image preview</p>
+                            <p class="text-muted mb-0">Pratinjau gambar prestasi</p>
                         </div>
                         <img id="imagePreview" class="w-100 d-none rounded" alt="Preview">
                     </div>
                     <div class="achievement-info">
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Title:</span>
+                            <span>Judul:</span>
                             <span id="titlePreview" class="text-dark">--</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted mb-2">
-                            <span>Content length:</span>
-                            <span id="contentLength">0 characters</span>
+                            <span>Panjang konten:</span>
+                            <span id="contentLength">0 karakter</span>
                         </div>
                         <div class="d-flex justify-content-between text-muted">
-                            <span>Word count:</span>
-                            <span id="wordCount">0 words</span>
+                            <span>Jumlah kata:</span>
+                            <span id="wordCount">0 kata</span>
                         </div>
                     </div>
                 </div>
@@ -180,8 +180,8 @@ document.getElementById('title').addEventListener('input', function() {
 // Update preview when content changes
 document.getElementById('content').addEventListener('input', function() {
     const content = this.value;
-    document.getElementById('contentLength').textContent = content.length + ' characters';
-    document.getElementById('wordCount').textContent = content.trim().split(/\s+/).filter(word => word.length > 0).length + ' words';
+    document.getElementById('contentLength').textContent = content.length + ' karakter';
+    document.getElementById('wordCount').textContent = content.trim().split(/\s+/).filter(word => word.length > 0).length + ' kata';
 });
 </script>
 @endpush

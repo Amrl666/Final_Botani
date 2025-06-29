@@ -370,7 +370,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
                         <span class="product-stock">
-                            <i class="fas fa-boxes me-1"></i>Stok: {{ $product->stock }}
+                            <i class="fas fa-boxes me-1"></i>Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                         </span>
                     </div>
 
@@ -396,6 +396,41 @@
                                 <i class="fas fa-times me-1"></i>Habis
                             </button>
                         @endif
+                    </div>
+
+                    <!-- Wishlist Button -->
+                    <div class="mt-3 flex justify-center">
+                        @auth('customer')
+                            @if(auth('customer')->user()->wishlist->contains($product->id))
+                                <form action="{{ route('customer.wishlist.remove', $product) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition-colors"
+                                            title="Hapus dari Wishlist">
+                                        <i class="fas fa-heart text-sm"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('customer.wishlist.add', $product) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="bg-gray-100 text-gray-600 p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                                            title="Tambah ke Wishlist">
+                                        <i class="far fa-heart text-sm"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        @else
+                            <form action="{{ route('wishlist.add', $product) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" 
+                                        class="bg-gray-100 text-gray-600 p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                                        title="Tambah ke Wishlist">
+                                    <i class="far fa-heart text-sm"></i>
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             </div>

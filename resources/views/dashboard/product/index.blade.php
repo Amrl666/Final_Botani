@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Product Management')
+@section('title', 'Manajemen Produk')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Product Management</h1>
-            <p class="text-muted">Manage your product catalog and inventory</p>
+            <h1 class="h3 mb-0">Manajemen Produk</h1>
+            <p class="text-muted">Kelola katalog produk dan inventori Anda</p>
         </div>
-            <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Add New Product
+            <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus mr-2"></i>Tambah Produk
             </a>
         </div>
     </div>
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Products</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Produk</h6>
                             <h2 class="card-title mb-0 counter">{{ $products->total() }}</h2>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">In Stock</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Tersedia</h6>
                             <h2 class="card-title mb-0 counter">{{ $products->where('stock', '>', 0)->count() }}</h2>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Low Stock</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Stok Menipis</h6>
                             <h2 class="card-title mb-0 counter">{{ $products->where('stock', '<=', 5)->where('stock', '>', 0)->count() }}</h2>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Out of Stock</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Habis</h6>
                             <h2 class="card-title mb-0 counter">{{ $products->where('stock', 0)->count() }}</h2>
                         </div>
                     </div>
@@ -95,15 +95,15 @@
                 <div class="col-md-8">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="form-control search-input" placeholder="Search products..." id="searchInput">
+                        <input type="text" class="form-control search-input" placeholder="Cari produk..." id="searchInput">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <select class="form-select" id="stockFilter">
-                        <option value="">All Stock Levels</option>
-                        <option value="in-stock">In Stock</option>
-                        <option value="low-stock">Low Stock</option>
-                        <option value="out-of-stock">Out of Stock</option>
+                        <option value="">Semua Level Stok</option>
+                        <option value="in-stock">Tersedia</option>
+                        <option value="low-stock">Stok Menipis</option>
+                        <option value="out-of-stock">Habis</option>
                     </select>
                 </div>
             </div>
@@ -123,10 +123,8 @@
                              alt="{{ $product->name }}">
                         <div class="product-overlay">
                             <div class="product-actions">
-                                <a href="{{ route('dashboard.product.edit', $product) }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Edit Product">
+                                <a href="{{ route('dashboard.products.edit', $product) }}"
+                                   class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button type="button" 
@@ -136,16 +134,12 @@
                                         onclick="quickView({{ $product->id }})">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <form action="{{ route('dashboard.product.destroy', $product) }}" 
-                                      method="POST" 
-                                      class="d-inline">
+                                <form action="{{ route('dashboard.products.destroy', $product) }}"
+                                      method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-light btn-sm" 
-                                            data-bs-toggle="tooltip" 
-                                            title="Delete Product"
-                                            onclick="return confirm('Are you sure you want to delete this product?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -154,12 +148,12 @@
                         <div class="product-badge">
                             @if($product->stock > 0)
                                 @if($product->stock <= 5)
-                                    <span class="badge bg-warning">Low Stock</span>
+                                    <span class="badge bg-warning">Stok Menipis</span>
                                 @else
-                                    <span class="badge bg-success">In Stock</span>
+                                    <span class="badge bg-success">Tersedia</span>
                                 @endif
                             @else
-                                <span class="badge bg-danger">Out of Stock</span>
+                                <span class="badge bg-danger">Habis</span>
                             @endif
                         </div>
                     </div>
@@ -174,18 +168,18 @@
                             </div>
                             <div class="product-stock">
                                 <i class="fas fa-boxes me-1"></i>
-                                {{ $product->stock }} units
+                                {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                             </div>
                         </div>
                         <div class="product-actions-bottom mt-3">
-                            <a href="{{ route('dashboard.product.edit', $product) }}" 
+                            <a href="{{ route('dashboard.products.edit', $product) }}" 
                                class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-edit me-1"></i>Edit
+                                <i class="fas fa-edit me-1"></i>Ubah
                             </a>
                             <button type="button" 
                                     class="btn btn-outline-info btn-sm" 
                                     onclick="quickView({{ $product->id }})">
-                                <i class="fas fa-eye me-1"></i>View
+                                <i class="fas fa-eye me-1"></i>Lihat
                             </button>
                         </div>
                     </div>
@@ -198,10 +192,10 @@
                         <div class="empty-icon mb-3">
                             <i class="fas fa-box"></i>
                         </div>
-                        <h4 class="text-muted">No Products Yet</h4>
-                        <p class="text-muted mb-4">Start adding products to your catalog</p>
-                        <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Add First Product
+                        <h4 class="text-muted">Belum Ada Produk</h4>
+                        <p class="text-muted mb-4">Mulai menambahkan produk ke katalog</p>
+                        <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i>Tambahkan Produk Pertama
                         </a>
                     </div>
                 </div>
@@ -220,7 +214,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Product Details</h5>
+                <h5 class="modal-title">Detail Produk</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="quickViewContent">
@@ -828,9 +822,9 @@ function quickView(productId) {
     content.innerHTML = `
         <div class="text-center py-4">
             <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">Memuat...</span>
             </div>
-            <p class="mt-2">Loading product details...</p>
+            <p class="mt-2">Memuat detail produk...</p>
         </div>
     `;
     
@@ -844,23 +838,23 @@ function quickView(productId) {
                     <img src="/storage/products/product-${productId}.jpg" class="img-fluid rounded" alt="Product Image">
                 </div>
                 <div class="col-md-6">
-                    <h4>Product Name</h4>
-                    <p class="text-muted">Product description goes here...</p>
+                    <h4>Nama Produk</h4>
+                    <p class="text-muted">Deskripsi produk akan ditampilkan di sini...</p>
                     <div class="mb-3">
-                        <strong>Price:</strong> Rp 50,000
+                        <strong>Harga:</strong> Rp 50,000
                     </div>
                     <div class="mb-3">
-                        <strong>Stock:</strong> 25 units
+                        <strong>Stok:</strong> 25 satuan
                     </div>
                     <div class="mb-3">
-                        <strong>Category:</strong> Vegetables
+                        <strong>Kategori:</strong> Sayuran
                     </div>
                     <div class="d-flex gap-2">
                         <a href="/dashboard/product/${productId}/edit" class="btn btn-primary">
-                            <i class="fas fa-edit me-2"></i>Edit Product
+                            <i class="fas fa-edit me-2"></i>Edit Produk
                         </a>
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
+                            Tutup
                         </button>
                     </div>
                 </div>
@@ -890,7 +884,7 @@ function showAlert(message, type) {
 
 // Export products function
 function exportProducts() {
-    showAlert('Exporting products...', 'info');
+    showAlert('Mengekspor produk...', 'info');
     // Add your export logic here
 }
 
@@ -898,19 +892,19 @@ function exportProducts() {
 function bulkDelete() {
     const selectedItems = document.querySelectorAll('input[name="selected_products"]:checked');
     if (selectedItems.length === 0) {
-        showAlert('Please select products to delete', 'warning');
+        showAlert('Silakan pilih produk untuk dihapus', 'warning');
         return;
     }
     
-    if (confirm(`Are you sure you want to delete ${selectedItems.length} products?`)) {
-        showAlert('Deleting selected products...', 'info');
+    if (confirm(`Apakah Anda yakin ingin menghapus ${selectedItems.length} produk?`)) {
+        showAlert('Menghapus produk yang dipilih...', 'info');
         // Add your bulk delete logic here
     }
 }
 
 // Update stock function
 function updateStock(productId, newStock) {
-    showAlert('Updating stock...', 'info');
+    showAlert('Memperbarui stok...', 'info');
     // Add your stock update logic here
 }
 </script>

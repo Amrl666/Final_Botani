@@ -11,10 +11,19 @@ class CartController extends Controller
 {
     public function index()
     {
-        $sessionId = session()->getId();
-        $cartItems = CartItem::with('product')
-            ->where('session_id', $sessionId)
-            ->get();
+        $cartItems = collect();
+        
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
+            $cartItems = CartItem::with('product')
+                ->where('customer_id', $customer->id)
+                ->get();
+        } else {
+            $sessionId = session()->getId();
+            $cartItems = CartItem::with('product')
+                ->where('session_id', $sessionId)
+                ->get();
+        }
 
         $total = $cartItems->sum(function ($item) {
             return $item->quantity * $item->product->price;
@@ -27,7 +36,7 @@ class CartController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|numeric|min:0.01'
         ]);
 
         $product = Product::findOrFail($request->product_id);
@@ -37,12 +46,37 @@ class CartController extends Controller
             return back()->with('error', 'Stok tidak mencukupi untuk jumlah yang diminta.');
         }
 
-        $sessionId = session()->getId();
+        // Check if quantity is valid based on min_increment (only if min_increment > 0)
+        if ($product->min_increment > 0) {
+            // Use a more robust method to avoid floating-point precision issues
+            $remainder = fmod($request->quantity, $product->min_increment);
+            if (abs($remainder) > 0.001) { // Allow for small floating-point errors
+                return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+            }
+        }
 
-        // Check if item already exists in cart
-        $cartItem = CartItem::where('session_id', $sessionId)
-            ->where('product_id', $request->product_id)
-            ->first();
+        $cartData = [
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity
+        ];
+
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
+            $cartData['customer_id'] = $customer->id;
+            
+            // Check if item already exists in cart
+            $cartItem = CartItem::where('customer_id', $customer->id)
+                ->where('product_id', $request->product_id)
+                ->first();
+        } else {
+            $sessionId = session()->getId();
+            $cartData['session_id'] = $sessionId;
+            
+            // Check if item already exists in cart
+            $cartItem = CartItem::where('session_id', $sessionId)
+                ->where('product_id', $request->product_id)
+                ->first();
+        }
 
         if ($cartItem) {
             // Update quantity
@@ -53,11 +87,7 @@ class CartController extends Controller
             $cartItem->update(['quantity' => $newQuantity]);
         } else {
             // Create new cart item
-            CartItem::create([
-                'session_id' => $sessionId,
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity
-            ]);
+            CartItem::create($cartData);
         }
 
         return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
@@ -66,13 +96,22 @@ class CartController extends Controller
     public function update(Request $request, CartItem $cartItem)
     {
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|numeric|min:0.01'
         ]);
 
         $product = $cartItem->product;
         
         if ($product->stock < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi untuk jumlah yang diminta.');
+        }
+
+        // Check if quantity is valid based on min_increment (only if min_increment > 0)
+        if ($product->min_increment > 0) {
+            // Use a more robust method to avoid floating-point precision issues
+            $remainder = fmod($request->quantity, $product->min_increment);
+            if (abs($remainder) > 0.001) { // Allow for small floating-point errors
+                return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+            }
         }
 
         $cartItem->update(['quantity' => $request->quantity]);
@@ -82,22 +121,45 @@ class CartController extends Controller
 
     public function remove(CartItem $cartItem)
     {
+        // Check if cart item belongs to current user
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
+            if ($cartItem->customer_id !== $customer->id) {
+                abort(403, 'Unauthorized action.');
+            }
+        } else {
+            $sessionId = session()->getId();
+            if ($cartItem->session_id !== $sessionId) {
+                abort(403, 'Unauthorized action.');
+            }
+        }
+
         $cartItem->delete();
         return back()->with('success', 'Produk berhasil dihapus dari keranjang!');
     }
 
     public function clear()
     {
-        $sessionId = session()->getId();
-        CartItem::where('session_id', $sessionId)->delete();
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
+            CartItem::where('customer_id', $customer->id)->delete();
+        } else {
+            $sessionId = session()->getId();
+            CartItem::where('session_id', $sessionId)->delete();
+        }
         
         return back()->with('success', 'Keranjang berhasil dikosongkan!');
     }
 
     public function getCartCount()
     {
-        $sessionId = session()->getId();
-        $count = CartItem::where('session_id', $sessionId)->sum('quantity');
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
+            $count = CartItem::where('customer_id', $customer->id)->sum('quantity');
+        } else {
+            $sessionId = session()->getId();
+            $count = CartItem::where('session_id', $sessionId)->sum('quantity');
+        }
         
         return response()->json(['count' => $count]);
     }

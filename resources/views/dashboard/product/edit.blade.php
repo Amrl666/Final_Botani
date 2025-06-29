@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Product')
+@section('title', 'Ubah Produk')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Edit Product</h1>
-            <p class="text-muted">Update product details and information</p>
+            <h1 class="h3 mb-0">Ubah Produk</h1>
+            <p class="text-muted">Perbarui detail dan informasi produk</p>
         </div>
         <div class="d-flex gap-2">
             <button type="submit" form="productForm" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Update Product
+                <i class="fas fa-save me-2"></i>Perbarui Produk
             </button>
-            <a href="{{ route('dashboard.product.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Products
+            <a href="{{ route('dashboard.products.index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-times mr-2"></i>Batal
             </a>
         </div>
     </div>
@@ -26,11 +26,11 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2 text-primary"></i>
-                        Edit Product: {{ $product->name }}
+                        Ubah Produk: {{ $product->name }}
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form id="productForm" action="{{ route('dashboard.product.update', $product) }}" method="POST" enctype="multipart/form-data">
+                    <form id="productForm" action="{{ route('dashboard.products.update', $product) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -43,12 +43,12 @@
                                         class="form-control @error('name') is-invalid @enderror" 
                                         id="name" 
                                         name="name" 
-                                        placeholder="Enter product name"
+                                        placeholder="Masukkan nama produk"
                                         value="{{ old('name', $product->name) }}" 
                                         required
                                     >
                                     <label for="name">
-                                        <i class="fas fa-box me-2"></i>Product Name
+                                        <i class="fas fa-box me-2"></i>Nama Produk
                                     </label>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -66,9 +66,9 @@
                                                      alt="{{ $product->name }}" 
                                                      class="preview-img">
                                                 <div class="image-overlay">
-                                                    <span class="badge bg-primary">Current Image</span>
+                                                    <span class="badge bg-primary">Gambar Saat Ini</span>
                                                     <button type="button" class="btn btn-light btn-sm" onclick="openImageModal('{{ asset('storage/' . $product->image) }}', '{{ $product->name }}')">
-                                                        <i class="fas fa-expand-alt me-1"></i>View
+                                                        <i class="fas fa-expand-alt me-1"></i>Lihat
                                                     </button>
                                                 </div>
                                             </div>
@@ -84,12 +84,12 @@
                                                 accept="image/*"
                                             >
                                             <label for="image">
-                                                <i class="fas fa-image me-2"></i>Update Image (Optional)
+                                                <i class="fas fa-image me-2"></i>Perbarui Gambar (Opsional)
                                             </label>
                                         </div>
                                         <div class="form-text">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Recommended size: 800x600 pixels, Max size: 5MB
+                                            Ukuran yang disarankan: 800x600 piksel, Ukuran maks: 5MB
                                         </div>
                                         @error('image')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -105,13 +105,13 @@
                                         class="form-control @error('description') is-invalid @enderror" 
                                         id="description" 
                                         name="description" 
-                                        placeholder="Enter product description"
+                                        placeholder="Masukkan deskripsi produk"
                                         rows="4"
                                         style="height: 120px;"
                                         required
                                     >{{ old('description', $product->description) }}</textarea>
                                     <label for="description">
-                                        <i class="fas fa-align-left me-2"></i>Product Description
+                                        <i class="fas fa-align-left me-2"></i>Deskripsi Produk
                                     </label>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Provide a detailed description of the product
+                                    Berikan deskripsi detail tentang produk
                                 </div>
                             </div>
 
@@ -131,14 +131,14 @@
                                         class="form-control @error('price') is-invalid @enderror" 
                                         id="price" 
                                         name="price" 
-                                        placeholder="Enter price"
+                                        placeholder="Masukkan harga"
                                         value="{{ old('price', $product->price) }}" 
                                         min="0"
                                         step="1000"
                                         required
                                     >
                                     <label for="price">
-                                        <i class="fas fa-tag me-2"></i>Price (Rp)
+                                        <i class="fas fa-tag me-2"></i>Harga (Rp)
                                     </label>
                                     @error('price')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -154,13 +154,13 @@
                                         class="form-control @error('stock') is-invalid @enderror" 
                                         id="stock" 
                                         name="stock" 
-                                        placeholder="Enter stock quantity"
+                                        placeholder="Masukkan jumlah stok"
                                         value="{{ old('stock', $product->stock ?? 0) }}" 
                                         min="0"
                                         required
                                     >
                                     <label for="stock">
-                                        <i class="fas fa-boxes me-2"></i>Stock Quantity
+                                        <i class="fas fa-boxes me-2"></i>Jumlah Stok
                                     </label>
                                     @error('stock')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -168,143 +168,70 @@
                                 </div>
                             </div>
 
-                            <!-- Category Field -->
+                            <!-- Unit Field -->
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Select category</option>
-                                        <option value="vegetables" {{ old('category', $product->category) == 'vegetables' ? 'selected' : '' }}>Vegetables</option>
-                                        <option value="fruits" {{ old('category', $product->category) == 'fruits' ? 'selected' : '' }}>Fruits</option>
-                                        <option value="herbs" {{ old('category', $product->category) == 'herbs' ? 'selected' : '' }}>Herbs</option>
-                                        <option value="seeds" {{ old('category', $product->category) == 'seeds' ? 'selected' : '' }}>Seeds</option>
-                                        <option value="tools" {{ old('category', $product->category) == 'tools' ? 'selected' : '' }}>Gardening Tools</option>
-                                        <option value="fertilizers" {{ old('category', $product->category) == 'fertilizers' ? 'selected' : '' }}>Fertilizers</option>
-                                        <option value="other" {{ old('category', $product->category) == 'other' ? 'selected' : '' }}>Other</option>
+                                    <select class="form-select @error('unit') is-invalid @enderror" id="unit" name="unit" required>
+                                        <option value="">Pilih Satuan</option>
+                                        <option value="kg" {{ old('unit', $product->unit ?? '') == 'kg' ? 'selected' : '' }}>Kilogram (kg)</option>
+                                        <option value="gram" {{ old('unit', $product->unit ?? '') == 'gram' ? 'selected' : '' }}>Gram</option>
+                                        <option value="buah" {{ old('unit', $product->unit ?? '') == 'buah' ? 'selected' : '' }}>Buah</option>
+                                        <option value="ikat" {{ old('unit', $product->unit ?? '') == 'ikat' ? 'selected' : '' }}>Ikat</option>
+                                        <option value="pack" {{ old('unit', $product->unit ?? '') == 'pack' ? 'selected' : '' }}>Pack</option>
+                                        <option value="box" {{ old('unit', $product->unit ?? '') == 'box' ? 'selected' : '' }}>Box</option>
+                                        <option value="pcs" {{ old('unit', $product->unit ?? '') == 'pcs' ? 'selected' : '' }}>Pieces (pcs)</option>
                                     </select>
-                                    <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Category
+                                    <label for="unit">
+                                        <i class="fas fa-ruler me-2"></i>Satuan
                                     </label>
-                                    @error('category')
+                                    @error('unit')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
-                            <!-- Weight Field -->
+                            <!-- Min Increment Field -->
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input 
                                         type="number" 
-                                        class="form-control @error('weight') is-invalid @enderror" 
-                                        id="weight" 
-                                        name="weight" 
-                                        placeholder="Enter weight in grams"
-                                        value="{{ old('weight', $product->weight ?? '') }}" 
-                                        min="0"
-                                        step="0.1"
+                                        class="form-control @error('min_increment') is-invalid @enderror" 
+                                        id="min_increment" 
+                                        name="min_increment" 
+                                        placeholder="Masukkan kelipatan minimum"
+                                        value="{{ old('min_increment', $product->min_increment ?? 0.5) }}" 
+                                        min="0.01"
+                                        step="0.01"
+                                        required
                                     >
-                                    <label for="weight">
-                                        <i class="fas fa-weight-hanging me-2"></i>Weight (grams)
+                                    <label for="min_increment">
+                                        <i class="fas fa-plus-minus me-2"></i>Kelipatan Minimum
                                     </label>
-                                    @error('weight')
+                                    @error('min_increment')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <!-- SKU Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input 
-                                        type="text" 
-                                        class="form-control @error('sku') is-invalid @enderror" 
-                                        id="sku" 
-                                        name="sku" 
-                                        placeholder="Enter SKU code"
-                                        value="{{ old('sku', $product->sku ?? '') }}" 
-                                    >
-                                    <label for="sku">
-                                        <i class="fas fa-barcode me-2"></i>SKU Code
-                                    </label>
-                                    @error('sku')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Status Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                        <option value="active" {{ old('status', $product->status ?? 'active') == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option value="inactive" {{ old('status', $product->status ?? 'inactive') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                                        <option value="draft" {{ old('status', $product->status ?? 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        <option value="out_of_stock" {{ old('status', $product->status ?? 'out_of_stock') == 'out_of_stock' ? 'selected' : '' }}>Out of Stock</option>
-                                    </select>
-                                    <label for="status">
-                                        <i class="fas fa-toggle-on me-2"></i>Status
-                                    </label>
-                                    @error('status')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Jumlah minimum yang dapat dipesan (misal: 0.5 untuk kg, 1 untuk pieces)
                                 </div>
                             </div>
 
                             <!-- Featured Field -->
                             <div class="col-md-6">
                                 <div class="form-check form-switch mt-4">
+                                    <input type="hidden" name="featured" value="0">
                                     <input 
                                         class="form-check-input" 
                                         type="checkbox" 
-                                        id="is_featured" 
-                                        name="is_featured" 
+                                        id="featured" 
+                                        name="featured" 
                                         value="1"
-                                        {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }}
+                                        {{ old('featured', $product->featured ?? false) ? 'checked' : '' }}
                                     >
-                                    <label class="form-check-label" for="is_featured">
-                                        <i class="fas fa-star me-2"></i>Featured Product
+                                    <label class="form-check-label" for="featured">
+                                        <i class="fas fa-star me-2"></i>Produk Unggulan
                                     </label>
-                                </div>
-                            </div>
-
-                            <!-- Best Seller Field -->
-                            <div class="col-md-6">
-                                <div class="form-check form-switch mt-4">
-                                    <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        id="is_bestseller" 
-                                        name="is_bestseller" 
-                                        value="1"
-                                        {{ old('is_bestseller', $product->is_bestseller ?? false) ? 'checked' : '' }}
-                                    >
-                                    <label class="form-check-label" for="is_bestseller">
-                                        <i class="fas fa-fire me-2"></i>Best Seller
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Product URL Field -->
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input 
-                                        type="url" 
-                                        class="form-control @error('product_url') is-invalid @enderror" 
-                                        id="product_url" 
-                                        name="product_url" 
-                                        placeholder="Enter product URL"
-                                        value="{{ old('product_url', $product->product_url ?? '') }}" 
-                                    >
-                                    <label for="product_url">
-                                        <i class="fas fa-link me-2"></i>Product URL (Optional)
-                                    </label>
-                                    @error('product_url')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Link to external product page or additional information
                                 </div>
                             </div>
                         </div>
@@ -312,10 +239,10 @@
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-2 mt-4 pt-4 border-top">
                             <a href="{{ route('dashboard.product.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Cancel
+                                <i class="fas fa-times me-2"></i>Batal
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Update Product
+                                <i class="fas fa-save me-2"></i>Perbarui Produk
                             </button>
                         </div>
                     </form>
@@ -330,7 +257,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageModalTitle">Image Preview</h5>
+                <h5 class="modal-title" id="imageModalTitle">Pratinjau Gambar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
@@ -672,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitBtn) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memperbarui...';
         }
     });
 
@@ -688,14 +615,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (file) {
             // Validate file size (5MB)
             if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
+                alert('Ukuran file harus kurang dari 5MB');
                 this.value = '';
                 return;
             }
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select a valid image file');
+                alert('Silakan pilih file gambar yang valid');
                 this.value = '';
                 return;
             }
@@ -730,8 +657,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Real-time validation
     const nameInput = document.getElementById('name');
-    const categorySelect = document.getElementById('category');
-    const statusSelect = document.getElementById('status');
 
     nameInput.addEventListener('input', function() {
         if (this.value.length > 0) {

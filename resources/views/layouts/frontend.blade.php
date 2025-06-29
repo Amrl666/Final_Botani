@@ -410,6 +410,37 @@
             outline: 2px solid var(--primary-color);
             outline-offset: 2px;
         }
+
+        /* Customer dropdown menu styles */
+        #user-menu {
+            z-index: 1000;
+            display: none;
+        }
+        
+        #user-menu.show {
+            display: block;
+        }
+        
+        /* Ensure dropdown is above other elements */
+        .relative {
+            position: relative;
+        }
+        
+        /* Dropdown animation */
+        #user-menu {
+            transform-origin: top right;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        #user-menu.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        #user-menu:not(.show) {
+            transform: scale(0.95);
+            opacity: 0;
+        }
     </style>
 </head>
 
@@ -459,42 +490,51 @@
                                 0
                             </span>
                             <i class="fas fa-shopping-cart text-xl"></i>
-                            
                         </a>
 
-                         {{-- User Session Dropdown --}}
-                        @if(session()->has('telepon'))
-                            <div class="user-dropdown">
-                                <button class="user-button">
-                                    <i class="fas fa-user-circle text-xl"></i>
-                                    <span class="text-sm md:text-base">{{ session('telepon') }}</span>
-                                    <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                                
-                                <div class="dropdown-menu">
-                                    <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
-                                    class="dropdown-item">
-                                    <i class="fas fa-shopping-bag mr-2"></i>
-                                    Riwayat Produk
+                        <!-- Customer Menu -->
+                        @auth('customer')
+                            <div class="relative ml-3">
+                                <div>
+                                    <button type="button" class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                        <span class="sr-only">Open user menu</span>
+                                        <div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center">
+                                            <span class="text-sm font-medium text-white">{{ substr(auth('customer')->user()->name, 0, 1) }}</span>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="user-menu">
+                                    <a href="{{ route('customer.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                                        <i class="fas fa-user mr-2"></i>Profil
                                     </a>
-                                    <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
-                                    class="dropdown-item">
-                                    <i class="fas fa-graduation-cap mr-2"></i>
-                                    Riwayat Eduwisata
+                                    <a href="{{ route('customer.orders') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                                        <i class="fas fa-shopping-bag mr-2"></i>Riwayat Pesanan
                                     </a>
-                                    <a href="{{ route('logout.riwayat') }}"
-                                    class="dropdown-item logout">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>
-                                    Keluar Riwayat
+                                    <a href="{{ route('customer.wishlist') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                                        <i class="fas fa-heart mr-2"></i>Wishlist
                                     </a>
+                                    <a href="{{ route('customer.addresses.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-3">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>Alamat Pengiriman
+                                    </a>
+                                    <a href="{{ route('customer.deliveries') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-4">
+                                        <i class="fas fa-truck mr-2"></i>Status Pengiriman
+                                    </a>
+                                    <div class="border-t border-gray-100"></div>
+                                    <form method="POST" action="{{ route('customer.logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1" id="user-menu-item-5">
+                                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         @else
-                            <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
-                                <i class="fas fa-history mr-2"></i>
-                                Lihat Riwayat
-                            </a>
-                        @endif
+                            <div class="flex items-center space-x-4">
+                                <a href="{{ route('customer.login') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                                <a href="{{ route('customer.register') }}" class="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-md text-sm font-medium">Daftar</a>
+                            </div>
+                        @endauth
                     </div>
                 </div>
 
@@ -632,8 +672,12 @@
         document.addEventListener('click', function(e) {
             const link = e.target.closest('a');
             if (link && link.href && !link.href.includes('#') && !link.href.includes('javascript:') && !link.target) {
-                // Don't show loading for external links or special links
-                if (link.href.startsWith(window.location.origin) && !link.href.includes('logout')) {
+                // Don't show loading for external links, special links, or customer links
+                if (link.href.startsWith(window.location.origin) && 
+                    !link.href.includes('logout') && 
+                    !link.href.includes('/profile') &&
+                    !link.href.includes('/orders') &&
+                    !link.href.includes('/wishlist')) {
                     e.preventDefault();
                     showLoading();
                     
@@ -790,6 +834,34 @@
                 })
                 .catch(error => console.error('Error fetching cart count:', error));
         }
+
+        // Customer dropdown menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    userMenu.classList.toggle('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                        userMenu.classList.remove('show');
+                    }
+                });
+                
+                // Close dropdown when pressing Escape
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        userMenu.classList.remove('show');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

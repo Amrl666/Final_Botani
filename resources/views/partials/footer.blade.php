@@ -111,6 +111,14 @@
                             Patangpuluhan, Wirobrajan, Yogyakarta
                         </span>
                     </div>
+                    <div class="text-green-100 text-sm mb-4 md:mb-0">
+                        <span class="flex items-center justify-center md:justify-center">
+                            <i class="fas fa-truck mr-2"></i>
+                            <a href="{{ route('delivery.track', 'TRACKING_NUMBER') }}" class="hover:text-white transition-colors">
+                                Lacak Pengiriman
+                            </a>
+                        </span>
+                    </div>
                     <div class="text-green-100 text-sm">
                         <span class="flex items-center justify-center md:justify-end">
                             <i class="fas fa-phone mr-2"></i>
