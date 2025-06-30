@@ -46,15 +46,22 @@
                 </div>
 
                 <div class="animate-slide-left">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $product->name }}</h1>
+                    <div class="flex items-start justify-between mb-4"> {{-- Ubah items-center menjadi items-start --}}
+                        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $product->name }}</h1>
+                        <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+                            </span>
+                    </div>
+
 
                     <div class="flex items-center space-x-4 mb-6">
                         <span class="text-3xl font-bold text-green-600">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
-                        <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
-                        </span>
+                            <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
+                    
+
+                        
                     </div>
 
                     <div class="prose prose-green max-w-none mb-8">

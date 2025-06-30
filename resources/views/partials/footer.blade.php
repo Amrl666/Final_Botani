@@ -90,13 +90,13 @@
                     <a href="#" class="social-link" title="Facebook">
                         <i class="fab fa-facebook-f text-xl"></i>
                     </a>
-                    <a href="#" class="social-link" title="Instagram">
+                    <a href="https://www.instagram.com/winongoasri.yk?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" title="Instagram">
                         <i class="fab fa-instagram text-xl"></i>
                     </a>
                     <a href="#" class="social-link" title="YouTube">
                         <i class="fab fa-youtube text-xl"></i>
                     </a>
-                    <a href="#" class="social-link" title="WhatsApp">
+                    <a href="http://wa.me/8553020204" class="social-link" title="WhatsApp">
                         <i class="fab fa-whatsapp text-xl"></i>
                     </a>
                 </div>

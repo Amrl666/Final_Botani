@@ -203,7 +203,7 @@
 </section>
 
 {{-- About Section --}}
-<section class="py-16 bg-gray-50">
+<section id="profil" class="py-16 bg-gray-50">
     <div class="container mx-auto px-6 lg:px-12">
         <div class="flex flex-col lg:flex-row items-center gap-12">
             <div class="lg:w-1/2 about-image-wrapper">
@@ -230,6 +230,7 @@
         </div>
     </div>
 </section>
+
 
 {{-- Blog Section --}}
 @if($latestBlogs->count())
