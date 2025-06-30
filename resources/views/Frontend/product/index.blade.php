@@ -362,17 +362,23 @@
                 </div>
 
                 <div class="product-content">
-                    <h3 class="product-title">{{ $product->name }}</h3>
-                    <p class="product-description">{{ $product->description }}</p>
-                    
+                    <div class="flex items-start justify-between mb-4"> {{-- Ubah items-center menjadi items-start --}}
+                        <h3 class="product-title text-lg font-semibold">{{ $product->name }}</h3>
+
+                        <span class="product-stock flex items-center text-sm text-gray-600">
+                            <i class="fas fa-boxes me-1 text-gray-500"></i>
+                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+                        </span>
+                    </div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="product-price">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </span>
-                        <span class="product-stock">
-                            <i class="fas fa-boxes me-1"></i>Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+                            <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
                         </span>
                     </div>
+
+                    <p class="product-description">{{ $product->description }}</p>
+
 
                     <div class="flex space-x-2">
                         <a href="{{ route('product.show', $product->id) }}" 
