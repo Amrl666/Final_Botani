@@ -69,6 +69,29 @@
                         <!-- Direct Order Section -->
                         <div class="border-t pt-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Pesan Langsung</h3>
+                            
+                            @if(!$customer)
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                                        <div>
+                                            <p class="text-blue-800 font-medium">Info</p>
+                                            <p class="text-blue-700 text-sm">Silakan <a href="{{ route('customer.login') }}" class="underline font-medium">login</a> terlebih dahulu agar data Anda dapat diisi otomatis.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                        <div>
+                                            <p class="text-green-800 font-medium">Data Terisi Otomatis</p>
+                                            <p class="text-green-700 text-sm">Data Anda telah diisi otomatis berdasarkan profil yang tersimpan.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            
                             <form action="{{ route('order.store') }}" method="POST" class="space-y-4">
                                 @csrf
                                 <input type="hidden" name="produk_id" value="{{ $product->id }}">
@@ -78,17 +101,18 @@
                                     <input type="text" 
                                            name="nama_pemesan" 
                                            id="nama_pemesan" 
+                                           value="{{ $customer->name ?? '' }}"
                                            required
                                            class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
                                 </div>
 
                                 <div class="flex flex-col space-y-2">
                                     <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
-                                    @if(auth('customer')->check())
+                                    @if($customer)
                                         <input type="tel"
                                                name="telepon"
                                                id="telepon"
-                                               value="{{ auth('customer')->user()->phone }}"
+                                               value="{{ $customer->phone }}"
                                                readonly
                                                class="form-input rounded-lg border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed">
                                         <span class="text-xs text-gray-500">Nomor HP diambil dari profil Anda</span>
@@ -203,41 +227,109 @@ button[type="submit"]:active {
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const jumlahInput = document.getElementById('jumlah');
-    const cartQuantityInput = document.getElementById('cart_quantity');
-    const maxStock = {{ $product->stock }};
-    
-    if (jumlahInput) {
-        jumlahInput.addEventListener('input', () => {
-            if (parseInt(jumlahInput.value) > maxStock) {
-                jumlahInput.value = maxStock;
-            }
-        });
-    }
-
-    if (cartQuantityInput) {
-        cartQuantityInput.addEventListener('input', () => {
-            if (parseInt(cartQuantityInput.value) > maxStock) {
-                cartQuantityInput.value = maxStock;
-            }
-        });
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function() {
     const jumlahInput = document.getElementById('jumlah');
-    const totalHargaDiv = document.getElementById('totalHarga');
-    const hargaProduk = {{ $product->price }};
-    if(jumlahInput && totalHargaDiv) {
-        function updateTotal() {
-            var qty = parseInt(jumlahInput.value) || 1;
-            var total = hargaProduk * qty;
-            totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
-        }
-        jumlahInput.addEventListener('input', updateTotal);
-        updateTotal();
+    const namaPemesanInput = document.getElementById('nama_pemesan');
+    const teleponInput = document.getElementById('telepon');
+    const alamatInput = document.getElementById('alamat');
+    const totalHargaElement = document.getElementById('totalHarga');
+    const productPrice = {{ $product->price }};
+    const minIncrement = {{ $product->min_increment ?? 1 }};
+    const maxStock = {{ $product->stock }};
+
+    // Update total harga when quantity changes
+    function updateTotalHarga() {
+        const quantity = parseFloat(jumlahInput.value) || 0;
+        const total = quantity * productPrice;
+        totalHargaElement.textContent = 'Rp ' + total.toLocaleString('id-ID');
     }
+
+    // Validate quantity input
+    jumlahInput.addEventListener('input', function() {
+        let value = parseFloat(this.value) || 0;
+        
+        // Check minimum increment
+        if (minIncrement > 0) {
+            const remainder = value % minIncrement;
+            if (remainder > 0.001) { // Allow for small floating-point errors
+                value = Math.floor(value / minIncrement) * minIncrement;
+                this.value = value;
+            }
+        }
+        
+        // Check maximum stock
+        if (value > maxStock) {
+            value = maxStock;
+            this.value = value;
+        }
+        
+        // Check minimum value
+        if (value < minIncrement) {
+            value = minIncrement;
+            this.value = value;
+        }
+        
+        updateTotalHarga();
+    });
+
+    // Validate phone number format
+    if (teleponInput && !teleponInput.readOnly) {
+        teleponInput.addEventListener('input', function() {
+            // Remove non-numeric characters except + and -
+            this.value = this.value.replace(/[^\d+\-]/g, '');
+        });
+    }
+
+    // Form validation before submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const nama = namaPemesanInput.value.trim();
+        const telepon = teleponInput ? teleponInput.value.trim() : '';
+        const alamat = alamatInput.value.trim();
+        const jumlah = parseFloat(jumlahInput.value) || 0;
+        
+        if (!nama) {
+            e.preventDefault();
+            alert('Nama pemesan harus diisi');
+            namaPemesanInput.focus();
+            return false;
+        }
+        
+        if (!telepon && !teleponInput.readOnly) {
+            e.preventDefault();
+            alert('Nomor telepon harus diisi');
+            teleponInput.focus();
+            return false;
+        }
+        
+        if (!alamat) {
+            e.preventDefault();
+            alert('Alamat pengiriman harus diisi');
+            alamatInput.focus();
+            return false;
+        }
+        
+        if (jumlah < minIncrement) {
+            e.preventDefault();
+            alert(`Minimal jumlah adalah ${minIncrement} ${@json($product->unit ?? 'satuan')}`);
+            jumlahInput.focus();
+            return false;
+        }
+        
+        if (jumlah > maxStock) {
+            e.preventDefault();
+            alert(`Maksimal jumlah adalah ${maxStock} ${@json($product->unit ?? 'satuan')}`);
+            jumlahInput.focus();
+            return false;
+        }
+        
+        // Show loading state
+        const submitBtn = document.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
+    });
+
+    // Initialize total harga
+    updateTotalHarga();
 });
 </script>
 @endpush

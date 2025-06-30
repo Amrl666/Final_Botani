@@ -15,8 +15,14 @@ class CartController extends Controller
         
         if (auth()->guard('customer')->check()) {
             $customer = auth()->guard('customer')->user();
+            $sessionId = session()->getId();
+            
+            // Get cart items by user_id OR session_id for the current customer
             $cartItems = CartItem::with('product')
-                ->where('customer_id', $customer->id)
+                ->where(function($query) use ($customer, $sessionId) {
+                    $query->where('user_id', $customer->id)
+                          ->orWhere('session_id', $sessionId);
+                })
                 ->get();
         } else {
             $sessionId = session()->getId();
@@ -57,23 +63,21 @@ class CartController extends Controller
 
         $cartData = [
             'product_id' => $request->product_id,
-            'quantity' => $request->quantity
+            'quantity' => $request->quantity,
+            'session_id' => session()->getId() // Always include session_id
         ];
 
         if (auth()->guard('customer')->check()) {
             $customer = auth()->guard('customer')->user();
-            $cartData['customer_id'] = $customer->id;
+            $cartData['user_id'] = $customer->id;
             
             // Check if item already exists in cart
-            $cartItem = CartItem::where('customer_id', $customer->id)
+            $cartItem = CartItem::where('user_id', $customer->id)
                 ->where('product_id', $request->product_id)
                 ->first();
         } else {
-            $sessionId = session()->getId();
-            $cartData['session_id'] = $sessionId;
-            
             // Check if item already exists in cart
-            $cartItem = CartItem::where('session_id', $sessionId)
+            $cartItem = CartItem::where('session_id', $cartData['session_id'])
                 ->where('product_id', $request->product_id)
                 ->first();
         }
@@ -124,7 +128,7 @@ class CartController extends Controller
         // Check if cart item belongs to current user
         if (auth()->guard('customer')->check()) {
             $customer = auth()->guard('customer')->user();
-            if ($cartItem->customer_id !== $customer->id) {
+            if ($cartItem->user_id !== $customer->id) {
                 abort(403, 'Unauthorized action.');
             }
         } else {
@@ -142,7 +146,7 @@ class CartController extends Controller
     {
         if (auth()->guard('customer')->check()) {
             $customer = auth()->guard('customer')->user();
-            CartItem::where('customer_id', $customer->id)->delete();
+            CartItem::where('user_id', $customer->id)->delete();
         } else {
             $sessionId = session()->getId();
             CartItem::where('session_id', $sessionId)->delete();
@@ -155,12 +159,15 @@ class CartController extends Controller
     {
         if (auth()->guard('customer')->check()) {
             $customer = auth()->guard('customer')->user();
-            $count = CartItem::where('customer_id', $customer->id)->sum('quantity');
+            $sessionId = session()->getId();
+            $count = CartItem::where(function($query) use ($customer, $sessionId) {
+                $query->where('user_id', $customer->id)
+                      ->orWhere('session_id', $sessionId);
+            })->sum('quantity');
         } else {
             $sessionId = session()->getId();
             $count = CartItem::where('session_id', $sessionId)->sum('quantity');
         }
-        
         return response()->json(['count' => $count]);
     }
 } 

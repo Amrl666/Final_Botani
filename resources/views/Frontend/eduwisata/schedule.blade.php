@@ -58,6 +58,28 @@
             <div class="bg-white rounded-xl shadow-lg p-8">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6">Pilih Jadwal Kunjungan</h3>
                 
+                @if(!$customer)
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                            <div>
+                                <p class="text-blue-800 font-medium">Info</p>
+                                <p class="text-blue-700 text-sm">Silakan <a href="{{ route('customer.login') }}" class="underline font-medium">login</a> terlebih dahulu agar data Anda dapat diisi otomatis.</p>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <p class="text-green-800 font-medium">Data Terisi Otomatis</p>
+                                <p class="text-green-700 text-sm">Data Anda telah diisi otomatis berdasarkan profil yang tersimpan.</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                
                 <form action="{{ route('order.store') }}" method="POST" class="space-y-6">
                     @csrf
                     <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
@@ -66,12 +88,14 @@
                         <div class="space-y-2">
                             <label for="nama_pemesan" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
                             <input type="text" id="nama_pemesan" name="nama_pemesan" required
+                                value="{{ $customer->name ?? '' }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         </div>
 
                         <div class="space-y-2">
                             <label for="telepon" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
                             <input type="tel" id="telepon" name="telepon" required
+                                value="{{ $customer->phone ?? '' }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         </div>
 
@@ -166,8 +190,10 @@ select {
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const jumlahPesertaInput = document.getElementById('jumlah_peserta');
-    const tanggalInput = document.getElementById('tanggal');
+    const jumlahPesertaInput = document.getElementById('jumlah_orang');
+    const tanggalInput = document.getElementById('tanggal_kunjungan');
+    const namaPemesanInput = document.getElementById('nama_pemesan');
+    const teleponInput = document.getElementById('telepon');
     
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
@@ -179,6 +205,53 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Minimal peserta adalah 5 orang');
             this.value = 5;
         }
+    });
+    
+    // Validate phone number format
+    teleponInput.addEventListener('input', function() {
+        // Remove non-numeric characters except + and -
+        this.value = this.value.replace(/[^\d+\-]/g, '');
+    });
+    
+    // Form validation before submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const nama = namaPemesanInput.value.trim();
+        const telepon = teleponInput.value.trim();
+        const jumlah = jumlahPesertaInput.value;
+        const tanggal = tanggalInput.value;
+        
+        if (!nama) {
+            e.preventDefault();
+            alert('Nama pemesan harus diisi');
+            namaPemesanInput.focus();
+            return false;
+        }
+        
+        if (!telepon) {
+            e.preventDefault();
+            alert('Nomor telepon harus diisi');
+            teleponInput.focus();
+            return false;
+        }
+        
+        if (jumlah < 5) {
+            e.preventDefault();
+            alert('Minimal peserta adalah 5 orang');
+            jumlahPesertaInput.focus();
+            return false;
+        }
+        
+        if (!tanggal) {
+            e.preventDefault();
+            alert('Tanggal kunjungan harus dipilih');
+            tanggalInput.focus();
+            return false;
+        }
+        
+        // Show loading state
+        const submitBtn = document.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
     });
 });
 </script>

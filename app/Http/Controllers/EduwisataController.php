@@ -6,6 +6,7 @@ use App\Models\Eduwisata;
 use App\Models\EduwisataSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class EduwisataController extends Controller
 {
@@ -124,7 +125,14 @@ class EduwisataController extends Controller
     public function scheduleDetail(Eduwisata $eduwisata)
     {
         $eduwisata->load('schedules');
-        return view('Frontend.eduwisata.schedule', compact('eduwisata'));
+        
+        // Get customer data if logged in
+        $customer = null;
+        if (Auth::guard('customer')->check()) {
+            $customer = Auth::guard('customer')->user();
+        }
+        
+        return view('Frontend.eduwisata.schedule', compact('eduwisata', 'customer'));
     }
 
 }

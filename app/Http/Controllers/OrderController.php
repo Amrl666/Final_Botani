@@ -10,6 +10,7 @@ use App\Models\Eduwisata;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -73,31 +74,8 @@ class OrderController extends Controller
 
         $order = Order::create($data);
 
-        // --- Generate pesan WhatsApp ---
-        $nama     = $data['nama_pemesan'];
-        $telepon  = $data['telepon'];
-        $alamat   = $data['alamat'] ?? '-';
-        $jumlah   = $data['jumlah_orang'] ?? $data['jumlah'] ?? 0;
-        $tanggal  = $data['tanggal_kunjungan'] ?? '-';
-        $harga    = $data['total_harga'];
-        
-        // Add unit to the message
-        $unit = $produk ? $produk->unit : 'orang';
-        $jumlahText = $jumlah . ' ' . $unit;
-
-        $waText = "Halo Admin, saya ingin memesan *$namaItem*:\n" .
-                "- Nama: $nama\n" .
-                "- No HP: $telepon\n" .
-                "- Alamat: $alamat\n" .
-                "- Jumlah: $jumlahText\n" .
-                "- Tanggal: $tanggal\n" .
-                "- Total: Rp " . number_format($harga, 0, ',', '.');
-
-        $waNumber = '628553020204'; // <- Ganti dengan nomor admin
-        $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
-
-        // ✅ Redirect ke WhatsApp
-        return redirect()->away($waUrl);
+        // Setelah order dibuat, redirect ke halaman pembayaran
+        return redirect()->route('payment.show', $order->id);
     }
 
     // New method for checkout from cart
@@ -166,30 +144,8 @@ class OrderController extends Controller
         // Clear cart
         CartItem::where('session_id', $sessionId)->delete();
 
-        // Generate WhatsApp message for multiple products
-        $nama = $request->nama_pemesan;
-        $keterangan = $request->keterangan ?? '-';
-
-        $waText = "Halo Admin, saya ingin memesan *Multiple Produk*:\n" .
-                "- Nama: $nama\n" .
-                "- No HP: $telepon\n" .
-                "- Alamat: $request->alamat\n" .
-                "- Keterangan: $keterangan\n\n";
-
-        $waText .= "*Detail Produk:*\n";
-        foreach ($cartItems as $item) {
-            $unit = $item->product->unit;
-            $waText .= "• {$item->product->name}: {$item->quantity} {$unit} x Rp " . 
-                      number_format($item->product->price, 0, ',', '.') . 
-                      " = Rp " . number_format($item->subtotal, 0, ',', '.') . "\n";
-        }
-
-        $waText .= "\n*Total: Rp " . number_format($totalHarga, 0, ',', '.') . "*";
-
-        $waNumber = '628553020204';
-        $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
-
-        return redirect()->away($waUrl);
+        // Setelah order dibuat, redirect ke halaman pembayaran
+        return redirect()->route('payment.show', $order->id);
     }
 
     public function index(Request $request)
@@ -392,7 +348,14 @@ class OrderController extends Controller
     {
         $product = \App\Models\Product::findOrFail($productId);
         $jumlah = $request->query('jumlah', $product->min_increment); // default to min_increment
-        return view('Frontend.product.order_now', compact('product', 'jumlah'));
+        
+        // Get customer data if logged in
+        $customer = null;
+        if (Auth::guard('customer')->check()) {
+            $customer = Auth::guard('customer')->user();
+        }
+        
+        return view('Frontend.product.order_now', compact('product', 'jumlah', 'customer'));
     }
 
     public function checkoutForm()
