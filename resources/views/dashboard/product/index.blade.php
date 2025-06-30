@@ -122,34 +122,6 @@
                              class="card-img-top product-image" 
                              alt="{{ $product->name }}">
                         <div class="product-overlay">
-                            <div class="product-actions">
-                                <a href="{{ route('dashboard.product.edit', $product) }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Edit Produk">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button type="button" 
-                                        class="btn btn-light btn-sm" 
-                                        data-bs-toggle="tooltip" 
-                                        title="Lihat Cepat"
-                                        onclick="quickView({{ $product->id }})">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <form action="{{ route('dashboard.product.destroy', $product) }}" 
-                                      method="POST" 
-                                      class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-light btn-sm" 
-                                            data-bs-toggle="tooltip" 
-                                            title="Hapus Produk"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
                         </div>
                         <div class="product-badge">
                             @if($product->stock > 0)
@@ -177,16 +149,23 @@
                                 {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
                             </div>
                         </div>
-                        <div class="product-actions-bottom mt-3">
+                        <div class="product-actions-bottom mt-3 d-flex gap-2">
                             <a href="{{ route('dashboard.product.edit', $product) }}" 
-                               class="btn btn-outline-primary btn-sm">
+                            class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-edit me-1"></i>Ubah
-                            </a>
-                            <button type="button" 
-                                    class="btn btn-outline-info btn-sm" 
-                                    onclick="quickView({{ $product->id }})">
-                                <i class="fas fa-eye me-1"></i>Lihat
-                            </button>
+                            </a>                            
+                            <form action="{{ route('dashboard.product.destroy', $product) }}" 
+                                method="POST" 
+                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="btn btn-outline-danger btn-sm" 
+                                        data-bs-toggle="tooltip" 
+                                        title="Hapus Produk">
+                                    <i class="fas fa-trash me-1"></i>Hapus
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

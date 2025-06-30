@@ -46,41 +46,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 animate-fade-in" style="--delay: 0.2s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-success bg-opacity-10 text-success">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Tontonan</h6>
-                            <h2 class="card-title mb-0">1,234</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 animate-fade-in" style="--delay: 0.3s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-info bg-opacity-10 text-info">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Durasi</h6>
-                            <h2 class="card-title mb-0">2h 30m</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Videos Grid -->
     <div class="row g-4">

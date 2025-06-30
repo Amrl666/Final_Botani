@@ -350,21 +350,6 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="stats-card animate-fade-in" style="--delay: 0.3s">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-success bg-opacity-10 text-success">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Dilihat</h6>
-                            <h2 class="mb-0">2,345</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
                 <div class="stats-card animate-fade-in" style="--delay: 0.4s">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">

@@ -34,40 +34,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 stats-card animate-fade-in" style="--delay: 0.2s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-success bg-opacity-10 text-success">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Jadwal Aktif</h6>
-                            <h2 class="card-title mb-0 counter">12</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100 stats-card animate-fade-in" style="--delay: 0.3s">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="stats-icon bg-info bg-opacity-10 text-info">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Peserta</h6>
-                            <h2 class="card-title mb-0 counter">156</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Search and Filter Section -->
@@ -107,33 +73,6 @@
                             </div>
                         @endif
                         <div class="program-overlay">
-                            <div class="program-actions">
-                                <a href="{{ route('dashboard.eduwisata.edit', $eduwisata->id) }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Edit Program">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="{{ route('dashboard.eduwisata.schedule', $eduwisata) }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Lihat Jadwal">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </a>
-                                <form action="{{ route('dashboard.eduwisata.destroy', $eduwisata->id) }}" 
-                                      method="POST" 
-                                      class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-light btn-sm" 
-                                            data-bs-toggle="tooltip" 
-                                            title="Hapus Program"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
                         </div>
                         <div class="program-badge">
                             <span class="badge bg-primary">{{ $eduwisata->schedules->count() }} Jadwal</span>
@@ -156,23 +95,24 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <a href="{{ route('dashboard.eduwisata.schedule', $eduwisata) }}" 
-                               class="btn btn-outline-primary btn-sm">
+                            class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-calendar-alt me-2"></i>Lihat Jadwal
                             </a>
-                            <div class="btn-group">
+
+                            <div class="d-flex gap-2">
                                 <a href="{{ route('dashboard.eduwisata.edit', $eduwisata->id) }}" 
-                                   class="btn btn-outline-secondary btn-sm">
-                                    <i class="fas fa-edit"></i>
+                                class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-edit me-1"></i>Ubah
                                 </a>
+
                                 <form action="{{ route('dashboard.eduwisata.destroy', $eduwisata->id) }}" 
-                                      method="POST" 
-                                      class="d-inline">
+                                    method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" 
-                                            class="btn btn-outline-danger btn-sm" 
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">
-                                        <i class="fas fa-trash"></i>
+                                            class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash me-1"></i>Hapus
                                     </button>
                                 </form>
                             </div>

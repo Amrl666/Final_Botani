@@ -105,23 +105,6 @@
                                                 <i class="fas fa-star me-1"></i>Unggulan
                                             </span>
                                         @endif
-                                        <div class="dropdown">
-                                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="{{ route('dashboard.blog.show', $blog) }}">
-                                                    <i class="fas fa-eye me-2"></i>Lihat
-                                                </a></li>
-                                                <li><a class="dropdown-item" href="{{ route('dashboard.blog.edit', $blog) }}">
-                                                    <i class="fas fa-edit me-2"></i>Edit
-                                                </a></li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item text-danger" href="#" onclick="deleteBlog({{ $blog->id }})">
-                                                    <i class="fas fa-trash me-2"></i>Hapus
-                                                </a></li>
-                                            </ul>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body d-flex flex-column">
