@@ -106,6 +106,7 @@ Route::get('gallery/videos', [VideoController::class, 'index_fr'])->name('videos
 Route::get('/blog', [BlogController::class, 'index_fr'])->name('blog');
 Route::get('/blog/{blog:title}', [BlogController::class, 'show_fr'])->name('blog.show_fr');
 Route::get('perijinan', [PerijinanControler::class,'index_fr'])->name('perijinan');
+Route::get('perijinan/pdf', [PerijinanControler::class, 'showPdf'])->name('perizinan.pdf');
 Route::get('product', [ProductController::class, 'index_fr'])->name('product.index_fr');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 Route::get('profile', [PrestasiController::class, 'index_fr'])->name('profile');

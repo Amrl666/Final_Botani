@@ -46,13 +46,56 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- PDF Action Buttons -->
+                    <div class="mt-8 space-y-3">
+                        <button onclick="openPdfViewer()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center space-x-2">
+                            <i class="fas fa-file-pdf text-xl"></i>
+                            <span>Lihat Dokumen Perizinan</span>
+                        </button>
+                        <a href="{{ route('perizinan.pdf') }}" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-center flex items-center justify-center space-x-2">
+                            <i class="fas fa-download text-xl"></i>
+                            <span>Download PDF</span>
+                        </a>
+                        
+                    </div>
                 </div>
 
-                <!-- Right Column - Image -->
-                <div class="relative overflow-hidden rounded-lg shadow-lg animate-fade-in">
-                    <img src="{{ asset('images/perizinan.jpg') }}" alt="Perizinan" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <!-- Right Column - PDF Preview -->
+                <div class="relative overflow-hidden rounded-lg shadow-lg animate-fade-in bg-gray-100">
+                    <div id="pdf-container" class="w-full h-96 flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-file-pdf text-6xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600 font-medium">Dokumen Perizinan</p>
+                            <p class="text-sm text-gray-500 mt-2">Klik tombol di sebelah kiri untuk melihat</p>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PDF Viewer Modal -->
+<div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl h-5/6 relative">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="text-lg font-semibold text-gray-800">Dokumen Perizinan</h3>
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleFullscreen()" class="text-gray-500 hover:text-gray-700 p-2 rounded hover:bg-gray-100" title="Fullscreen">
+                        <i class="fas fa-expand text-lg"></i>
+                    </button>
+                    <button onclick="closePdfViewer()" class="text-gray-500 hover:text-gray-700 p-2 rounded hover:bg-gray-100">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PDF Content -->
+            <div class="p-4 h-full">
+                <iframe id="pdf-iframe" src="{{ route('perizinan.pdf') }}" class="w-full h-full border-0 rounded"></iframe>
             </div>
         </div>
     </div>
@@ -86,9 +129,120 @@
     animation: slideUp 1s ease-out forwards;
 }
 
-/* Hover effects */
-.hover\:scale-105:hover {
-    transform: scale(1.05);
+/* Modal animations */
+#pdf-modal {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#pdf-modal.show {
+    display: flex !important;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    #pdf-modal .bg-white {
+        width: 95vw !important;
+        height: 90vh !important;
+        max-width: none !important;
+    }
+    
+    #pdf-modal .p-4 {
+        padding: 0.5rem !important;
+    }
+    
+    #pdf-modal .h-5\/6 {
+        height: calc(90vh - 4rem) !important;
+    }
+}
+
+/* Fullscreen styles */
+#pdf-modal .bg-white:fullscreen {
+    border-radius: 0 !important;
+    max-width: none !important;
+    height: 100vh !important;
+}
+
+#pdf-modal .bg-white:-webkit-full-screen {
+    border-radius: 0 !important;
+    max-width: none !important;
+    height: 100vh !important;
 }
 </style>
+
+<script>
+function openPdfViewer() {
+    const modal = document.getElementById('pdf-modal');
+    const iframe = document.getElementById('pdf-iframe');
+    
+    // Tambahkan loading state
+    iframe.onload = function() {
+        // PDF berhasil dimuat
+    };
+    
+    iframe.onerror = function() {
+        alert('Gagal memuat dokumen. Pastikan file PDF tersedia di server.');
+        closePdfViewer();
+    };
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePdfViewer() {
+    const modal = document.getElementById('pdf-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+function toggleFullscreen() {
+    const modal = document.getElementById('pdf-modal');
+    const modalContent = modal.querySelector('.bg-white');
+    
+    if (!document.fullscreenElement) {
+        // Enter fullscreen
+        if (modalContent.requestFullscreen) {
+            modalContent.requestFullscreen();
+        } else if (modalContent.webkitRequestFullscreen) {
+            modalContent.webkitRequestFullscreen();
+        } else if (modalContent.msRequestFullscreen) {
+            modalContent.msRequestFullscreen();
+        }
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('pdf-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePdfViewer();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePdfViewer();
+    }
+});
+
+// Handle fullscreen change
+document.addEventListener('fullscreenchange', function() {
+    const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"] i');
+    if (document.fullscreenElement) {
+        fullscreenBtn.className = 'fas fa-compress text-lg';
+    } else {
+        fullscreenBtn.className = 'fas fa-expand text-lg';
+    }
+});
+</script>
 @endsection
