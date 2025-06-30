@@ -55,8 +55,8 @@
                                 <div class="upload-area" id="uploadArea">
                                     <div class="upload-content">
                                         <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                                        <h5>Upload File Video</h5>
-                                        <p class="text-muted">Seret dan lepas file video Anda di sini atau klik untuk memilih</p>
+                                        <h5>Unggah Berkas Video</h5>
+                                        <p class="text-muted">Seret dan lepas berkas video Anda di sini atau klik untuk memilih</p>
                                         <input 
                                             type="file" 
                                             class="form-control @error('video') is-invalid @enderror" 
@@ -67,13 +67,13 @@
                                             style="display: none;"
                                         >
                                         <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('video').click()">
-                                            <i class="fas fa-folder-open me-2"></i>Pilih File
+                                            <i class="fas fa-folder-open me-2"></i>Pilih Berkas
                                         </button>
                                     </div>
                                     <div class="upload-preview" id="uploadPreview" style="display: none;">
                                         <div class="preview-content">
                                             <i class="fas fa-video fa-2x text-success"></i>
-                                            <h6 id="fileName">File video dipilih</h6>
+                                            <h6 id="fileName">Berkas video dipilih</h6>
                                             <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFile()">
                                                 <i class="fas fa-times me-1"></i>Hapus
                                             </button>

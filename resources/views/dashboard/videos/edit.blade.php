@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="video" class="form-label">File Video</label>
+                            <label for="video" class="form-label">Berkas Video</label>
                             <div class="video-upload-wrapper">
                                 <input type="file" 
                                        class="form-control @error('video') is-invalid @enderror" 

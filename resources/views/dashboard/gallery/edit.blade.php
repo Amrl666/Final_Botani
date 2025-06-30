@@ -202,10 +202,10 @@
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-2 mt-4 pt-4 border-top">
                             <a href="{{ route('dashboard.gallery.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Cancel
+                                <i class="fas fa-times me-2"></i>Batal
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Update Item
+                                <i class="fas fa-save me-2"></i>Perbarui Item
                             </button>
                         </div>
                     </form>
@@ -220,7 +220,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageModalTitle">Image Preview</h5>
+                <h5 class="modal-title" id="imageModalTitle">Pratinjau Gambar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
@@ -595,9 +595,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="image-preview animate-scale-in">
                         <img src="${e.target.result}" alt="Preview" class="preview-img">
                         <div class="image-overlay">
-                            <span class="badge bg-success">New Image</span>
-                            <button type="button" class="btn btn-light btn-sm" onclick="openImageModal('${e.target.result}', 'Preview')">
-                                <i class="fas fa-expand-alt me-1"></i>View
+                            <span class="badge bg-success">Gambar Baru</span>
+                            <button type="button" class="btn btn-light btn-sm" onclick="openImageModal('${e.target.result}', 'Pratinjau')">
+                                <i class="fas fa-expand-alt me-1"></i>Lihat
                             </button>
                         </div>
                     </div>

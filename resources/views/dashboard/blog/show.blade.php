@@ -7,15 +7,15 @@
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Blog Post Details</h1>
-            <p class="text-muted">View and manage blog post information</p>
+            <h1 class="h3 mb-0">Detail Artikel Blog</h1>
+            <p class="text-muted">Lihat dan kelola informasi artikel blog</p>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('dashboard.blog.edit', $blog) }}" class="btn btn-primary">
-                <i class="fas fa-edit me-2"></i>Edit Post
+                <i class="fas fa-edit me-2"></i>Ubah Artikel
             </a>
             <a href="{{ route('dashboard.blog.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Posts
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Artikel
             </a>
         </div>
     </div>
@@ -29,15 +29,15 @@
                         <div>
                             <h2 class="card-title mb-2">{{ $blog->title }}</h2>
                             <div class="blog-meta">
-                                <span class="badge bg-primary me-2">{{ $blog->category ?? 'Uncategorized' }}</span>
+                                <span class="badge bg-primary me-2">{{ $blog->category ?? 'Tanpa Kategori' }}</span>
                                 <small class="text-muted">
                                     <i class="far fa-calendar-alt me-1"></i>
-                                    Posted on {{ $blog->created_at->format('F j, Y \a\t g:i a') }}
+                                    Diposting pada {{ $blog->created_at->format('d M Y \p\u\k\u\l H:i') }}
                                 </small>
                             </div>
                         </div>
                         <div class="blog-status">
-                            <span class="badge bg-success">Published</span>
+                            <span class="badge bg-success">Dipublikasikan</span>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                              class="blog-image">
                         <div class="image-overlay">
                             <button class="btn btn-light btn-sm" onclick="openImageModal('{{ asset('storage/' . $blog->image) }}', '{{ $blog->title }}')">
-                                <i class="fas fa-expand-alt me-1"></i>View Full Size
+                                <i class="fas fa-expand-alt me-1"></i>Lihat Ukuran Penuh
                             </button>
                         </div>
                     </div>
@@ -66,20 +66,20 @@
                         <div class="blog-stats">
                             <span class="stat-item">
                                 <i class="fas fa-eye me-1"></i>
-                                <span>1,234 views</span>
+                                <span>1.234 kali dilihat</span>
                             </span>
                             <span class="stat-item">
                                 <i class="fas fa-comments me-1"></i>
-                                <span>5 comments</span>
+                                <span>5 komentar</span>
                             </span>
                             <span class="stat-item">
                                 <i class="fas fa-heart me-1"></i>
-                                <span>23 likes</span>
+                                <span>23 suka</span>
                             </span>
                         </div>
                         <div class="blog-actions">
                             <button class="btn btn-outline-primary btn-sm" onclick="sharePost()">
-                                <i class="fas fa-share me-1"></i>Share
+                                <i class="fas fa-share me-1"></i>Bagikan
                             </button>
                         </div>
                     </div>
@@ -94,30 +94,30 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2 text-primary"></i>
-                        Post Information
+                        Informasi Artikel
                     </h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Post ID</span>
+                            <span class="text-muted">ID Artikel</span>
                             <span class="text-dark">#{{ $blog->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Category</span>
-                            <span class="badge bg-primary">{{ $blog->category ?? 'Uncategorized' }}</span>
+                            <span class="text-muted">Kategori</span>
+                            <span class="badge bg-primary">{{ $blog->category ?? 'Tanpa Kategori' }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">Status</span>
-                            <span class="badge bg-success">Published</span>
+                            <span class="badge bg-success">Dipublikasikan</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Created</span>
-                            <span class="text-dark">{{ $blog->created_at->format('M j, Y') }}</span>
+                            <span class="text-muted">Dibuat</span>
+                            <span class="text-dark">{{ $blog->created_at->format('d M Y') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Updated</span>
-                            <span class="text-dark">{{ $blog->updated_at->format('M j, Y') }}</span>
+                            <span class="text-muted">Diperbarui</span>
+                            <span class="text-dark">{{ $blog->updated_at->format('d M Y') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -128,19 +128,19 @@
                 <div class="card-header bg-transparent">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-bolt me-2 text-primary"></i>
-                        Quick Actions
+                        Aksi Cepat
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('dashboard.blog.edit', $blog) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-edit me-2"></i>Edit Post
+                            <i class="fas fa-edit me-2"></i>Ubah Artikel
                         </a>
                         <button class="btn btn-outline-success" onclick="duplicatePost()">
-                            <i class="fas fa-copy me-2"></i>Duplicate Post
+                            <i class="fas fa-copy me-2"></i>Duplikat Artikel
                         </button>
                         <button class="btn btn-outline-info" onclick="previewPost()">
-                            <i class="fas fa-eye me-2"></i>Preview Post
+                            <i class="fas fa-eye me-2"></i>Pratinjau Artikel
                         </button>
                         <form action="{{ route('dashboard.blog.destroy', $blog) }}" method="POST" class="d-grid">
                             @csrf
@@ -161,7 +161,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageModalTitle">Image Preview</h5>
+                <h5 class="modal-title" id="imageModalTitle">Pratinjau Gambar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
@@ -493,22 +493,22 @@ function sharePost() {
     } else {
         // Fallback: copy to clipboard
         navigator.clipboard.writeText(window.location.href).then(() => {
-            alert('Link copied to clipboard!');
+            alert('Link berhasil disalin ke clipboard!');
         });
     }
 }
 
 // Duplicate post function
 function duplicatePost() {
-    if (confirm('Do you want to create a copy of this post?')) {
-        // You can implement the duplication logic here
-        alert('Post duplication feature will be implemented soon!');
+    if (confirm('Apakah Anda ingin membuat salinan artikel ini?')) {
+        // Anda dapat mengimplementasikan logika duplikasi di sini
+        alert('Fitur duplikasi artikel akan segera tersedia!');
     }
 }
 
 // Preview post function
 function previewPost() {
-    // Open in new tab for preview
+    // Buka di tab baru untuk pratinjau
     window.open('{{ route("dashboard.blog.show", $blog) }}', '_blank');
 }
 

@@ -73,7 +73,7 @@
                         </div>
                         
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="reset" class="btn btn-light">Reset</button>
+                            <button type="reset" class="btn btn-light">Atur Ulang</button>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-paper-plane me-2"></i>Publikasikan Artikel
                             </button>
