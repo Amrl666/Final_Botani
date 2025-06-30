@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Eduwisata Schedule')
+@section('title', 'Jadwal Eduwisata')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Eduwisata Schedule</h1>
-            <p class="text-muted">Manage and view educational tourism schedules</p>
+            <h1 class="h3 mb-0">Jadwal Eduwisata</h1>
+            <p class="text-muted">Kelola dan lihat jadwal eduwisata</p>
         </div>
         <div class="d-flex gap-2">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
-                <i class="fas fa-plus me-2"></i>Add Schedule
+                <i class="fas fa-plus me-2"></i>Tambah Jadwal
             </button>
             <a href="{{ route('dashboard.eduwisata.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Programs
+                <i class="fas fa-arrow-left me-2"></i>Kembali ke Program
             </a>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Schedules
+                                Total Jadwal
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $schedules->count() }}</div>
                         </div>
@@ -46,7 +46,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Upcoming Events
+                                Acara Mendatang
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $schedules->where('date', '>=', now()->toDateString())->count() }}</div>
                         </div>
@@ -64,7 +64,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                This Month
+                                Bulan Ini
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $schedules->whereBetween('date', [now()->startOfMonth(), now()->endOfMonth()])->count() }}</div>
                         </div>
@@ -82,7 +82,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Completed
+                                Selesai
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $schedules->where('date', '<', now()->toDateString())->count() }}</div>
                         </div>
@@ -100,7 +100,7 @@
         <div class="card-header bg-transparent">
             <h5 class="card-title mb-0">
                 <i class="fas fa-filter me-2 text-primary"></i>
-                Filters & Search
+                Filter & Pencarian
             </h5>
         </div>
         <div class="card-body">
@@ -108,26 +108,26 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" id="programFilter">
-                            <option value="">All Programs</option>
+                            <option value="">Semua Program</option>
                             @foreach($programs as $program)
                                 <option value="{{ $program->id }}">{{ $program->name }}</option>
                             @endforeach
                         </select>
                         <label for="programFilter">
-                            <i class="fas fa-graduation-cap me-2"></i>Filter by Program
+                            <i class="fas fa-graduation-cap me-2"></i>Filter berdasarkan Program
                         </label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" id="statusFilter">
-                            <option value="">All Status</option>
-                            <option value="upcoming">Upcoming</option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="completed">Completed</option>
+                            <option value="">Semua Status</option>
+                            <option value="upcoming">Mendatang</option>
+                            <option value="ongoing">Sedang Berlangsung</option>
+                            <option value="completed">Selesai</option>
                         </select>
                         <label for="statusFilter">
-                            <i class="fas fa-toggle-on me-2"></i>Filter by Status
+                            <i class="fas fa-toggle-on me-2"></i>Filter berdasarkan Status
                         </label>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
         <div class="card-header bg-transparent">
             <h5 class="card-title mb-0">
                 <i class="fas fa-list me-2 text-primary"></i>
-                Schedule List
+                Daftar Jadwal
             </h5>
         </div>
         <div class="card-body">
@@ -158,22 +158,22 @@
                         <thead class="table-light">
                             <tr>
                                 <th>
-                                    <i class="fas fa-calendar me-2"></i>Date & Time
+                                    <i class="fas fa-calendar me-2"></i>Tanggal & Waktu
                                 </th>
                                 <th>
                                     <i class="fas fa-graduation-cap me-2"></i>Program
                                 </th>
                                 <th>
-                                    <i class="fas fa-users me-2"></i>Participants
+                                    <i class="fas fa-users me-2"></i>Peserta
                                 </th>
                                 <th>
-                                    <i class="fas fa-map-marker-alt me-2"></i>Location
+                                    <i class="fas fa-map-marker-alt me-2"></i>Lokasi
                                 </th>
                                 <th>
                                     <i class="fas fa-toggle-on me-2"></i>Status
                                 </th>
                                 <th>
-                                    <i class="fas fa-cogs me-2"></i>Actions
+                                    <i class="fas fa-cogs me-2"></i>Aksi
                                 </th>
                             </tr>
                         </thead>
@@ -795,8 +795,28 @@ function editSchedule(id) {
 
 function deleteSchedule(id) {
     if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
-        // Add your delete logic here
-        showAlert(`Jadwal ${id} berhasil dihapus!`, 'success');
+        // Create a form to submit the DELETE request
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/dashboard/eduwisata/schedule/destroy/${id}`;
+        
+        // Add CSRF token
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
+        
+        // Add method override for DELETE
+        const methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        form.appendChild(methodField);
+        
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 

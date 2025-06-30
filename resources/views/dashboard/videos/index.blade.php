@@ -16,9 +16,9 @@
                     <i class="fas fa-filter me-2"></i>Filter
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">All Videos</a></li>
-                    <li><a class="dropdown-item" href="#">Recent Uploads</a></li>
-                    <li><a class="dropdown-item" href="#">Most Viewed</a></li>
+                    <li><a class="dropdown-item" href="#">Semua Video</a></li>
+                    <li><a class="dropdown-item" href="#">Upload Terbaru</a></li>
+                    <li><a class="dropdown-item" href="#">Paling Dilihat</a></li>
                 </ul>
             </div>
             <a href="{{ route('dashboard.videos.create') }}" class="btn btn-primary">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Videos</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Video</h6>
                             <h2 class="card-title mb-0">{{ $videos->total() }}</h2>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Views</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Tontonan</h6>
                             <h2 class="card-title mb-0">1,234</h2>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Duration</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Durasi</h6>
                             <h2 class="card-title mb-0">2h 30m</h2>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                     <div class="video-thumbnail-container">
                         <video class="w-100" controls preload="metadata" poster="https://via.placeholder.com/640x360" style="background:#000; min-height:180px;">
                             <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
-                            Your browser does not support the video tag.
+                            Browser Anda tidak mendukung tag video.
                         </video>
                         <div class="video-duration">
                             <i class="fas fa-play-circle"></i>
@@ -142,10 +142,10 @@
                         <div class="mb-3">
                             <i class="fas fa-video fa-3x text-muted"></i>
                         </div>
-                        <h4 class="text-muted">No Videos Yet</h4>
-                        <p class="text-muted mb-4">Start adding videos to your collection</p>
+                        <h4 class="text-muted">Belum Ada Video</h4>
+                        <p class="text-muted mb-4">Mulai menambahkan video ke koleksi Anda</p>
                         <a href="{{ route('dashboard.videos.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Add First Video
+                            <i class="fas fa-plus me-2"></i>Tambah Video Pertama
                         </a>
                     </div>
                 </div>

@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Programs</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Program</h6>
                             <h2 class="card-title mb-0 counter">{{ $eduwisatas->count() }}</h2>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Active Schedules</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Jadwal Aktif</h6>
                             <h2 class="card-title mb-0 counter">12</h2>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="card-subtitle text-muted mb-1">Total Participants</h6>
+                            <h6 class="card-subtitle text-muted mb-1">Total Peserta</h6>
                             <h2 class="card-title mb-0 counter">156</h2>
                         </div>
                     </div>
@@ -82,9 +82,9 @@
                 </div>
                 <div class="col-md-4">
                     <select class="form-select" id="statusFilter">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="">Semua Status</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Tidak Aktif</option>
                     </select>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                                 <a href="{{ route('dashboard.eduwisata.schedule', $eduwisata) }}" 
                                    class="btn btn-light btn-sm" 
                                    data-bs-toggle="tooltip" 
-                                   title="View Schedules">
+                                   title="Lihat Jadwal">
                                     <i class="fas fa-calendar-alt"></i>
                                 </a>
                                 <form action="{{ route('dashboard.eduwisata.destroy', $eduwisata->id) }}" 
@@ -136,7 +136,7 @@
                             </div>
                         </div>
                         <div class="program-badge">
-                            <span class="badge bg-primary">{{ $eduwisata->schedules->count() }} Schedules</span>
+                            <span class="badge bg-primary">{{ $eduwisata->schedules->count() }} Jadwal</span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -147,17 +147,17 @@
                         <div class="program-meta">
                             <div class="meta-item">
                                 <i class="fas fa-clock me-1"></i>
-                                <span>Duration: 2-3 hours</span>
+                                <span>Durasi: 2-3 jam</span>
                             </div>
                             <div class="meta-item">
                                 <i class="fas fa-users me-1"></i>
-                                <span>Max: 20 people</span>
+                                <span>Maks: 20 orang</span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <a href="{{ route('dashboard.eduwisata.schedule', $eduwisata) }}" 
                                class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-calendar-alt me-2"></i>View Schedules
+                                <i class="fas fa-calendar-alt me-2"></i>Lihat Jadwal
                             </a>
                             <div class="btn-group">
                                 <a href="{{ route('dashboard.eduwisata.edit', $eduwisata->id) }}" 
@@ -187,10 +187,10 @@
                         <div class="empty-icon mb-3">
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
-                        <h4 class="text-muted">No Programs Yet</h4>
-                        <p class="text-muted mb-4">Start creating your first educational tourism program</p>
+                        <h4 class="text-muted">Belum Ada Program</h4>
+                        <p class="text-muted mb-4">Mulai membuat program eduwisata pertama Anda</p>
                         <a href="{{ route('dashboard.eduwisata.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Create First Program
+                            <i class="fas fa-plus me-2"></i>Buat Program Pertama
                         </a>
                     </div>
                 </div>

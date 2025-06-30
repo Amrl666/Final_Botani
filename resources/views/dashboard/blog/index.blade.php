@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted mb-1">Total Posts</h6>
+                                <h6 class="text-muted mb-1">Total Artikel</h6>
                                 <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $blogs->count() }}</div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
         <div class="card-header bg-transparent">
             <h5 class="card-title mb-0">
                 <i class="fas fa-search me-2 text-primary"></i>
-                Search & Filters
+                Pencarian & Filter
             </h5>
         </div>
         <div class="card-body">
@@ -59,10 +59,10 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" id="statusFilter">
-                            <option value="">All Status</option>
-                            <option value="published">Published</option>
+                            <option value="">Semua Status</option>
+                            <option value="published">Dipublikasikan</option>
                             <option value="draft">Draft</option>
-                            <option value="archived">Archived</option>
+                            <option value="archived">Diarsipkan</option>
                         </select>
                         <label for="statusFilter">
                             <i class="fas fa-toggle-on me-2"></i>Status
@@ -80,7 +80,7 @@
         <div class="card-header bg-transparent">
             <h5 class="card-title mb-0">
                 <i class="fas fa-list me-2 text-primary"></i>
-                Blog Posts
+                Daftar Artikel
             </h5>
         </div>
         <div class="card-body">
@@ -102,7 +102,7 @@
                                     <div class="card-img-overlay d-flex justify-content-between align-items-start">
                                         @if($blog->is_featured)
                                             <span class="badge bg-warning">
-                                                <i class="fas fa-star me-1"></i>Featured
+                                                <i class="fas fa-star me-1"></i>Unggulan
                                             </span>
                                         @endif
                                         <div class="dropdown">
@@ -111,14 +111,14 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="{{ route('dashboard.blog.show', $blog) }}">
-                                                    <i class="fas fa-eye me-2"></i>View
+                                                    <i class="fas fa-eye me-2"></i>Lihat
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('dashboard.blog.edit', $blog) }}">
                                                     <i class="fas fa-edit me-2"></i>Edit
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item text-danger" href="#" onclick="deleteBlog({{ $blog->id }})">
-                                                    <i class="fas fa-trash me-2"></i>Delete
+                                                    <i class="fas fa-trash me-2"></i>Hapus
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -126,9 +126,9 @@
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <div class="blog-meta mb-2">
-                                        <span class="badge bg-primary">{{ $blog->category ?? 'General' }}</span>
+                                        <span class="badge bg-primary">{{ $blog->category ?? 'Umum' }}</span>
                                         <span class="badge bg-{{ $blog->status == 'published' ? 'success' : ($blog->status == 'draft' ? 'warning' : 'secondary') }}">
-                                            {{ ucfirst($blog->status) }}
+                                            {{ $blog->status == 'published' ? 'Dipublikasikan' : ($blog->status == 'draft' ? 'Draft' : 'Diarsipkan') }}
                                         </span>
                                     </div>
                                     <h5 class="card-title blog-title">{{ $blog->title }}</h5>
@@ -152,7 +152,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('dashboard.blog.show', $blog) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-eye me-1"></i>View
+                                                <i class="fas fa-eye me-1"></i>Lihat
                                             </a>
                                             <a href="{{ route('dashboard.blog.edit', $blog) }}" class="btn btn-sm btn-outline-warning">
                                                 <i class="fas fa-edit me-1"></i>Edit
@@ -160,11 +160,11 @@
                                         </div>
                                         <div class="blog-actions">
                                             @if($blog->status == 'draft')
-                                                <button class="btn btn-sm btn-success" onclick="publishBlog({{ $blog->id }})" title="Publish">
+                                                <button class="btn btn-sm btn-success" onclick="publishBlog({{ $blog->id }})" title="Publikasikan">
                                                     <i class="fas fa-check"></i>
                                                 </button>
                                             @endif
-                                            <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog({{ $blog->id }})" title="Delete">
+                                            <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog({{ $blog->id }})" title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -178,10 +178,10 @@
                 <div class="text-center py-5">
                     <div class="empty-state">
                         <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                        <h5 class="text-muted">No Blog Posts Found</h5>
-                        <p class="text-muted">Start by creating your first blog post.</p>
+                        <h5 class="text-muted">Belum Ada Artikel</h5>
+                        <p class="text-muted">Mulai dengan membuat artikel pertama Anda.</p>
                         <a href="{{ route('dashboard.blog.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Create First Post
+                            <i class="fas fa-plus me-2"></i>Buat Artikel Pertama
                         </a>
                     </div>
                 </div>
@@ -243,8 +243,6 @@
 .card-body {
     padding: 2rem;
 }
-
-
 
 /* Stats Cards */
 .stats-card {
@@ -611,8 +609,28 @@ function publishBlog(id) {
 
 function deleteBlog(id) {
     if (confirm('Apakah Anda yakin ingin menghapus artikel blog ini? Tindakan ini tidak dapat dibatalkan.')) {
-        // Add your delete logic here
-        showAlert(`Artikel blog ${id} berhasil dihapus!`, 'success');
+        // Create a form to submit the DELETE request
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/dashboard/blog/${id}`;
+        
+        // Add CSRF token
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
+        
+        // Add method override for DELETE
+        const methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        form.appendChild(methodField);
+        
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 

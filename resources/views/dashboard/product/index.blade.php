@@ -126,13 +126,13 @@
                                 <a href="{{ route('dashboard.product.edit', $product) }}" 
                                    class="btn btn-light btn-sm" 
                                    data-bs-toggle="tooltip" 
-                                   title="Edit Product">
+                                   title="Edit Produk">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button type="button" 
                                         class="btn btn-light btn-sm" 
                                         data-bs-toggle="tooltip" 
-                                        title="Quick View"
+                                        title="Lihat Cepat"
                                         onclick="quickView({{ $product->id }})">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -144,7 +144,7 @@
                                     <button type="submit" 
                                             class="btn btn-light btn-sm" 
                                             data-bs-toggle="tooltip" 
-                                            title="Delete Product"
+                                            title="Hapus Produk"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                         <i class="fas fa-trash"></i>
                                     </button>

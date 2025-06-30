@@ -61,7 +61,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Blog
     Route::resource('/dashboard/blog', BlogController::class)->names('dashboard.blog');
-    Route::get('/dashboard/blog/destroy/{id}', [BlogController::class, 'destroy']);
 
     //contact 
     Route::get('/dashboard/contact/messages', [ContactController::class, 'messages'])->name('dashboard.contact.messages');

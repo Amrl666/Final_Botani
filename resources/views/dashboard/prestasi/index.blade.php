@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-4">
                     <select class="form-select" id="yearFilter">
-                        <option value="">All Years</option>
+                        <option value="">Semua Tahun</option>
                         @for($year = date('Y'); $year >= date('Y') - 10; $year--)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endfor
@@ -68,14 +68,14 @@
                         <div class="achievement-tags mb-3">
                             <span class="badge bg-primary">{{ $prestasi->category }}</span>
                             @if($prestasi->is_featured)
-                                <span class="badge bg-warning">Featured</span>
+                                <span class="badge bg-warning">Unggulan</span>
                             @endif
                         </div>
                         <div class="achievement-actions">
                             <a href="{{ route('dashboard.prestasi.edit', $prestasi) }}" 
                                class="btn btn-outline-primary btn-sm" 
                                data-bs-toggle="tooltip" 
-                               title="Edit Achievement">
+                               title="Edit Prestasi">
                                 <i class="fas fa-edit me-1"></i>Edit
                             </a>
                             <form action="{{ route('dashboard.prestasi.destroy', $prestasi) }}" 
@@ -102,10 +102,10 @@
                         <div class="empty-icon mb-3">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <h4 class="text-muted">No Achievements Yet</h4>
-                        <p class="text-muted mb-4">Start adding your achievements and awards</p>
+                        <h4 class="text-muted">Belum Ada Prestasi</h4>
+                        <p class="text-muted mb-4">Mulai menambahkan prestasi dan penghargaan Anda</p>
                         <a href="{{ route('dashboard.prestasi.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Add First Achievement
+                            <i class="fas fa-plus me-2"></i>Tambah Prestasi Pertama
                         </a>
                     </div>
                 </div>
