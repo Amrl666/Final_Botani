@@ -38,13 +38,17 @@ class CartController extends Controller
         }
 
         // Check if quantity is valid based on min_increment
-        if ($request->quantity % $product->min_increment != 0) {
-            return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+        if ($product->min_increment > 0) {
+            $remainder = fmod($request->quantity, $product->min_increment);
+            // Use a small epsilon for float comparison to avoid precision issues
+            if (abs($remainder) > 0.00001) {
+                return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+            }
         }
 
         $sessionId = session()->getId();
 
-        // Check if item already exists in cart
+        // Check if item already exists in cart 
         $cartItem = CartItem::where('session_id', $sessionId)
             ->where('product_id', $request->product_id)
             ->first();
@@ -81,8 +85,12 @@ class CartController extends Controller
         }
 
         // Check if quantity is valid based on min_increment
-        if ($request->quantity % $product->min_increment != 0) {
-            return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+        if ($product->min_increment > 0) {
+            $remainder = fmod($request->quantity, $product->min_increment);
+            // Use a small epsilon for float comparison to avoid precision issues
+            if (abs($remainder) > 0.00001) {
+                return back()->with('error', "Jumlah harus kelipatan {$product->min_increment} {$product->unit}.");
+            }
         }
 
         $cartItem->update(['quantity' => $request->quantity]);
@@ -107,7 +115,7 @@ class CartController extends Controller
     public function getCartCount()
     {
         $sessionId = session()->getId();
-        $count = CartItem::where('session_id', $sessionId)->sum('quantity');
+        $count = CartItem::where('session_id', $sessionId)->count();
         
         return response()->json(['count' => $count]);
     }
