@@ -447,7 +447,6 @@
                     <a href="{{ route('eduwisata') }}" class="nav-link">Eduwisata</a>
                     <a href="{{ route('blog') }}" class="nav-link">Blog</a>
                     <a href="{{ route('gallery') }}" class="nav-link">Galeri</a>
-                    <a href="{{ route('perijinan') }}" class="nav-link">Perijinan</a>
                     <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">Profile</a>
                     <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('contact') }}">Kontak</a>
 
@@ -511,7 +510,6 @@
                 <a href="{{ route('blog') }}" class="nav-link">Blog</a>
                 <a href="{{ route('gallery') }}" class="nav-link">Galeri</a>
                 <a href="{{ route('videos') }}" class="nav-link">Video</a>
-                <a href="{{ route('perijinan') }}" class="nav-link">Perijinan</a>
                 <a href="{{ route('profile') }}" class="nav-link">Profil</a>
                 <a href="{{ route('contact.index') }}" class="nav-link">Kontak</a>
 
