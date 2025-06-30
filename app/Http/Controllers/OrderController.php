@@ -49,8 +49,11 @@ class OrderController extends Controller
             $namaItem = $produk->name ?? 'Produk';
             $jumlah = $data['jumlah'] ?? 1;
             // Check if quantity is valid based on min_increment
-            if ($produk && $jumlah % $produk->min_increment != 0) {
-                return back()->with('error', "Jumlah harus kelipatan {$produk->min_increment} {$produk->unit}.");
+            if ($produk && $produk->min_increment > 0) {
+                $remainder = fmod($jumlah, $produk->min_increment);
+                if (abs($remainder) > 0.00001) {
+                    return back()->with('error', "Jumlah harus kelipatan {$produk->min_increment} {$produk->unit}.");
+                }
             }
             $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
         }
