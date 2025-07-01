@@ -143,12 +143,14 @@
                                         </div>
                                         <div class="blog-actions">
                                             @if($blog->status == 'draft')
-                                                <button class="btn btn-sm btn-success" onclick="publishBlog({{ $blog->id }})" title="Publikasikan">
-                                                    <i class="fas fa-check"></i>
+                                                <button class="btn btn-sm btn-success" onclick="publishBlog({{ $blog->id }})" title="Publikasikan Blog Ini">
+                                                    <i class="fas fa-check me-1"></i>Publikasi
                                                 </button>
                                             @endif
-                                            <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog({{ $blog->id }})" title="Hapus">
-                                                <i class="fas fa-trash"></i>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    onclick="if(confirm('Yakin ingin menghapus blog ini?')) deleteBlog({{ $blog->id }})" 
+                                                    title="Hapus Blog">
+                                                <i class="fas fa-trash me-1"></i>Hapus
                                             </button>
                                         </div>
                                     </div>

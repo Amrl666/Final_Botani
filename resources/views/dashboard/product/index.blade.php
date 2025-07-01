@@ -135,52 +135,57 @@
                             @endif
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">{{ $product->name }}</h5>
+                    {{-- Product Info --}}
+                    <div class="card-body p-3 d-flex flex-column">
+                        <h5 class="card-title text-truncate mb-1">{{ $product->name }}</h5>
                         <p class="card-text text-muted small mb-2">
                             {{ Str::limit($product->description, 60) }}
                         </p>
-                        <div class="product-details">
-                            <div class="product-price">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
+
+                        <div class="mt-auto">
+                            {{-- Price & Stock Info --}}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="text-primary fw-bold small">
+                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                </div>
+                                <div class="text-muted small">
+                                    <i class="fas fa-boxes me-1"></i>{{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+                                </div>
                             </div>
-                            <div class="product-stock">
-                                <i class="fas fa-boxes me-1"></i>
-                                {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+
+                            {{-- Actions --}}
+                            <div class="d-flex justify-content-between gap-2">
+                                <a href="{{ route('dashboard.product.edit', $product) }}" 
+                                class="btn btn-sm btn-outline-primary d-flex align-items-center">
+                                    <i class="fas fa-edit me-1"></i> Ubah
+                                </a>
+                                <form action="{{ route('dashboard.product.destroy', $product) }}" 
+                                    method="POST" 
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="btn btn-sm btn-outline-danger d-flex align-items-center" 
+                                            title="Hapus Produk">
+                                        <i class="fas fa-trash me-1"></i> Hapus
+                                    </button>
+                                </form>
                             </div>
-                        </div>
-                        <div class="product-actions-bottom mt-3 d-flex gap-2">
-                            <a href="{{ route('dashboard.product.edit', $product) }}" 
-                            class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-edit me-1"></i>Ubah
-                            </a>                            
-                            <form action="{{ route('dashboard.product.destroy', $product) }}" 
-                                method="POST" 
-                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" 
-                                        class="btn btn-outline-danger btn-sm" 
-                                        data-bs-toggle="tooltip" 
-                                        title="Hapus Produk">
-                                    <i class="fas fa-trash me-1"></i>Hapus
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         @empty
             <div class="col-12">
-                <div class="card empty-state animate-fade-in" style="--delay: 0.6s">
-                    <div class="card-body text-center py-5">
-                        <div class="empty-icon mb-3">
-                            <i class="fas fa-box"></i>
+                <div class="card empty-state text-center animate-fade-in shadow-sm">
+                    <div class="card-body py-5">
+                        <div class="mb-3">
+                            <i class="fas fa-box fa-2x text-muted"></i>
                         </div>
                         <h4 class="text-muted">Belum Ada Produk</h4>
                         <p class="text-muted mb-4">Mulai menambahkan produk ke katalog</p>
                         <a href="{{ route('dashboard.product.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>Tambahkan Produk Pertama
+                            <i class="fas fa-plus me-2"></i> Tambahkan Produk Pertama
                         </a>
                     </div>
                 </div>

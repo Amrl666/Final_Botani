@@ -75,24 +75,25 @@
                                     {{ $video->created_at->format('d M Y') }}
                                 </small>
                             </div>
-                            <div class="video-actions">
+                            <div class="video-actions d-flex gap-2">
                                 <a href="{{ route('dashboard.videos.edit', $video) }}" 
-                                   class="btn btn-light btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                class="btn btn-sm btn-outline-warning d-flex align-items-center"
+                                data-bs-toggle="tooltip" 
+                                title="Edit Video Ini">
+                                    <i class="fas fa-edit me-1"></i> Edit
                                 </a>
+
                                 <form action="{{ route('dashboard.videos.destroy', $video) }}" 
-                                      method="POST" 
-                                      class="d-inline">
+                                    method="POST" 
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" 
-                                            class="btn btn-light btn-sm" 
+                                            class="btn btn-sm btn-outline-danger d-flex align-items-center"
                                             data-bs-toggle="tooltip" 
-                                            title="Delete"
+                                            title="Hapus Video Ini"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus video ini?')">
-                                        <i class="fas fa-trash"></i>
+                                        <i class="fas fa-trash me-1"></i> Hapus
                                     </button>
                                 </form>
                             </div>
