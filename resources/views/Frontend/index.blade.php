@@ -288,13 +288,39 @@
                 </div>
                 <div class="p-6">
                     <h3 class="font-bold text-xl mb-2 text-gray-800">{{ $product->name }}</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-2">{{ Str::limit($product->description, 80) }}</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-green-600 font-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="product-price text-green-600 font-semibold text-lg">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                            <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
+                        </span>
+                    </div>
+
+                    <p class="product-description">{{ $product->description }}</p>
+
+
+
+                    <div class="flex space-x-2">
                         <a href="{{ route('product.show', $product->id) }}" 
-                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300">
+                           class="w-full text-center bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300">
                             Pesan
                         </a>
+                        @if($product->stock > 0)
+                            <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" 
+                                        class=" bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-300">
+                                    <i class="fas fa-cart-plus me-1"></i>
+                                </button>
+                            </form>
+                        @else
+                            <button disabled 
+                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-2 rounded-lg cursor-not-allowed">
+                                <i class="fas fa-times me-1"></i>Habis
+                            </button>
+                        @endif
+
                     </div>
                 </div>
             </div>

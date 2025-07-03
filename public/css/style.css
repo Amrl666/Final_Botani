@@ -8,6 +8,7 @@
   body {
     background: linear-gradient(to bottom, #f0ffe0, #c5e8a8);
     color: #333;
+    font-size: 20px;
   }
   
   header {
@@ -173,5 +174,32 @@
       background-size: cover;
       background-color: rgb(205, 255, 87);
   }
+  }
+  
+  .lansia-friendly {
+    font-size: 22px !important;
+    line-height: 1.8 !important;
+  }
+  
+  button, .btn, .cta {
+    font-size: 20px !important;
+    padding: 16px 32px !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+  }
+  
+  input, select, textarea {
+    font-size: 20px !important;
+    padding: 14px 16px !important;
+    border-radius: 8px !important;
+  }
+  
+  .nav-link, .navbar .nav-link, .sidebar-link {
+    font-size: 20px !important;
+    padding: 14px 20px !important;
+  }
+  
+  .alert, .dropdown-item, .sidebar-link {
+    font-size: 18px !important;
   }
   

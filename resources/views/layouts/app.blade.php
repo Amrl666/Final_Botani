@@ -908,7 +908,7 @@
     
     @stack('styles')
 </head>
-<body class="sidebar-open"> {{-- Default state for desktop: sidebar open --}}
+<body class="font-sans antialiased bg-gray-100 text-gray-800 lansia-friendly">
     {{-- Page Loading Screen --}}
     <div class="page-loader" id="pageLoader">
         <div class="loader-logo">

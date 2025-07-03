@@ -413,7 +413,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased bg-gray-100 text-gray-800">
+<body class="font-sans antialiased bg-gray-100 text-gray-800 lansia-friendly">
 
     {{-- Page Loading Screen --}}
     <div class="page-loader" id="pageLoader">
