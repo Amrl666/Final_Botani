@@ -159,8 +159,7 @@
                     <span class="text-gray-800">TANI</span>
                 </h2>
                 <p class="text-gray-700 text-lg mb-8">
-                    BO-TANI merupakan aplikasi yang memberikan efisiensi kepada khalayak umum untuk mengakses informasi mengenai Kelompok Tani Winongo Asri. Mereka bisa mengakses informasi umum, seperti: denah, struktur organisasi, foto, dan lain-lain.
-                </p>
+                Selamat datang di BOTANI — website resmi Kelompok Tani Winongo Asri yang dirancang untuk memudahkan Anda menjelajahi dunia pertanian modern! Melalui BOTANI, semua informasi seputar produk unggulan, layanan eduwisata, galeri kegiatan, blog inspiratif, hingga profil dan struktur organisasi dapat diakses dengan cepat dan praktis. </p>
                 <a href="#profil" class="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors duration-300 transform hover:scale-105">
                     Jelajahi Sekarang
                 </a>
@@ -217,13 +216,13 @@
                 <h3 class="text-gray-800 font-bold text-3xl mb-6">WINONGO ASRI PATANGPULUHAN</h3>
                 <div class="prose prose-lg text-gray-700">
                     <p class="mb-6">
-                        Kelompok Tani Winongo Asri awalnya salah satu UKM kecil di daerah Wirobrajan yang bergerak di bidang pertanian. Kemudian berkembang menjadi kelompok yang bermitra dengan masyarakat untuk berdiskusi mengenai hal-hal yang mengangkat pertanian.
+                        Kelompok Tani Winongo Asri berawal sebagai salah satu usaha kecil menengah (UKM) di kawasan Wirobrajan yang bergerak di bidang pertanian. Seiring waktu, kelompok ini berkembang menjadi mitra aktif bagi masyarakat dalam berdiskusi dan berbagi pengetahuan mengenai berbagai isu pertanian. Dimulai dari langkah sederhana, Kelompok Tani Winongo Asri terus tumbuh untuk memenuhi kebutuhan publik di tingkat lokal, khususnya melalui penjualan sayur-mayur dan cabai sebagai produk unggulan mereka.
                     </p>
                     <p class="mb-6">
-                        Berawal dari langkah sederhana, kelompok tani ini terus berkembang untuk memenuhi kebutuhan publik di tingkat lokal. Penjualan sayuran dan cabai menjadi produk unggulan mereka. Meski dengan keterbatasan lahan, semangat untuk mengembangkan berbagai jenis tanaman tetap tinggi.
+                       Meskipun memiliki keterbatasan lahan, semangat untuk membudidayakan berbagai jenis tanaman tetap tinggi, mencerminkan komitmen mereka dalam memajukan pertanian yang berkelanjutan dan bermanfaat bagi lingkungan sekitar. Selain itu, Kelompok Tani Winongo Asri juga mengembangkan program eduwisata yang edukatif dan menyenangkan, memberikan kesempatan bagi masyarakat untuk belajar langsung tentang teknik budidaya tanaman, pengelolaan kebun, dan pentingnya pertanian ramah lingkungan
                     </p>
                     <div class="mt-8 italic text-xl text-green-700 font-semibold">
-                        "Tanam di Bibit dahulu laut hasil buahnya nanti kali"
+                        "Tanam bibit hari ini, Petik hasilnya nanti"
                     </div>
                 </div>
             </div>

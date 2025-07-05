@@ -243,8 +243,8 @@
                     <div class="flex-grow-1 ms-3">
                         <h6 class="text-muted mb-1">Total Pendapatan</h6>
                         <h3 class="mb-0">
-                            Rp {{ number_format($orders->where('status', 'disetujui')->sum('total_harga'), 0, ',', '.') }}
-                        </h>
+                            Rp {{ number_format($orders->whereIn('status', ['disetujui', 'selesai'])->sum('total_harga'), 0, ',', '.') }}
+                        </h3>
                     </div>
                 </div>
             </div>

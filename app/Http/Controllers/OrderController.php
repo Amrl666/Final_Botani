@@ -83,7 +83,7 @@ class OrderController extends Controller
                 "- Tanggal: $tanggal\n" .
                 "- Total: Rp " . number_format($harga, 0, ',', '.');
 
-        $waNumber = '628553020204'; // <- Ganti dengan nomor admin
+        $waNumber = '6282379044166'; // <- Ganti dengan nomor admin
         $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
 
         // ✅ Redirect ke WhatsApp
@@ -147,7 +147,7 @@ class OrderController extends Controller
         $alamat = $request->alamat;
         $keterangan = $request->keterangan ?? '-';
 
-        $waText = "Halo Admin, saya ingin memesan *Multiple Produk*:\n" .
+        $waText = "Halo Admin, saya ingin memesan *Beberapa Produk*:\n" .
                 "- Nama: $nama\n" .
                 "- No HP: $telepon\n" .
                 "- Alamat: $alamat\n" .
@@ -163,7 +163,7 @@ class OrderController extends Controller
 
         $waText .= "\n*Total: Rp " . number_format($totalHarga, 0, ',', '.') . "*";
 
-        $waNumber = '628553020204';
+        $waNumber = '6282379044166';
         $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
 
         return redirect()->away($waUrl);

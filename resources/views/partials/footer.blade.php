@@ -96,7 +96,7 @@
                     <a href="#" class="social-link" title="YouTube">
                         <i class="fab fa-youtube text-xl"></i>
                     </a>
-                    <a href="http://wa.me/8553020204" class="social-link" title="WhatsApp">
+                    <a href="https://kirimwa.id/botani" class="social-link" title="WhatsApp">
                         <i class="fab fa-whatsapp text-xl"></i>
                     </a>
                 </div>

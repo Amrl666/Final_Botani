@@ -3,6 +3,11 @@
 @section('title', 'Jadwal Eduwisata')
 
 @section('content')
+<div id="infoUlangiPesan" style="display:none; margin-top:2rem;" class="w-full flex justify-center">
+    <div class="w-full bg-yellow-300 border-2 border-yellow-600 text-yellow-900 text-xl font-bold px-6 py-5 rounded-lg shadow text-center">
+        Jika sudah chat admin, <u>silakan ulangi kembali proses pemesanan</u>.
+    </div>
+</div>
 <div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
         <!-- Header Section -->
@@ -60,54 +65,52 @@
                 <div class="md:w-1/2 p-6 bg-gray-50">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6">Pilih Jadwal Kunjungan</h3>
 
-                    <form action="{{ route('order.store') }}" method="POST" class="space-y-6">
-                        @csrf
-                        <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id }}">
-
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <label for="nama_pemesan" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
-                                <input type="text" id="nama_pemesan" name="nama_pemesan" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label for="telepon" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                                <input type="tel" id="telepon" name="telepon" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label for="jumlah_orang" class="block text-sm font-medium text-gray-700">Jumlah Peserta</label>
-                                <input type="number" id="jumlah_orang" name="jumlah_orang" min="5" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label for="tanggal_kunjungan" class="block text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
-                                <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" required min="{{ date('Y-m-d') }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label for="keterangan" class="block text-sm font-medium text-gray-700">Catatan Tambahan</label>
-                                <textarea id="keterangan" name="keterangan" rows="3"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between bg-white px-4 py-2 rounded-lg border mt-4">
-                            <span class="text-gray-700 font-semibold">Total Pembayaran:</span>
-                            <span class="text-green-600 font-bold">Rp {{ number_format($eduwisata->harga, 0, ',', '.') }}</span>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full mt-4 bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300">
-                            Pesan Sekarang
+                    <div id="chat-admin-section">
+                        <button id="btnChatAdmin" type="button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mb-3" style="display:none;">
+                            Chat Admin di WhatsApp
                         </button>
-                    </form>
+                        <form id="orderForm" action="{{ route('order.store') }}" method="POST" class="space-y-4" style="display:block;">
+                            @csrf
+                            <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id ?? '' }}">
+                            <div class="flex flex-col space-y-2">
+                                <label for="nama_pemesan" class="text-sm font-medium text-gray-700">Nama Pemesan</label>
+                                <input type="text" name="nama_pemesan" id="nama_pemesan" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
+                                <input type="tel" name="telepon" id="telepon" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <label for="alamat" class="text-sm font-medium text-gray-700">Alamat</label>
+                                <textarea name="alamat" id="alamat" rows="3" required class="form-textarea rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200"></textarea>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <label for="jumlah_orang" class="text-sm font-medium text-gray-700">Jumlah Orang</label>
+                                <input type="number" name="jumlah_orang" id="jumlah_orang" min="1" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <label for="tanggal_kunjungan" class="text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
+                                <input type="date" name="tanggal_kunjungan" id="tanggal_kunjungan" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                            </div>
+                            <button id="btnPesan" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
+                                Pesan Sekarang
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi -->
+<div id="popupChatAdmin" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
+    <div style="background:#fff; max-width:350px; margin:10% auto; padding:2rem; border-radius:1rem; text-align:center; position:relative;">
+        <button id="btnClosePopup" style="position:absolute; top:0.5rem; right:0.5rem; background:transparent; border:none; font-size:1.5rem; color:#888; cursor:pointer;">&times;</button>
+        <p class="mb-4 text-lg font-semibold">Apakah Anda sudah pernah chat admin?</p>
+        <div class="flex justify-center gap-4">
+            <button id="btnSudahChat" class="bg-green-600 text-white px-4 py-2 rounded">Sudah</button>
+            <button id="btnBelumChat" class="bg-gray-400 text-white px-4 py-2 rounded">Belum</button>
         </div>
     </div>
 </div>
@@ -164,17 +167,51 @@ select {
 
 @push('scripts')
 <script>
+function setBodyScroll(disable) {
+    if (disable) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
-    const jumlahPesertaInput = document.getElementById('jumlah_orang');
-    const tanggalInput = document.getElementById('tanggal_kunjungan');
-
-    const today = new Date().toISOString().split('T')[0];
-    tanggalInput.min = today;
-
-    jumlahPesertaInput.addEventListener('change', function() {
-        if (this.value < 5) {
-            alert('Minimal peserta adalah 5 orang');
-            this.value = 5;
+    const btnPesan = document.getElementById('btnPesan');
+    const orderForm = document.getElementById('orderForm');
+    const popup = document.getElementById('popupChatAdmin');
+    const btnSudah = document.getElementById('btnSudahChat');
+    const btnBelum = document.getElementById('btnBelumChat');
+    const btnClose = document.getElementById('btnClosePopup');
+    const infoUlangi = document.getElementById('infoUlangiPesan');
+    const adminWa = '6282379044166'; // Ganti dengan nomor admin
+    if (btnPesan) {
+        btnPesan.addEventListener('click', function(e) {
+            e.preventDefault();
+            popup.style.display = 'block';
+            setBodyScroll(true);
+        });
+    }
+    btnSudah && btnSudah.addEventListener('click', function() {
+        popup.style.display = 'none';
+        setBodyScroll(false);
+        orderForm.submit();
+    });
+    btnBelum && btnBelum.addEventListener('click', function() {
+        popup.style.display = 'none';
+        setBodyScroll(false);
+        window.open('https://wa.me/' + adminWa + '?text=Halo%20Admin%2C%20saya%20ingin%20bertanya%20tentang%20eduwisata', '_blank');
+        // Tampilkan info ulangi pesan setelah kembali
+        setTimeout(function() {
+            infoUlangi.style.display = 'block';
+        }, 500);
+    });
+    btnClose && btnClose.addEventListener('click', function() {
+        popup.style.display = 'none';
+        setBodyScroll(false);
+    });
+    popup && popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            popup.style.display = 'none';
+            setBodyScroll(false);
         }
     });
 });
