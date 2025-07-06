@@ -156,13 +156,6 @@
                           {{-- Actions --}}
                         <div class="d-flex gap-1">
 
-                            {{-- Tombol Detail --}}
-                            <a href="{{ route('dashboard.product.show', $product->id) }}"
-                            class="btn btn-sm btn-outline-primary flex-fill" title="Detail Produk">
-                                <i class="fas fa-eye me-xl-1"></i>
-                                <span class="d-none d-xl-inline">Detail</span>
-                            </a>
-
                             {{-- Tombol Edit --}}
                             <a href="{{ route('dashboard.product.edit', $product->id) }}"
                             class="btn btn-sm btn-outline-warning flex-fill" title="Edit Produk">
