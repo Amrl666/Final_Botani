@@ -159,7 +159,7 @@ class EduwisataController extends Controller
                     $quotaArray[$date] = max(0, 15 - $item->total_peserta);
                 }
             } catch (\Exception $e) {
-                \Log::error('Error processing quota data: ' . $e->getMessage(), [
+                Log::error('Error processing quota data: ' . $e->getMessage(), [
                     'item' => $item,
                     'eduwisata_id' => $eduwisata->id
                 ]);
@@ -216,7 +216,7 @@ class EduwisataController extends Controller
                     $quotaArray[$date] = max(0, 15 - $item->total_peserta);
                 }
             } catch (\Exception $e) {
-                \Log::error('Error processing quota data in API: ' . $e->getMessage(), [
+                Log::error('Error processing quota data in API: ' . $e->getMessage(), [
                     'item' => $item,
                     'eduwisata_id' => $eduwisata->id
                 ]);
