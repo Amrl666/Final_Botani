@@ -39,6 +39,13 @@ class OrderController extends Controller
             $jumlah = $data['jumlah_orang'] ?? 0;
             $tanggal = $data['tanggal_kunjungan'] ?? null;
             
+            // Validasi minimal 5 orang per grup
+            if ($jumlah < 5) {
+                return back()->withErrors([
+                    'jumlah_orang' => 'Minimal 5 orang per grup untuk pemesanan eduwisata.'
+                ])->withInput();
+            }
+            
             // Validasi kapasitas harian (maksimal 15 orang per hari)
             if ($tanggal) {
                 $totalBookedToday = Order::where('eduwisata_id', $data['eduwisata_id'])

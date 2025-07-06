@@ -6,6 +6,7 @@ use App\Models\Eduwisata;
 use App\Models\EduwisataSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class EduwisataController extends Controller
 {
@@ -127,16 +128,118 @@ class EduwisataController extends Controller
             $query->where('date', '>=', now())->orderBy('date');
         }]);
         
-        // Ambil data jadwal yang sudah penuh (15 orang per hari)
-        $fullDates = \App\Models\Order::where('eduwisata_id', $eduwisata->id)
-            ->where('tanggal_kunjungan', '>=', now()->toDateString())
+        // Ambil data kuota tersisa untuk setiap tanggal dalam bulan ini
+        $currentMonth = now()->startOfMonth();
+        $nextMonth = now()->addMonth()->startOfMonth();
+        
+        // Ambil data booking untuk eduwisata ini
+        $quotaData = \App\Models\Order::where('eduwisata_id', $eduwisata->id)
+            ->where('tanggal_kunjungan', '>=', $currentMonth->toDateString())
+            ->where('tanggal_kunjungan', '<', $nextMonth->toDateString())
             ->selectRaw('tanggal_kunjungan, SUM(jumlah_orang) as total_peserta')
             ->groupBy('tanggal_kunjungan')
-            ->having('total_peserta', '>=', 15)
-            ->pluck('tanggal_kunjungan')
-            ->toArray();
+            ->get();
         
-        return view('Frontend.eduwisata.schedule', compact('eduwisata', 'fullDates'));
+        // Convert ke array dengan format yang benar
+        $quotaArray = [];
+        foreach ($quotaData as $item) {
+            try {
+                // Pastikan tanggal_kunjungan adalah string yang valid
+                $date = $item->tanggal_kunjungan;
+                if ($date instanceof \Carbon\Carbon) {
+                    $date = $date->format('Y-m-d');
+                } elseif (is_string($date)) {
+                    $date = date('Y-m-d', strtotime($date));
+                } else {
+                    // Skip jika tanggal tidak valid
+                    continue;
+                }
+                
+                if ($date && $date !== '1970-01-01') { // Skip invalid dates
+                    $quotaArray[$date] = max(0, 15 - $item->total_peserta);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error processing quota data: ' . $e->getMessage(), [
+                    'item' => $item,
+                    'eduwisata_id' => $eduwisata->id
+                ]);
+                continue;
+            }
+        }
+        
+        // Fallback: jika tidak ada data, set array kosong
+        if (empty($quotaArray)) {
+            $quotaArray = [];
+        }
+        
+        // Ambil data jadwal yang sudah penuh (15 orang per hari)
+        $fullDates = [];
+        foreach ($quotaArray as $date => $quota) {
+            if ($quota <= 0) {
+                $fullDates[] = $date;
+            }
+        }
+        
+
+        
+        return view('Frontend.eduwisata.schedule', compact('eduwisata', 'fullDates', 'quotaArray'));
+    }
+    
+    // API untuk mendapatkan data kuota real-time
+    public function getQuotaData(Eduwisata $eduwisata)
+    {
+        $currentMonth = now()->startOfMonth();
+        $nextMonth = now()->addMonth()->startOfMonth();
+        
+        $quotaData = \App\Models\Order::where('eduwisata_id', $eduwisata->id)
+            ->where('tanggal_kunjungan', '>=', $currentMonth->toDateString())
+            ->where('tanggal_kunjungan', '<', $nextMonth->toDateString())
+            ->selectRaw('tanggal_kunjungan, SUM(jumlah_orang) as total_peserta')
+            ->groupBy('tanggal_kunjungan')
+            ->get();
+        
+        $quotaArray = [];
+        foreach ($quotaData as $item) {
+            try {
+                // Pastikan tanggal_kunjungan adalah string yang valid
+                $date = $item->tanggal_kunjungan;
+                if ($date instanceof \Carbon\Carbon) {
+                    $date = $date->format('Y-m-d');
+                } elseif (is_string($date)) {
+                    $date = date('Y-m-d', strtotime($date));
+                } else {
+                    // Skip jika tanggal tidak valid
+                    continue;
+                }
+                
+                if ($date && $date !== '1970-01-01') { // Skip invalid dates
+                    $quotaArray[$date] = max(0, 15 - $item->total_peserta);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Error processing quota data in API: ' . $e->getMessage(), [
+                    'item' => $item,
+                    'eduwisata_id' => $eduwisata->id
+                ]);
+                continue;
+            }
+        }
+        
+        // Fallback: jika tidak ada data, set array kosong
+        if (empty($quotaArray)) {
+            $quotaArray = [];
+        }
+        
+        $fullDates = [];
+        foreach ($quotaArray as $date => $quota) {
+            if ($quota <= 0) {
+                $fullDates[] = $date;
+            }
+        }
+        
+        return response()->json([
+            'quotaData' => $quotaArray,
+            'fullDates' => $fullDates
+        ]);
     }
 
 }

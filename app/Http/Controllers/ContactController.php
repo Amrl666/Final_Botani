@@ -17,7 +17,7 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'whatsapp' => 'required',
+            'whatsapp' => 'required|regex:/^[0-9]{10,15}$/',
             'subject' => 'required',
             'message' => 'required',
         ]);

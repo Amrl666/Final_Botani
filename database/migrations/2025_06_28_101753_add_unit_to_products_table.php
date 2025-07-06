@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->string('unit')->default('kg')->after('price');
             $table->decimal('min_increment', 8, 2)->default(0.5)->after('unit');
+            $table->integer('bundle_quantity')->nullable()->after('min_increment');
+            $table->decimal('bundle_price', 10, 2)->nullable()->after('bundle_quantity');
         });
     }
 
@@ -23,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['unit', 'min_increment']);
+            $table->dropColumn(['unit', 'min_increment', 'bundle_quantity', 'bundle_price']);
         });
     }
 };

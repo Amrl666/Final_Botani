@@ -190,6 +190,31 @@
             transform: translateY(-2px);
         }
 
+        .nav-link.active {
+            color: var(--primary-color);
+            background: rgba(5, 150, 105, 0.1);
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+            animation: activePulse 2s ease-in-out infinite;
+        }
+
+        .nav-link.active:hover {
+            background: rgba(5, 150, 105, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3);
+            animation: none;
+        }
+
+        @keyframes activePulse {
+            0%, 100% { 
+                box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+            }
+            50% { 
+                box-shadow: 0 4px 20px rgba(5, 150, 105, 0.4);
+            }
+        }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -203,6 +228,11 @@
         }
 
         .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .nav-link.active::after {
+            background: var(--primary-color);
             width: 80%;
         }
 
@@ -442,11 +472,11 @@
 
                 <!-- Desktop Menu -->
                 <div class="nav-menu">
-                    <a href="{{ url('/') }}" class="nav-link">Beranda</a>
-                    <a href="{{ route('product.index_fr') }}" class="nav-link">Produk</a>
-                    <a href="{{ route('eduwisata') }}" class="nav-link">Eduwisata</a>
-                    <a href="{{ route('blog') }}" class="nav-link">Blog</a>
-                    <a href="{{ route('gallery') }}" class="nav-link">Galeri</a>
+                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+                    <a href="{{ route('product.index_fr') }}" class="nav-link {{ request()->routeIs('product.index_fr') ? 'active' : '' }}">Produk</a>
+                    <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
+                    <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
+                    <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
                     <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">Profile</a>
                     <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('contact') }}">Kontak</a>
 
@@ -504,14 +534,14 @@
 
             <!-- Mobile Menu -->
             <div class="nav-menu md:hidden" id="mobileMenu">
-                <a href="{{ url('/') }}" class="nav-link">Beranda</a>
-                <a href="{{ route('product.index_fr') }}" class="nav-link">Produk</a>
-                <a href="{{ route('eduwisata') }}" class="nav-link">Eduwisata</a>
-                <a href="{{ route('blog') }}" class="nav-link">Blog</a>
-                <a href="{{ route('gallery') }}" class="nav-link">Galeri</a>
-                <a href="{{ route('videos') }}" class="nav-link">Video</a>
-                <a href="{{ route('profile') }}" class="nav-link">Profil</a>
-                <a href="{{ route('contact.index') }}" class="nav-link">Kontak</a>
+                <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+                <a href="{{ route('product.index_fr') }}" class="nav-link {{ request()->routeIs('product.index_fr') ? 'active' : '' }}">Produk</a>
+                <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
+                <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
+                <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
+                <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
+                <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
+                <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
 
                 {{-- Mobile User Session --}}
                 {{-- @if(session()->has('telepon'))

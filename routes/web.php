@@ -113,6 +113,7 @@ Route::get('profile', [PrestasiController::class, 'index_fr'])->name('profile');
 Route::get('eduwisata', [EduwisataController::class, 'index_fr'])->name('eduwisata');
 Route::get('eduwisata/schedule', [EduwisataController::class, 'schedule_fr'])->name('eduwisata.schedule');
 Route::get('/eduwisata/{eduwisata}/schedule', [EduwisataController::class, 'scheduleDetail'])->name('eduwisata.schedule.detail');
+Route::get('/eduwisata/{eduwisata}/quota', [EduwisataController::class, 'getQuotaData'])->name('eduwisata.quota.data');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::post('/order/checkout-cart', [OrderController::class, 'checkoutFromCart'])->name('order.checkout-cart');

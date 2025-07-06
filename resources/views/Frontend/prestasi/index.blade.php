@@ -48,74 +48,126 @@
             border-radius: 8px;
         }
 
-        /* === Prestasi Cards Horizontal === */
+        /* === Prestasi Cards 3 Kolom === */
         .prestasi-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px auto;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: start;
         }
 
         .prestasi-card {
-            display: flex;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            min-height: 350px;
         }
 
         .prestasi-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #10b981;
         }
 
         .prestasi-image {
-            flex: 1;
-            min-width: 200px;
-            max-width: 250px;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
         }
 
         .prestasi-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .prestasi-card:hover .prestasi-image img {
+            transform: scale(1.05);
         }
 
         .prestasi-content {
-            flex: 2;
             padding: 20px;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         .prestasi-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+            line-height: 1.4;
         }
 
         .prestasi-text {
-            font-size: 15px;
-            color: #2f5d27;
-            text-align: right;
+            font-size: 14px;
+            color: #6b7280;
             line-height: 1.6;
+            flex: 1;
+            text-align: justify;
+        }
+
+        /* Badge untuk prestasi */
+        .prestasi-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+        }
+
+        .prestasi-card {
+            position: relative;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .prestasi-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                max-width: 800px;
+            }
         }
 
         @media (max-width: 768px) {
-            .prestasi-card {
-                flex-direction: column;
+            .prestasi-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                max-width: 500px;
             }
 
-            .prestasi-image,
+            .prestasi-image {
+                height: 180px;
+            }
+
             .prestasi-content {
-                max-width: 100%;
+                padding: 16px;
+            }
+
+            .prestasi-title {
+                font-size: 15px;
             }
 
             .prestasi-text {
-                text-align: justify;
+                font-size: 13px;
             }
         }
 
@@ -136,7 +188,8 @@
         }
 
         .animate-fade-in {
-            animation: fadeIn 1s ease-out forwards;
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
         }
 
         .animate-slide-down {
@@ -145,6 +198,36 @@
 
         .animate-slide-up {
             animation: slideUp 1s ease-out forwards;
+        }
+
+        /* Animasi khusus untuk card prestasi */
+        .prestasi-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardSlideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes cardSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading skeleton untuk card prestasi */
+        .prestasi-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
         }
 
         /* Modal animations */
@@ -187,7 +270,7 @@
         }
     </style>
 
-    <div class="container-fluid px-20">
+    <div class="container mx-auto px-4 max-w-7xl">
 
         <div class="text-center">
             <div class="section-title">VISI & MISI</div>
@@ -318,17 +401,18 @@
         </div>
 
         <section class="py-4">
-            <div class="container">
-            @if($prestasi && $prestasi->count())
+            <div class="container mx-auto px-4">
+            @if($prestasis && $prestasis->count())
             <div class="prestasi-grid">
-                @foreach($prestasi as $item)
-                <div class="prestasi-card">
+                @foreach($prestasis as $item)
+                <div class="prestasi-card animate-fade-in" style="animation-delay: {{ $loop->index * 0.1 }}s;">
+                    <div class="prestasi-badge">Prestasi</div>
                     <div class="prestasi-image">
                         <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}">
                     </div>
                     <div class="prestasi-content">
                         <div class="prestasi-title">{{ $item->title }}</div>
-                            <div class="prestasi-text">{!! Str::limit(strip_tags($item->content), 250) !!}</div>
+                        <div class="prestasi-text">{!! Str::limit(strip_tags($item->content), 200) !!}</div>
                     </div>
                 </div>
                 @endforeach
@@ -419,6 +503,29 @@
         } else {
             fullscreenBtn.className = 'fas fa-expand text-lg';
         }
+    });
+
+    // Animasi card prestasi dengan Intersection Observer
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.prestasi-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animationDelay = `${index * 0.1}s`;
+                        entry.target.style.animation = 'cardSlideUp 0.6s ease-out forwards';
+                    }, index * 100);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
     });
     </script>
     @endsection

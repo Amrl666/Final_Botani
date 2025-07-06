@@ -70,19 +70,69 @@
                             <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id ?? '' }}">
                             <div class="flex flex-col space-y-2">
                                 <label for="nama_pemesan" class="text-sm font-medium text-gray-700">Nama Pemesan</label>
-                                <input type="text" name="nama_pemesan" id="nama_pemesan" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                <input type="text" 
+                                       name="nama_pemesan" 
+                                       id="nama_pemesan" 
+                                       value="{{ old('nama_pemesan') }}"
+                                       required 
+                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('nama_pemesan') border-red-500 @enderror">
+                                @error('nama_pemesan')
+                                    <div class="text-red-500 text-sm mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="telepon" class="text-sm font-medium text-gray-700">Nomor HP</label>
-                                <input type="tel" name="telepon" id="telepon" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                <input type="tel" 
+                                       name="telepon" 
+                                       id="telepon" 
+                                       value="{{ old('telepon') }}"
+                                       required 
+                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('telepon') border-red-500 @enderror">
+                                @error('telepon')
+                                    <div class="text-red-500 text-sm mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="alamat" class="text-sm font-medium text-gray-700">Alamat</label>
-                                <textarea name="alamat" id="alamat" rows="3" required class="form-textarea rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200"></textarea>
+                                <textarea name="alamat" 
+                                          id="alamat" 
+                                          rows="3" 
+                                          required 
+                                          class="form-textarea rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('alamat') border-red-500 @enderror">{{ old('alamat') }}</textarea>
+                                @error('alamat')
+                                    <div class="text-red-500 text-sm mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="jumlah_orang" class="text-sm font-medium text-gray-700">Jumlah Orang</label>
-                                <input type="number" name="jumlah_orang" id="jumlah_orang" min="1" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                <input type="number" 
+                                       name="jumlah_orang" 
+                                       id="jumlah_orang" 
+                                       min="1" 
+                                       max="15"
+                                       required 
+                                       value="{{ old('jumlah_orang') }}"
+                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('jumlah_orang') border-red-500 @enderror"
+                                       placeholder="Minimal 1, maksimal 15">
+                                @error('jumlah_orang')
+                                    <div class="text-red-500 text-sm mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <div class="text-xs text-gray-500">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Maksimal 15 orang per hari. Minimal 5 orang per grup.
+                                </div>
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="tanggal_kunjungan" class="text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
@@ -90,8 +140,15 @@
                                        name="tanggal_kunjungan" 
                                        id="tanggal_kunjungan" 
                                        min="{{ now()->toDateString() }}"
+                                       value="{{ old('tanggal_kunjungan') }}"
                                        required 
-                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('tanggal_kunjungan') border-red-500 @enderror">
+                                @error('tanggal_kunjungan')
+                                    <div class="text-red-500 text-sm mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                                 
                                 <!-- Info Tanggal Full -->
                                 <div id="dateInfo" class="text-sm mt-2 hidden">
@@ -111,26 +168,43 @@
                                 
                                 <!-- Kalender Mini untuk Preview -->
                                 <div class="mt-4 p-3 bg-gray-50 rounded-lg">
-                                    <h4 class="text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar-alt me-1"></i>
-                                        Status Kuota Bulan Ini
-                                    </h4>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="text-sm font-medium text-gray-700">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            Status Kuota Bulan Ini
+                                        </h4>
+                                        <button type="button" onclick="refreshCalendar()" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                                        </button>
+                                    </div>
+                                    <div class="text-xs text-gray-600 mb-3">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Klik tanggal untuk memilih.
+                                    </div>
                                     <div id="calendarPreview" class="grid grid-cols-7 gap-1 text-xs">
                                         <!-- Akan diisi oleh JavaScript -->
                                     </div>
+                                    
+
+                                    
+
                                     <div class="mt-2 text-xs text-gray-500">
-                                        <div class="flex items-center space-x-4">
+                                        <div class="grid grid-cols-2 gap-2">
                                             <div class="flex items-center">
-                                                <div class="w-3 h-3 bg-green-500 rounded mr-1"></div>
-                                                <span>Tersedia</span>
+                                                <div class="w-3 h-3 bg-green-100 border border-green-300 rounded mr-1"></div>
+                                                <span>Tersedia (&gt;5 slot)</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="w-3 h-3 bg-yellow-100 border border-yellow-300 rounded mr-1"></div>
+                                                <span>Hampir Penuh (&lt;=5 slot)</span>
                                             </div>
                                             <div class="flex items-center">
                                                 <div class="w-3 h-3 bg-red-500 rounded mr-1"></div>
-                                                <span>Penuh</span>
+                                                <span>Penuh (0 slot)</span>
                                             </div>
                                             <div class="flex items-center">
                                                 <div class="w-3 h-3 bg-gray-300 rounded mr-1"></div>
-                                                <span>Lewat</span>
+                                                <span>Tanggal Lewat</span>
                                             </div>
                                         </div>
                                     </div>
@@ -202,6 +276,7 @@ select {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.getElementById('tanggal_kunjungan');
+    const jumlahInput = document.getElementById('jumlah_orang');
     const dateInfo = document.getElementById('dateInfo');
     const dateAvailable = document.getElementById('dateAvailable');
     const dateFull = document.getElementById('dateFull');
@@ -209,10 +284,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButton = document.querySelector('button[type="submit"]');
     
     // Data tanggal yang sudah penuh dari backend
-    const fullDates = @json($fullDates ?? []);
+    const fullDates = {!! json_encode($fullDates ?? []) !!};
+    const quotaData = {!! json_encode($quotaArray ?? []) !!};
+    
+
     
     function checkDateAvailability() {
         const selectedDate = dateInput.value;
+        const jumlahOrang = parseInt(jumlahInput.value) || 0;
         const today = new Date().toISOString().split('T')[0];
         
         // Reset semua status
@@ -234,10 +313,33 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Cek kuota tersisa
+        const kuotaTersisa = quotaData[selectedDate] !== undefined ? quotaData[selectedDate] : 15;
+        
         // Cek apakah tanggal sudah penuh
-        if (fullDates.includes(selectedDate)) {
+        if (kuotaTersisa <= 0) {
             dateInfo.classList.remove('hidden');
             dateFull.classList.remove('hidden');
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            return;
+        }
+        
+        // Cek apakah jumlah orang melebihi kuota tersisa
+        if (jumlahOrang > kuotaTersisa) {
+            dateInfo.classList.remove('hidden');
+            dateFull.classList.remove('hidden');
+            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Kuota tidak mencukupi. Tersisa ${kuotaTersisa} slot untuk tanggal ini.</span>`;
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            return;
+        }
+        
+        // Cek minimal 5 orang per grup
+        if (jumlahOrang < 5) {
+            dateInfo.classList.remove('hidden');
+            dateFull.classList.remove('hidden');
+            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Minimal 5 orang per grup untuk pemesanan eduwisata.</span>`;
             submitButton.disabled = true;
             submitButton.classList.add('opacity-50', 'cursor-not-allowed');
             return;
@@ -246,13 +348,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Tanggal tersedia
         dateInfo.classList.remove('hidden');
         dateAvailable.classList.remove('hidden');
+        dateAvailable.innerHTML = `<i class="fas fa-check-circle me-1"></i><span>Tanggal tersedia. Kuota tersisa: ${kuotaTersisa} slot</span>`;
         submitButton.disabled = false;
         submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
     }
     
-    // Event listener untuk perubahan tanggal
+    // Event listener untuk perubahan tanggal dan jumlah orang
     dateInput.addEventListener('change', checkDateAvailability);
     dateInput.addEventListener('input', checkDateAvailability);
+    jumlahInput.addEventListener('change', checkDateAvailability);
+    jumlahInput.addEventListener('input', checkDateAvailability);
     
     // Set tanggal minimum ke hari ini
     dateInput.min = new Date().toISOString().split('T')[0];
@@ -260,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tambahkan tooltip untuk tanggal yang sudah penuh
     const calendarIcon = document.createElement('div');
     calendarIcon.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400';
-    calendarIcon.innerHTML = '<i class="fas fa-calendar-alt"></i>';
+    
     
     const dateContainer = dateInput.parentElement;
     dateContainer.style.position = 'relative';
@@ -291,9 +396,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render kalender preview
     function renderCalendarPreview() {
         const calendarContainer = document.getElementById('calendarPreview');
+        calendarContainer.innerHTML = ''; // Clear existing content
+        
         const today = new Date();
-        const currentMonth = today.getMonth();
-        const currentYear = today.getFullYear();
+        // Gunakan UTC untuk konsistensi
+        const currentMonth = today.getUTCMonth();
+        const currentYear = today.getUTCFullYear();
         
         // Header hari
         const daysOfWeek = ['M', 'S', 'S', 'R', 'K', 'J', 'S'];
@@ -305,25 +413,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Hari-hari dalam bulan
-        const firstDay = new Date(currentYear, currentMonth, 1);
-        const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        const firstDay = new Date(Date.UTC(currentYear, currentMonth, 1));
+        const lastDay = new Date(Date.UTC(currentYear, currentMonth + 1, 0));
         const startDate = new Date(firstDay);
-        startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+        startDate.setUTCDate(startDate.getUTCDate() - firstDay.getUTCDay() + 1);
         
         for (let i = 0; i < 42; i++) {
             const date = new Date(startDate);
-            date.setDate(startDate.getDate() + i);
+            date.setUTCDate(startDate.getUTCDate() + i);
             
             const dayElement = document.createElement('div');
             dayElement.className = 'text-center p-1 rounded cursor-pointer transition-colors';
             
-            if (date.getMonth() === currentMonth) {
+            if (date.getUTCMonth() === currentMonth) {
                 const dateString = date.toISOString().split('T')[0];
                 const isToday = dateString === today.toISOString().split('T')[0];
                 const isPast = date < today;
-                const isFull = fullDates.includes(dateString);
+                const kuotaTersisa = quotaData[dateString] !== undefined ? quotaData[dateString] : 15;
+                const isFull = kuotaTersisa <= 0;
                 
-                dayElement.textContent = date.getDate();
+
+                
+                dayElement.textContent = date.getUTCDate();
+                
+                // Tambahkan tooltip dengan info kuota
+                if (!isPast) {
+                    dayElement.title = `Kuota tersisa: ${kuotaTersisa} slot`;
+                }
                 
                 if (isToday) {
                     dayElement.className += ' bg-blue-500 text-white font-bold';
@@ -331,6 +447,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     dayElement.className += ' bg-gray-300 text-gray-500';
                 } else if (isFull) {
                     dayElement.className += ' bg-red-500 text-white';
+                } else if (kuotaTersisa <= 5) {
+                    dayElement.className += ' bg-yellow-100 text-yellow-700 hover:bg-yellow-200';
                 } else {
                     dayElement.className += ' bg-green-100 text-green-700 hover:bg-green-200';
                 }
@@ -338,22 +456,69 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Click event untuk memilih tanggal
                 dayElement.addEventListener('click', function() {
                     if (!isPast && !isFull) {
-                        dateInput.value = dateString;
+                        // Pastikan format tanggal yang benar (YYYY-MM-DD)
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getUTCDate()).padStart(2, '0');
+                        const formattedDate = `${year}-${month}-${day}`;
+                        
+                        dateInput.value = formattedDate;
                         checkDateAvailability();
                         updateQuotaInfo();
                     }
                 });
             } else {
                 dayElement.className += ' text-gray-300';
-                dayElement.textContent = date.getDate();
+                dayElement.textContent = date.getUTCDate();
             }
             
             calendarContainer.appendChild(dayElement);
         }
+        
+
     }
     
     // Render kalender saat halaman dimuat
     renderCalendarPreview();
+    
+    // Fungsi untuk refresh kalender manual
+    window.refreshCalendar = function() {
+        fetch('{{ route("eduwisata.quota.data", $eduwisata) }}')
+            .then(response => response.json())
+            .then(data => {
+                // Update data global
+                Object.assign(quotaData, data.quotaData);
+                fullDates.length = 0;
+                fullDates.push(...data.fullDates);
+                // Re-render kalender
+                renderCalendarPreview();
+            })
+            .catch(error => {
+                console.error('Error fetching quota data:', error);
+            });
+    };
+    
+
+    
+    // Refresh kalender setiap 30 detik untuk update real-time
+    setInterval(function() {
+        // Fetch data terbaru dari API
+        fetch('{{ route("eduwisata.quota.data", $eduwisata) }}')
+            .then(response => response.json())
+            .then(data => {
+                // Update data global
+                Object.assign(quotaData, data.quotaData);
+                fullDates.length = 0;
+                fullDates.push(...data.fullDates);
+                // Re-render kalender
+                renderCalendarPreview();
+            })
+            .catch(error => {
+                console.error('Error fetching quota data:', error);
+            });
+    }, 30000); // Refresh setiap 30 detik
+    
+
 });
 </script>
 @endpush
