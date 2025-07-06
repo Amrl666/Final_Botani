@@ -417,14 +417,43 @@
             </div>
 
             <!-- Pagination -->
-            @if($contacts->hasPages())
-                <div class="d-flex justify-content-between align-items-center p-4 border-top">
-                    <div class="text-muted">
-                        Menampilkan {{ $contacts->firstItem() ?? 0 }} sampai {{ $contacts->lastItem() ?? 0 }} dari {{ $contacts->total() }} pesan
-                    </div>
-                    {{ $contacts->links() }}
+        @if($contacts->hasPages())
+        <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination pagination-lg shadow-sm">
+                            {{-- Tombol Sebelumnya --}}
+                            @if ($contacts->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">‹</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $contacts->previousPageUrl() }}" rel="prev">‹</a>
+                                </li>
+                            @endif
+
+                            {{-- Angka Halaman --}}
+                            @foreach ($contacts->getUrlRange(1, $contacts->lastPage()) as $page => $url)
+                                <li class="page-item {{ $contacts->currentPage() == $page ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            {{-- Tombol Selanjutnya --}}
+                            @if ($contacts->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $contacts->nextPageUrl() }}" rel="next">›</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">›</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
                 </div>
             @endif
+        </div>
         </div>
     </div>
 </div>
