@@ -145,6 +145,49 @@
                             </div>
                         </div>
                         
+                        <!-- Bundle Fields -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="bundle_quantity" class="form-label">Jumlah Bundle</label>
+                                    <input type="number" 
+                                           class="form-control @error('bundle_quantity') is-invalid @enderror" 
+                                           id="bundle_quantity" 
+                                           name="bundle_quantity" 
+                                           value="{{ old('bundle_quantity') }}"
+                                           placeholder="0"
+                                           min="0">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Jumlah item dalam bundle (misal: 3 untuk "5000 dapat 3")
+                                    </small>
+                                    @error('bundle_quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="bundle_price" class="form-label">Harga Bundle (Rp)</label>
+                                    <input type="number" 
+                                           step="0.01" 
+                                           class="form-control @error('bundle_price') is-invalid @enderror" 
+                                           id="bundle_price" 
+                                           name="bundle_price" 
+                                           value="{{ old('bundle_price') }}"
+                                           placeholder="0.00"
+                                           min="0">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Harga total untuk bundle (misal: 5000 untuk "5000 dapat 3")
+                                    </small>
+                                    @error('bundle_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="mb-4">
                             <label for="image" class="form-label">Gambar Produk</label>
                             <div class="image-upload-wrapper">

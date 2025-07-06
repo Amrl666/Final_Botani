@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'fonnte' => [
+        'api_key' => env('FONNTE_API_KEY'),
+        'device_id' => env('FONNTE_DEVICE_ID'),
+        'admin_phone' => env('FONNTE_ADMIN_PHONE', '6282379044166'),
+    ],
+
 ];

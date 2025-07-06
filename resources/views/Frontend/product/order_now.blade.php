@@ -3,11 +3,7 @@
 @section('title', $product->name)
 
 @section('content')
-<div id="infoUlangiPesan" style="display:none; margin-top:2rem;" class="w-full flex justify-center">
-    <div class="w-full bg-yellow-300 border-2 border-yellow-600 text-yellow-900 text-xl font-bold px-6 py-5 rounded-lg shadow text-center">
-        Jika sudah chat admin, <u>silakan ulangi kembali proses pemesanan</u>.
-    </div>
-</div>
+
 <div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
         <!-- Breadcrumb -->
@@ -74,11 +70,7 @@
                         <!-- Direct Order Section -->
                         <div class="border-t pt-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Pesan Langsung</h3>
-                            <div id="chat-admin-section">
-                                <button id="btnChatAdmin" type="button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mb-3" style="display:none;">
-                                    Chat Admin di WhatsApp
-                                </button>
-                                <form id="orderForm" action="{{ route('order.store') }}" method="POST" class="space-y-4" style="display:block;">
+                            <form id="orderForm" action="{{ route('order.store') }}" method="POST" class="space-y-4">
                                     @csrf
                                     <input type="hidden" name="produk_id" value="{{ $product->id }}">
                                     
@@ -125,15 +117,28 @@
                                     <div class="flex flex-col space-y-2">
                                         <label class="text-sm font-medium text-gray-700">Total Harga</label>
                                         <div id="totalHarga" class="font-bold text-green-700 text-lg">
-                                            Rp {{ number_format(($jumlah ?? 1) * $product->price, 0, ',', '.') }}
+                                            @php
+                                                $initialQty = $jumlah ?? 1;
+                                                $breakdown = $product->getBundleBreakdown($initialQty);
+                                                
+                                                if ($breakdown['bundles'] > 0) {
+                                                    echo 'Rp ' . number_format($breakdown['total'], 0, ',', '.') . 
+                                                         '<br><span class="text-sm text-orange-600">Bundle: ' . $breakdown['bundles'] . 'x' . $product->bundle_quantity;
+                                                    if ($breakdown['remaining'] > 0) {
+                                                        echo ' + ' . $breakdown['remaining'] . ' satuan';
+                                                    }
+                                                    echo '</span>';
+                                                } else {
+                                                    echo 'Rp ' . number_format($breakdown['total'], 0, ',', '.');
+                                                }
+                                            @endphp
                                         </div>
                                     </div>
 
-                                    <button id="btnPesan" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
+                                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
                                         Pesan Sekarang
                                     </button>
                                 </form>
-                            </div>
                         </div>
                     @else
                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
@@ -146,17 +151,7 @@
     </div>
 </div>
 
-<!-- Modal Konfirmasi -->
-<div id="popupChatAdmin" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
-    <div style="background:#fff; max-width:350px; margin:10% auto; padding:2rem; border-radius:1rem; text-align:center; position:relative;">
-        <button id="btnClosePopup" style="position:absolute; top:0.5rem; right:0.5rem; background:transparent; border:none; font-size:1.5rem; color:#888; cursor:pointer;">&times;</button>
-        <p class="mb-4 text-lg font-semibold">Apakah Anda sudah pernah chat admin?</p>
-        <div class="flex justify-center gap-4">
-            <button id="btnSudahChat" class="bg-green-600 text-white px-4 py-2 rounded">Sudah</button>
-            <button id="btnBelumChat" class="bg-gray-400 text-white px-4 py-2 rounded">Belum</button>
-        </div>
-    </div>
-</div>
+
 
 <style>
 @keyframes fadeIn {
@@ -240,84 +235,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const jumlahInput = document.getElementById('jumlah');
     const totalHargaDiv = document.getElementById('totalHarga');
     const hargaProduk = {{ $product->price }};
+    const hasBundle = {{ $product->hasBundle() ? 'true' : 'false' }};
+    const bundleQuantity = {{ $product->bundle_quantity ?? 0 }};
+    const bundlePrice = {{ $product->bundle_price ?? 0 }};
+    
     if(jumlahInput && totalHargaDiv) {
         function updateTotal() {
             var qty = parseInt(jumlahInput.value) || 1;
-            var total = hargaProduk * qty;
-            totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            var total = 0;
+            
+            if (hasBundle && bundleQuantity > 0) {
+                // Calculate bundle pricing
+                var completeBundles = Math.floor(qty / bundleQuantity);
+                var remainingItems = qty % bundleQuantity;
+                
+                var bundleTotal = completeBundles * bundlePrice;
+                var regularTotal = remainingItems * hargaProduk;
+                total = bundleTotal + regularTotal;
+                
+                // Show bundle info if applicable
+                if (completeBundles > 0) {
+                    let bundleText = 'Bundle: ' + completeBundles + 'x' + bundleQuantity;
+                    if (remainingItems > 0) {
+                        bundleText += ' + ' + remainingItems + ' satuan';
+                    }
+                    totalHargaDiv.innerHTML = 'Rp ' + total.toLocaleString('id-ID') + 
+                        '<br><span class="text-sm text-orange-600">' + bundleText + '</span>';
+                } else {
+                    totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
+                }
+            } else {
+                total = hargaProduk * qty;
+                totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            }
         }
         jumlahInput.addEventListener('input', updateTotal);
         updateTotal();
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const btnChatAdmin = document.getElementById('btnChatAdmin');
-    const orderForm = document.getElementById('orderForm');
-    const adminWa = '6282379044166'; // Ganti dengan nomor admin
-    // Cek localStorage
-    if (localStorage.getItem('sudahChatAdmin') === '1') {
-        orderForm.style.display = 'block';
-    } else {
-        btnChatAdmin.style.display = 'block';
-    }
-    btnChatAdmin && btnChatAdmin.addEventListener('click', function() {
-        window.open('https://wa.me/' + adminWa + '?text=Halo%20Admin%2C%20saya%20ingin%20bertanya', '_blank');
-        localStorage.setItem('sudahChatAdmin', '1');
-        btnChatAdmin.style.display = 'none';
-        orderForm.style.display = 'block';
-    });
-});
 
-function setBodyScroll(disable) {
-    if (disable) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const btnPesan = document.getElementById('btnPesan');
-    const orderForm = document.getElementById('orderForm');
-    const popup = document.getElementById('popupChatAdmin');
-    const btnSudah = document.getElementById('btnSudahChat');
-    const btnBelum = document.getElementById('btnBelumChat');
-    const btnClose = document.getElementById('btnClosePopup');
-    const infoUlangi = document.getElementById('infoUlangiPesan');
-    const adminWa = '6282379044166'; // Ganti dengan nomor admin
-    if (btnPesan) {
-        btnPesan.addEventListener('click', function(e) {
-            e.preventDefault();
-            popup.style.display = 'block';
-            setBodyScroll(true);
-        });
-    }
-    btnSudah && btnSudah.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-        orderForm.submit();
-    });
-    btnBelum && btnBelum.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-        window.open('https://wa.me/' + adminWa + '?text=Halo%20Admin%2C%20saya%20ingin%20bertanya', '_blank');
-        // Tampilkan info ulangi pesan setelah kembali
-        setTimeout(function() {
-            infoUlangi.style.display = 'block';
-        }, 500);
-    });
-    btnClose && btnClose.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-    });
-    popup && popup.addEventListener('click', function(e) {
-        if (e.target === popup) {
-            popup.style.display = 'none';
-            setBodyScroll(false);
-        }
-    });
-});
 </script>
 @endpush
 @endsection

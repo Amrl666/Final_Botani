@@ -11,12 +11,13 @@
             <div class="w-24 h-1 bg-green-500 mx-auto rounded-full"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="video-grid">
             @forelse($videos as $video)
                 <div class="video-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 animate-slide-up" 
                      style="--delay: {{ $loop->iteration * 0.1 }}s">
                     <div class="relative aspect-video group">
-                        <video class="w-full h-full object-cover" preload="metadata" poster="{{ asset('images/video-placeholder.jpg') }}">
+                        <video class="w-full h-full object-cover" 
+                               preload="metadata">
                             <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -136,6 +137,34 @@
 
 .aspect-video {
     aspect-ratio: 16 / 9;
+}
+
+/* Uniform Grid for Videos - All Landscape */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    grid-auto-rows: 1fr;
+}
+
+.video-grid .video-card {
+    break-inside: avoid;
+    margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 .video-card {

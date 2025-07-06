@@ -11,8 +11,12 @@
             <p class="text-muted">Lihat dan kelola informasi pesan</p>
         </div>
         <div class="d-flex gap-2">
-            <a href="mailto:{{ $contact->email }}" class="btn btn-primary">
-                <i class="fas fa-reply me-2"></i>Balas via Email
+            @php
+                $wa_number = preg_replace('/^0/', '62', $contact->whatsapp);
+            @endphp
+            <a href="https://wa.me/{{ $wa_number }}?text=Halo%20{{ urlencode($contact->name) }}" 
+               class="btn btn-success" target="_blank">
+                <i class="fab fa-whatsapp me-2"></i>Balas via WhatsApp
             </a>
             <a href="{{ route('dashboard.contact.messages') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Kembali ke Pesan
@@ -31,7 +35,9 @@
                         </div>
                         <div>
                             <h5 class="mb-1">{{ $contact->name }}</h5>
-                            <p class="text-muted mb-0">{{ $contact->email }}</p>
+                            <p class="text-muted mb-0">
+                                <i class="fab fa-whatsapp text-success me-1"></i>{{ $contact->whatsapp }}
+                            </p>
                         </div>
                     </div>
                     <div class="message-header">
@@ -120,15 +126,23 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-envelope me-2"></i>Alamat Email
+                                <i class="fab fa-whatsapp me-2"></i>Nomor WhatsApp
                             </span>
-                            <span class="text-dark">{{ $contact->email }}</span>
+                            <span class="text-dark">{{ $contact->whatsapp }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
                                 <i class="fas fa-tag me-2"></i>Status
                             </span>
-                            <span class="badge bg-warning">Belum Dibaca</span>
+                            @if($contact->read_at)
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>Sudah Dibaca
+                                </span>
+                            @else
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-clock me-1"></i>Belum Dibaca
+                                </span>
+                            @endif
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
@@ -144,15 +158,11 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">
-                                <i class="fas fa-globe me-2"></i>Alamat IP
+                                <i class="fas fa-bell me-2"></i>Notifikasi
                             </span>
-                            <span class="text-dark">192.168.1.1</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">
-                                <i class="fas fa-browser me-2"></i>Browser
+                            <span class="text-success">
+                                <i class="fas fa-check-circle me-1"></i>WhatsApp terkirim
                             </span>
-                            <span class="text-dark">Chrome</span>
                         </li>
                     </ul>
                 </div>

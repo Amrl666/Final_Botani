@@ -76,6 +76,16 @@
                         </div>
                     @endif
 
+                    <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded">
+                        <div class="flex items-center">
+                            <i class="fab fa-whatsapp mr-3 text-lg"></i>
+                            <div>
+                                <p class="font-semibold">Pesan akan dikirim via WhatsApp!</p>
+                                <p class="text-sm">Admin akan menerima notifikasi dan membalas langsung ke WhatsApp Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <form action="{{ url('/contact/send') }}" method="POST" class="space-y-6">
                         @csrf
                         <div class="form-group animate-slide-up" style="--delay: 0.1s">

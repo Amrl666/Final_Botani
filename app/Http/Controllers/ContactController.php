@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -21,10 +22,20 @@ class ContactController extends Controller
             'message' => 'required',
         ]);
 
+        // Create contact record
         Contact::create($validated);
 
+        // Send WhatsApp notifications via Fonnte
+        $fonnteService = new FonnteService();
+        
+        // Send notification to admin
+        $fonnteService->sendContactNotification($validated);
+        
+        // Send confirmation to customer
+        $fonnteService->sendContactConfirmation($validated);
+
         return redirect('contact')
-            ->with('success', 'Pesan Anda telah terkirim. Terima kasih!');
+            ->with('success', 'Pesan Anda telah terkirim. Kami akan segera menghubungi Anda via WhatsApp!');
     }
 
     // Admin Method untuk melihat pesan

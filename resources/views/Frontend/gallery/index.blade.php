@@ -53,6 +53,82 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
+
+    /* Video Grid Styles */
+    .aspect-video {
+        aspect-ratio: 16 / 10;
+        min-height: 250px;
+    }
+
+    /* Uniform Grid for Videos - All Landscape */
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        grid-auto-rows: 1fr;
+    }
+
+    .video-grid .video-card {
+        break-inside: avoid;
+        margin-bottom: 0;
+    }
+
+    .video-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-height: 400px;
+    }
+
+    .video-card:hover {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: translateY(-5px);
+    }
+
+    .video-card .p-6 {
+        padding: 1.5rem !important;
+    }
+
+    .video-card h3 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .video-card p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .play-button {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.3s ease;
+    }
+
+    .group:hover .play-button {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        .video-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .video-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
 </style>
 @endpush
 
@@ -110,16 +186,36 @@
             <!-- Video Gallery -->
             <div id="video-content" class="tab-content">
                 @if($videos->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div class="video-grid">
                     @foreach($videos as $video)
-                    <div class="gallery-card bg-white rounded-lg overflow-hidden shadow-md p-4 animate-slide-up" style="--delay: {{ $loop->iteration * 0.05 }}s">
-                        <video controls class="w-full rounded-md">
-                            <source src="{{ Storage::url($video->video) }}" type="video/mp4">
-                            Browser Anda tidak mendukung tag video.
-                        </video>
-                        <div class="mt-4">
-                            <h3 class="font-bold text-lg text-gray-800">{{ $video->title }}</h3>
-                            <p class="text-gray-600 text-sm mt-1">{{ $video->description }}</p>
+                    <div class="video-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 animate-slide-up" 
+                         style="--delay: {{ $loop->iteration * 0.1 }}s">
+                        <div class="relative aspect-video group">
+                            <video class="w-full h-full object-cover" 
+                                   preload="metadata">
+                                <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <button class="play-button bg-white bg-opacity-90 rounded-full p-4 transform hover:scale-110 transition-transform duration-300"
+                                        onclick="playVideo(this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $video->title }}</h3>
+                            @if($video->description)
+                                <p class="text-gray-600 line-clamp-2 mb-4">{{ $video->description }}</p>
+                            @endif
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-2"></i>
+                                {{ $video->created_at->format('d M Y') }}
+                            </div>
                         </div>
                     </div>
                     @endforeach
@@ -156,6 +252,56 @@
         const params = new URLSearchParams(window.location.search);
         const tab = params.get('tab') || 'photo';
         switchTab(tab);
+    });
+
+    function playVideo(button) {
+        const videoContainer = button.closest('.group');
+        const video = videoContainer.querySelector('video');
+        
+        if (video.paused) {
+            video.play();
+            button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            `;
+        } else {
+            video.pause();
+            button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            `;
+        }
+    }
+
+    // Pause all videos when scrolling out of view
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    const video = entry.target.querySelector('video');
+                    const button = entry.target.querySelector('.play-button');
+                    if (video && !video.paused) {
+                        video.pause();
+                        if (button) {
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            `;
+                        }
+                    }
+                }
+            });
+        });
+
+        // Observe all video containers
+        document.querySelectorAll('.group').forEach(container => {
+            observer.observe(container);
+        });
     });
 </script>
 @endpush

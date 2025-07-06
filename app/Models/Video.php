@@ -12,4 +12,10 @@ class Video extends Model
     protected $fillable = [
         'name', 'title', 'video', 'description'
     ];
+
+    // Get video aspect ratio class
+    public function getAspectClass()
+    {
+        return 'aspect-video';
+    }
 }

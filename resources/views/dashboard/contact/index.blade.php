@@ -343,6 +343,10 @@
                                     <a href="https://wa.me/{{ $wa_number }}" class="text-decoration-none" target="_blank">
                                         <i class="fab fa-whatsapp text-success me-2"></i>{{ $contact->whatsapp }}
                                     </a>
+                                    <br>
+                                    <small class="text-success">
+                                        <i class="fas fa-check-circle me-1"></i>Notifikasi terkirim
+                                    </small>
                                 </td>
                                 <td>
                                     <div class="message-preview" title="{{ $contact->subject }}">

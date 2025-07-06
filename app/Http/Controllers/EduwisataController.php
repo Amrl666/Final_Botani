@@ -119,12 +119,24 @@ class EduwisataController extends Controller
             $query->where('date', '>=', now())->orderBy('date');
         }])->get();
 
-        return view('Frontend.eduwisata.schedule', compact('eduwisatas'));
+        return view('Frontend.eduwisata.index', compact('eduwisatas'));
     }
     public function scheduleDetail(Eduwisata $eduwisata)
     {
-        $eduwisata->load('schedules');
-        return view('Frontend.eduwisata.schedule', compact('eduwisata'));
+        $eduwisata->load(['schedules' => function($query) {
+            $query->where('date', '>=', now())->orderBy('date');
+        }]);
+        
+        // Ambil data jadwal yang sudah penuh (15 orang per hari)
+        $fullDates = \App\Models\Order::where('eduwisata_id', $eduwisata->id)
+            ->where('tanggal_kunjungan', '>=', now()->toDateString())
+            ->selectRaw('tanggal_kunjungan, SUM(jumlah_orang) as total_peserta')
+            ->groupBy('tanggal_kunjungan')
+            ->having('total_peserta', '>=', 15)
+            ->pluck('tanggal_kunjungan')
+            ->toArray();
+        
+        return view('Frontend.eduwisata.schedule', compact('eduwisata', 'fullDates'));
     }
 
 }

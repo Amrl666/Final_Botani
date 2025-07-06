@@ -33,6 +33,8 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'image' => 'required|image',
             'featured' => 'nullable|boolean',
+            'bundle_quantity' => 'nullable|integer|min:0',
+            'bundle_price' => 'nullable|numeric|min:0',
         ]);
 
         $data = $request->all();
@@ -65,6 +67,8 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stock' => 'required|integer',
             'featured' => 'nullable|boolean',
+            'bundle_quantity' => 'nullable|integer|min:0',
+            'bundle_price' => 'nullable|numeric|min:0',
         ]);
 
         // Handle featured checkbox

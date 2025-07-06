@@ -140,3 +140,6 @@ Route::post('/login-wa', function (\Illuminate\Http\Request $request) {
 })->name('login.wa.submit');
 
 Route::get('/order-now/{product}', [App\Http\Controllers\OrderController::class, 'orderNowForm'])->name('order.now.form');
+Route::get('/order/success', function () {
+    return view('Frontend.order.success');
+})->name('order.success');

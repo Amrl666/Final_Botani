@@ -105,40 +105,23 @@
                                 </div>
                             </div>
 
-                            <!-- Category Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Pilih kategori</option>
-                                        <option value="tutorial" {{ old('category') == 'tutorial' ? 'selected' : '' }}>Tutorial</option>
-                                        <option value="presentation" {{ old('category') == 'presentation' ? 'selected' : '' }}>Presentasi</option>
-                                        <option value="documentary" {{ old('category') == 'documentary' ? 'selected' : '' }}>Dokumenter</option>
-                                        <option value="interview" {{ old('category') == 'interview' ? 'selected' : '' }}>Wawancara</option>
-                                        <option value="other" {{ old('category') == 'other' ? 'selected' : '' }}>Lainnya</option>
-                                    </select>
-                                    <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Kategori
-                                    </label>
-                                    @error('category')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
 
-                            <!-- Thumbnail Upload -->
+
+                            <!-- Name Field -->
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input 
-                                        type="file" 
-                                        class="form-control @error('thumbnail') is-invalid @enderror" 
-                                        id="thumbnail" 
-                                        name="thumbnail" 
-                                        accept="image/*"
+                                        type="text" 
+                                        class="form-control @error('name') is-invalid @enderror" 
+                                        id="name" 
+                                        name="name" 
+                                        placeholder="Masukkan nama video (opsional)"
+                                        value="{{ old('name') }}"
                                     >
-                                    <label for="thumbnail">
-                                        <i class="fas fa-image me-2"></i>Thumbnail (Opsional)
+                                    <label for="name">
+                                        <i class="fas fa-tag me-2"></i>Nama Video (Opsional)
                                     </label>
-                                    @error('thumbnail')
+                                    @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

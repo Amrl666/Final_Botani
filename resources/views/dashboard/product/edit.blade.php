@@ -216,7 +216,61 @@
                                     Jumlah minimum yang dapat dipesan (misal: 0.5 untuk kg, 1 untuk pieces)
                                 </div>
                             </div>
+                        </div>
 
+                        <!-- Bundle Fields -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input 
+                                        type="number" 
+                                        class="form-control @error('bundle_quantity') is-invalid @enderror" 
+                                        id="bundle_quantity" 
+                                        name="bundle_quantity" 
+                                        placeholder="Masukkan jumlah bundle"
+                                        value="{{ old('bundle_quantity', $product->bundle_quantity ?? '') }}" 
+                                        min="0"
+                                    >
+                                    <label for="bundle_quantity">
+                                        <i class="fas fa-boxes me-2"></i>Jumlah Bundle
+                                    </label>
+                                    @error('bundle_quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Jumlah item dalam bundle (misal: 3 untuk "5000 dapat 3")
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input 
+                                        type="number" 
+                                        class="form-control @error('bundle_price') is-invalid @enderror" 
+                                        id="bundle_price" 
+                                        name="bundle_price" 
+                                        placeholder="Masukkan harga bundle"
+                                        value="{{ old('bundle_price', $product->bundle_price ?? '') }}" 
+                                        min="0"
+                                        step="0.01"
+                                    >
+                                    <label for="bundle_price">
+                                        <i class="fas fa-tag me-2"></i>Harga Bundle (Rp)
+                                    </label>
+                                    @error('bundle_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Harga total untuk bundle (misal: 5000 untuk "5000 dapat 3")
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <!-- Featured Field -->
                             <div class="col-md-6">
                                 <div class="form-check form-switch mt-4">

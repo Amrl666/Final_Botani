@@ -58,11 +58,43 @@
                         <span class="text-3xl font-bold text-green-600">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </span>
-                            <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
-                    
-
-                        
+                        <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
                     </div>
+
+                    @if($product->hasBundle())
+                        <div class="mb-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-lg font-semibold text-orange-800">
+                                    <i class="fas fa-gift me-2"></i>Paket Hemat!
+                                </h3>
+                                <span class="bg-orange-100 text-orange-800 text-sm font-semibold px-2 py-1 rounded-full">
+                                    Hemat {{ $product->getBundleSavingsPercentage() }}%
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-orange-600">
+                                        Rp {{ number_format($product->bundle_price, 0, ',', '.') }}
+                                    </div>
+                                    <div class="text-sm text-orange-700">
+                                        untuk {{ $product->bundle_quantity }} {{ $product->unit ?? 'satuan' }}
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-sm text-gray-500 line-through">
+                                        Rp {{ number_format($product->price * $product->bundle_quantity, 0, ',', '.') }}
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        harga normal
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-xs text-orange-700">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Hemat Rp {{ number_format($product->getBundleSavings(), 0, ',', '.') }} per paket
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="prose prose-green max-w-none mb-8">
                         <p class="text-gray-600">{{ $product->description }}</p>
@@ -83,6 +115,15 @@
                                        class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center">
                                 <span class="text-sm text-gray-500">{{ $product->unit ?? 'satuan' }}</span>
                             </div>
+                            
+                            @if($product->hasBundle())
+                                <div class="mb-4 p-3 bg-orange-50 rounded-lg border border-orange-200">
+                                    <div class="text-sm text-orange-800">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <strong>Tips:</strong> Beli {{ $product->bundle_quantity }} {{ $product->unit ?? 'satuan' }} untuk mendapatkan harga bundle Rp {{ number_format($product->bundle_price, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            @endif
                             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                                 <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
                                     @csrf

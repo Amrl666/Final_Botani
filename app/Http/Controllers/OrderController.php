@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\Eduwisata;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -36,6 +37,23 @@ class OrderController extends Controller
             $eduwisata = Eduwisata::find($data['eduwisata_id']);
             $namaItem = $eduwisata->name ?? 'Eduwisata';
             $jumlah = $data['jumlah_orang'] ?? 0;
+            $tanggal = $data['tanggal_kunjungan'] ?? null;
+            
+            // Validasi kapasitas harian (maksimal 15 orang per hari)
+            if ($tanggal) {
+                $totalBookedToday = Order::where('eduwisata_id', $data['eduwisata_id'])
+                    ->where('tanggal_kunjungan', $tanggal)
+                    ->sum('jumlah_orang');
+                
+                $availableSlots = 15 - $totalBookedToday;
+                
+                if ($jumlah > $availableSlots) {
+                    return back()->withErrors([
+                        'jumlah_orang' => "Maaf, untuk tanggal $tanggal hanya tersisa $availableSlots slot. Maksimal 15 orang per hari."
+                    ])->withInput();
+                }
+            }
+            
             $harga = 14000;
             if ($jumlah >= 20) {
                 $harga = 10000;
@@ -48,6 +66,7 @@ class OrderController extends Controller
             $produk = Product::find($data['produk_id']);
             $namaItem = $produk->name ?? 'Produk';
             $jumlah = $data['jumlah'] ?? 1;
+            
             // Check if quantity is valid based on min_increment
             if ($produk && $produk->min_increment > 0) {
                 $remainder = fmod($jumlah, $produk->min_increment);
@@ -55,7 +74,27 @@ class OrderController extends Controller
                     return back()->with('error', "Jumlah harus kelipatan {$produk->min_increment} {$produk->unit}.");
                 }
             }
-            $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
+            
+            // Calculate total price with bundle logic
+            if ($produk && $produk->hasBundle()) {
+                $breakdown = $produk->getBundleBreakdown($jumlah);
+                $data['total_harga'] = $breakdown['total'];
+                
+                // Add bundle info to message
+                if ($breakdown['bundles'] > 0) {
+                    $bundleInfo = "Bundle: {$breakdown['bundles']}x{$produk->bundle_quantity}";
+                    if ($breakdown['remaining'] > 0) {
+                        $bundleInfo .= " + {$breakdown['remaining']} satuan";
+                    }
+                    $data['keterangan'] = ($data['keterangan'] ?? '') . " ($bundleInfo)";
+                }
+                
+                // Add bundle breakdown for WhatsApp message
+                $data['bundle_breakdown'] = $breakdown;
+                $data['bundle_quantity'] = $produk->bundle_quantity;
+            } else {
+                $data['total_harga'] = $produk ? ($produk->price * $jumlah) : 0;
+            }
         }
 
         $order = Order::create($data);
@@ -63,31 +102,31 @@ class OrderController extends Controller
         // Simpan session untuk tracking riwayat user
         session()->put('telepon', $data['telepon']);
 
-        // --- Generate pesan WhatsApp ---
-        $nama     = $data['nama_pemesan'];
-        $telepon  = $data['telepon'];
-        $alamat   = $data['alamat'] ?? '-';
-        $jumlah   = $data['jumlah_orang'] ?? $data['jumlah'] ?? 0;
-        $tanggal  = $data['tanggal_kunjungan'] ?? '-';
-        $harga    = $data['total_harga'];
+        // --- Kirim notifikasi via Fonnte ---
+        $fonnteService = new FonnteService();
+        
+        // Prepare order data for notification
+        $orderData = [
+            'nama_pemesan' => $data['nama_pemesan'],
+            'telepon' => $data['telepon'],
+            'alamat' => $data['alamat'] ?? '-',
+            'jumlah_orang' => $data['jumlah_orang'] ?? null,
+            'jumlah' => $data['jumlah'] ?? null,
+            'tanggal_kunjungan' => $data['tanggal_kunjungan'] ?? '-',
+            'total_harga' => $data['total_harga'],
+            'nama_item' => $namaItem,
+            'keterangan' => $data['keterangan'] ?? '',
+            'unit' => $produk ? $produk->unit : 'orang'
+        ];
 
-        // Add unit to the message
-        $unit = $produk ? $produk->unit : 'orang';
-        $jumlahText = $jumlah . ' ' . $unit;
+        // Send notification to admin
+        $fonnteService->sendOrderNotification($orderData);
+        
+        // Send confirmation to customer
+        $fonnteService->sendOrderConfirmation($orderData);
 
-        $waText = "Halo Admin, saya ingin memesan *$namaItem*:\n" .
-                "- Nama: $nama\n" .
-                "- No HP: $telepon\n" .
-                "- Alamat: $alamat\n" .
-                "- Jumlah: $jumlahText\n" .
-                "- Tanggal: $tanggal\n" .
-                "- Total: Rp " . number_format($harga, 0, ',', '.');
-
-        $waNumber = '6282379044166'; // <- Ganti dengan nomor admin
-        $waUrl = "https://wa.me/$waNumber?text=" . urlencode($waText);
-
-        // ✅ Redirect ke WhatsApp
-        return redirect()->away($waUrl);
+        // ✅ Redirect ke halaman sukses
+        return redirect()->route('order.success')->with('success', 'Pesanan berhasil dikirim! Admin akan segera menghubungi Anda.');
     }
 
     // New method for checkout from cart
@@ -109,10 +148,36 @@ class OrderController extends Controller
             return back()->with('error', 'Keranjang belanja kosong!');
         }
 
-        // Calculate total
-        $totalHarga = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        });
+        // Calculate total with bundle logic
+        $totalHarga = 0;
+        $bundleInfo = [];
+        $allBundleBreakdowns = [];
+        
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $quantity = $item->quantity;
+            
+            $breakdown = $product->getBundleBreakdown($quantity);
+            $totalHarga += $breakdown['total'];
+            
+            // Store bundle info for WhatsApp message
+            if ($breakdown['bundles'] > 0) {
+                $bundleText = "Bundle: {$breakdown['bundles']}x{$product->bundle_quantity}";
+                if ($breakdown['remaining'] > 0) {
+                    $bundleText .= " + {$breakdown['remaining']} satuan";
+                }
+                $bundleText .= " {$product->unit}";
+                $bundleInfo[] = $bundleText;
+                
+                // Store detailed breakdown for WhatsApp
+                $allBundleBreakdowns[] = [
+                    'product_name' => $product->name,
+                    'breakdown' => $breakdown,
+                    'bundle_quantity' => $product->bundle_quantity,
+                    'unit' => $product->unit
+                ];
+            }
+        }
 
         // Create order
         $order = Order::create([
@@ -124,14 +189,19 @@ class OrderController extends Controller
             'keterangan' => $request->keterangan
         ]);
 
-        // Create order items
+        // Create order items with bundle calculation
         foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product;
+            $quantity = $cartItem->quantity;
+            
+            $breakdown = $product->getBundleBreakdown($quantity);
+            
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $cartItem->product_id,
-                'quantity' => $cartItem->quantity,
-                'price_per_unit' => $cartItem->product->price,
-                'subtotal' => $cartItem->quantity * $cartItem->product->price
+                'quantity' => $quantity,
+                'price_per_unit' => $product->price, // Store regular price for reference
+                'subtotal' => $breakdown['total']
             ]);
         }
 
@@ -140,6 +210,23 @@ class OrderController extends Controller
 
         // Save session for tracking
         session()->put('telepon', $request->telepon);
+
+        // Prepare data for WhatsApp notification
+        $orderData = [
+            'nama_pemesan' => $request->nama_pemesan,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'total_harga' => $totalHarga,
+            'nama_item' => 'Beberapa Produk',
+            'keterangan' => $request->keterangan ?? '',
+            'jenis' => 'produk',
+            'all_bundle_breakdowns' => $allBundleBreakdowns
+        ];
+
+        // Send WhatsApp notification
+        $fonnteService = new \App\Services\FonnteService();
+        $fonnteService->sendOrderNotification($orderData);
+        $fonnteService->sendOrderConfirmation($orderData);
 
         // Generate WhatsApp message for multiple products
         $nama = $request->nama_pemesan;
@@ -155,10 +242,42 @@ class OrderController extends Controller
 
         $waText .= "*Detail Produk:*\n";
         foreach ($cartItems as $item) {
-            $unit = $item->product->unit;
-            $waText .= "• {$item->product->name}: {$item->quantity} {$unit} x Rp " . 
-                      number_format($item->product->price, 0, ',', '.') . 
-                      " = Rp " . number_format($item->subtotal, 0, ',', '.') . "\n";
+            $product = $item->product;
+            $quantity = $item->quantity;
+            $unit = $product->unit;
+            
+            if ($product->hasBundle()) {
+                $bundleQuantity = $product->bundle_quantity;
+                $bundlePrice = $product->bundle_price;
+                $regularPrice = $product->price;
+                
+                // Calculate bundle info
+                $completeBundles = intval($quantity / $bundleQuantity);
+                $remainingItems = $quantity % $bundleQuantity;
+                
+                $waText .= "• {$product->name}: {$quantity} {$unit}\n";
+                
+                if ($completeBundles > 0) {
+                    $waText .= "  - Bundle: {$completeBundles}x{$bundleQuantity} = Rp " . 
+                              number_format($completeBundles * $bundlePrice, 0, ',', '.') . "\n";
+                }
+                
+                if ($remainingItems > 0) {
+                    $waText .= "  - Regular: {$remainingItems}x = Rp " . 
+                              number_format($remainingItems * $regularPrice, 0, ',', '.') . "\n";
+                }
+                
+                // Calculate total for this item
+                $bundleTotal = $completeBundles * $bundlePrice;
+                $regularTotal = $remainingItems * $regularPrice;
+                $itemTotal = $bundleTotal + $regularTotal;
+                
+                $waText .= "  Total: Rp " . number_format($itemTotal, 0, ',', '.') . "\n";
+            } else {
+                $waText .= "• {$product->name}: {$quantity} {$unit} x Rp " . 
+                          number_format($product->price, 0, ',', '.') . 
+                          " = Rp " . number_format($quantity * $product->price, 0, ',', '.') . "\n";
+            }
         }
 
         $waText .= "\n*Total: Rp " . number_format($totalHarga, 0, ',', '.') . "*";

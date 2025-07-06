@@ -104,26 +104,7 @@
                                 </div>
                             </div>
 
-                            <!-- Location Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input 
-                                        type="text" 
-                                        class="form-control @error('location') is-invalid @enderror" 
-                                        id="location" 
-                                        name="location" 
-                                        placeholder="Masukkan lokasi"
-                                        value="{{ old('location', $eduwisata->location ?? '') }}" 
-                                        required
-                                    >
-                                    <label for="location">
-                                        <i class="fas fa-map-pin me-2"></i>Lokasi
-                                    </label>
-                                    @error('location')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+
 
                             <!-- Image Upload -->
                             <div class="col-12">

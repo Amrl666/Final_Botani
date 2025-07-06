@@ -42,32 +42,40 @@
     <div class="row g-4" id="achievementsGrid">
         @forelse($prestasis as $prestasi)
             <div class="col-md-6 col-lg-4 achievement-item" 
-                 data-year="{{ $prestasi->year }}" 
-                 data-category="{{ strtolower($prestasi->category) }}"
-                 data-featured="{{ $prestasi->is_featured ? 'true' : 'false' }}">
+                 data-year="{{ $prestasi->year ?? '' }}" 
+                 data-category="{{ strtolower($prestasi->category ?? '') }}"
+                 data-featured="{{ $prestasi->is_featured ?? false ? 'true' : 'false' }}">
                 <div class="card h-100 achievement-card animate-fade-in" style="--delay: {{ 0.5 + ($loop->index * 0.1) }}s">
-                    <div class="achievement-header">
-                        <div class="achievement-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        @if($prestasi->is_featured)
-                            <div class="featured-badge">
-                                <i class="fas fa-star"></i>
+                    <!-- Prestasi Image -->
+                    @if($prestasi->image)
+                        <div class="achievement-image-container">
+                            <img src="{{ asset('storage/' . $prestasi->image) }}" 
+                                 alt="{{ $prestasi->title }}" 
+                                 class="achievement-image"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="achievement-image-fallback" style="display: none;">
+                                <i class="fas fa-trophy fa-3x text-warning"></i>
                             </div>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <div class="achievement-image-container">
+                            <div class="achievement-image-fallback">
+                                <i class="fas fa-trophy fa-3x text-warning"></i>
+                            </div>
+                        </div>
+                    @endif
+                    
                     <div class="card-body">
                         <div class="achievement-meta mb-3">
                             <h5 class="card-title mb-1">{{ $prestasi->title }}</h5>
                             <p class="text-muted small mb-0">
                                 <i class="far fa-calendar-alt me-1"></i>
-                                {{ $prestasi->year }}
+                                {{ $prestasi->created_at->format('d M Y') }}
                             </p>
                         </div>
-                        <p class="card-text achievement-description">{{ Str::limit($prestasi->description, 120) }}</p>
+                        <p class="card-text achievement-description">{{ Str::limit($prestasi->content, 120) }}</p>
                         <div class="achievement-tags mb-3">
-                            <span class="badge bg-primary">{{ $prestasi->category }}</span>
-                            @if($prestasi->is_featured)
+                            @if($prestasi->is_featured ?? false)
                                 <span class="badge bg-warning">Unggulan</span>
                             @endif
                         </div>
@@ -261,6 +269,35 @@
 .achievement-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Achievement Image */
+.achievement-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.achievement-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.achievement-card:hover .achievement-image {
+    transform: scale(1.05);
+}
+
+.achievement-image-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #fff;
 }
 
 .achievement-header {

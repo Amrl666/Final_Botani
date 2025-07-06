@@ -3,11 +3,7 @@
 @section('title', 'Jadwal Eduwisata')
 
 @section('content')
-<div id="infoUlangiPesan" style="display:none; margin-top:2rem;" class="w-full flex justify-center">
-    <div class="w-full bg-yellow-300 border-2 border-yellow-600 text-yellow-900 text-xl font-bold px-6 py-5 rounded-lg shadow text-center">
-        Jika sudah chat admin, <u>silakan ulangi kembali proses pemesanan</u>.
-    </div>
-</div>
+
 <div class="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 animate-fade-in">
     <div class="container mx-auto px-4">
         <!-- Header Section -->
@@ -57,6 +53,10 @@
                                 <i class="fas fa-certificate mr-3 text-green-600"></i>
                                 <span>Sertifikat keikutsertaan</span>
                             </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-calendar-check mr-3 text-green-600"></i>
+                                <span>Maksimal 15 orang per hari</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,11 +65,7 @@
                 <div class="md:w-1/2 p-6 bg-gray-50">
                     <h3 class="text-2xl font-bold text-gray-800 mb-6">Pilih Jadwal Kunjungan</h3>
 
-                    <div id="chat-admin-section">
-                        <button id="btnChatAdmin" type="button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mb-3" style="display:none;">
-                            Chat Admin di WhatsApp
-                        </button>
-                        <form id="orderForm" action="{{ route('order.store') }}" method="POST" class="space-y-4" style="display:block;">
+                    <form id="orderForm" action="{{ route('order.store') }}" method="POST" class="space-y-4">
                             @csrf
                             <input type="hidden" name="eduwisata_id" value="{{ $eduwisata->id ?? '' }}">
                             <div class="flex flex-col space-y-2">
@@ -90,30 +86,67 @@
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="tanggal_kunjungan" class="text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
-                                <input type="date" name="tanggal_kunjungan" id="tanggal_kunjungan" required class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                <input type="date" 
+                                       name="tanggal_kunjungan" 
+                                       id="tanggal_kunjungan" 
+                                       min="{{ now()->toDateString() }}"
+                                       required 
+                                       class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200">
+                                
+                                <!-- Info Tanggal Full -->
+                                <div id="dateInfo" class="text-sm mt-2 hidden">
+                                    <div id="dateAvailable" class="text-green-600 hidden">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        <span>Tanggal tersedia</span>
+                                    </div>
+                                    <div id="dateFull" class="text-red-600 hidden">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        <span>Tanggal sudah penuh (15 orang)</span>
+                                    </div>
+                                    <div id="datePast" class="text-orange-600 hidden">
+                                        <i class="fas fa-calendar-times me-1"></i>
+                                        <span>Tanggal sudah lewat</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kalender Mini untuk Preview -->
+                                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fas fa-calendar-alt me-1"></i>
+                                        Status Kuota Bulan Ini
+                                    </h4>
+                                    <div id="calendarPreview" class="grid grid-cols-7 gap-1 text-xs">
+                                        <!-- Akan diisi oleh JavaScript -->
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="flex items-center">
+                                                <div class="w-3 h-3 bg-green-500 rounded mr-1"></div>
+                                                <span>Tersedia</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="w-3 h-3 bg-red-500 rounded mr-1"></div>
+                                                <span>Penuh</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="w-3 h-3 bg-gray-300 rounded mr-1"></div>
+                                                <span>Lewat</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <button id="btnPesan" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105">
                                 Pesan Sekarang
                             </button>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Konfirmasi -->
-<div id="popupChatAdmin" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
-    <div style="background:#fff; max-width:350px; margin:10% auto; padding:2rem; border-radius:1rem; text-align:center; position:relative;">
-        <button id="btnClosePopup" style="position:absolute; top:0.5rem; right:0.5rem; background:transparent; border:none; font-size:1.5rem; color:#888; cursor:pointer;">&times;</button>
-        <p class="mb-4 text-lg font-semibold">Apakah Anda sudah pernah chat admin?</p>
-        <div class="flex justify-center gap-4">
-            <button id="btnSudahChat" class="bg-green-600 text-white px-4 py-2 rounded">Sudah</button>
-            <button id="btnBelumChat" class="bg-gray-400 text-white px-4 py-2 rounded">Belum</button>
-        </div>
-    </div>
-</div>
+
 
 <style>
 @keyframes fadeIn {
@@ -167,54 +200,162 @@ select {
 
 @push('scripts')
 <script>
-function setBodyScroll(disable) {
-    if (disable) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-}
 document.addEventListener('DOMContentLoaded', function() {
-    const btnPesan = document.getElementById('btnPesan');
-    const orderForm = document.getElementById('orderForm');
-    const popup = document.getElementById('popupChatAdmin');
-    const btnSudah = document.getElementById('btnSudahChat');
-    const btnBelum = document.getElementById('btnBelumChat');
-    const btnClose = document.getElementById('btnClosePopup');
-    const infoUlangi = document.getElementById('infoUlangiPesan');
-    const adminWa = '6282379044166'; // Ganti dengan nomor admin
-    if (btnPesan) {
-        btnPesan.addEventListener('click', function(e) {
-            e.preventDefault();
-            popup.style.display = 'block';
-            setBodyScroll(true);
-        });
-    }
-    btnSudah && btnSudah.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-        orderForm.submit();
-    });
-    btnBelum && btnBelum.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-        window.open('https://wa.me/' + adminWa + '?text=Halo%20Admin%2C%20saya%20ingin%20bertanya%20tentang%20eduwisata', '_blank');
-        // Tampilkan info ulangi pesan setelah kembali
-        setTimeout(function() {
-            infoUlangi.style.display = 'block';
-        }, 500);
-    });
-    btnClose && btnClose.addEventListener('click', function() {
-        popup.style.display = 'none';
-        setBodyScroll(false);
-    });
-    popup && popup.addEventListener('click', function(e) {
-        if (e.target === popup) {
-            popup.style.display = 'none';
-            setBodyScroll(false);
+    const dateInput = document.getElementById('tanggal_kunjungan');
+    const dateInfo = document.getElementById('dateInfo');
+    const dateAvailable = document.getElementById('dateAvailable');
+    const dateFull = document.getElementById('dateFull');
+    const datePast = document.getElementById('datePast');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Data tanggal yang sudah penuh dari backend
+    const fullDates = @json($fullDates ?? []);
+    
+    function checkDateAvailability() {
+        const selectedDate = dateInput.value;
+        const today = new Date().toISOString().split('T')[0];
+        
+        // Reset semua status
+        dateInfo.classList.add('hidden');
+        dateAvailable.classList.add('hidden');
+        dateFull.classList.add('hidden');
+        datePast.classList.add('hidden');
+        
+        if (!selectedDate) {
+            return;
         }
-    });
+        
+        // Cek apakah tanggal sudah lewat
+        if (selectedDate < today) {
+            dateInfo.classList.remove('hidden');
+            datePast.classList.remove('hidden');
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            return;
+        }
+        
+        // Cek apakah tanggal sudah penuh
+        if (fullDates.includes(selectedDate)) {
+            dateInfo.classList.remove('hidden');
+            dateFull.classList.remove('hidden');
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            return;
+        }
+        
+        // Tanggal tersedia
+        dateInfo.classList.remove('hidden');
+        dateAvailable.classList.remove('hidden');
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+    
+    // Event listener untuk perubahan tanggal
+    dateInput.addEventListener('change', checkDateAvailability);
+    dateInput.addEventListener('input', checkDateAvailability);
+    
+    // Set tanggal minimum ke hari ini
+    dateInput.min = new Date().toISOString().split('T')[0];
+    
+    // Tambahkan tooltip untuk tanggal yang sudah penuh
+    const calendarIcon = document.createElement('div');
+    calendarIcon.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400';
+    calendarIcon.innerHTML = '<i class="fas fa-calendar-alt"></i>';
+    
+    const dateContainer = dateInput.parentElement;
+    dateContainer.style.position = 'relative';
+    dateContainer.appendChild(calendarIcon);
+    
+    // Tambahkan info kuota tersisa
+    function updateQuotaInfo() {
+        const selectedDate = dateInput.value;
+        if (selectedDate && !fullDates.includes(selectedDate) && selectedDate >= new Date().toISOString().split('T')[0]) {
+            // Hitung kuota tersisa (implementasi bisa ditambahkan nanti)
+            const quotaInfo = document.createElement('div');
+            quotaInfo.className = 'text-xs text-blue-600 mt-1';
+            quotaInfo.innerHTML = '<i class="fas fa-users me-1"></i>Kuota tersisa: Tersedia';
+            
+            // Hapus info sebelumnya jika ada
+            const existingQuota = dateContainer.querySelector('.quota-info');
+            if (existingQuota) {
+                existingQuota.remove();
+            }
+            
+            quotaInfo.classList.add('quota-info');
+            dateContainer.appendChild(quotaInfo);
+        }
+    }
+    
+    dateInput.addEventListener('change', updateQuotaInfo);
+    
+    // Render kalender preview
+    function renderCalendarPreview() {
+        const calendarContainer = document.getElementById('calendarPreview');
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+        
+        // Header hari
+        const daysOfWeek = ['M', 'S', 'S', 'R', 'K', 'J', 'S'];
+        daysOfWeek.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'text-center font-medium text-gray-600 p-1';
+            dayHeader.textContent = day;
+            calendarContainer.appendChild(dayHeader);
+        });
+        
+        // Hari-hari dalam bulan
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        const startDate = new Date(firstDay);
+        startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+        
+        for (let i = 0; i < 42; i++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+            
+            const dayElement = document.createElement('div');
+            dayElement.className = 'text-center p-1 rounded cursor-pointer transition-colors';
+            
+            if (date.getMonth() === currentMonth) {
+                const dateString = date.toISOString().split('T')[0];
+                const isToday = dateString === today.toISOString().split('T')[0];
+                const isPast = date < today;
+                const isFull = fullDates.includes(dateString);
+                
+                dayElement.textContent = date.getDate();
+                
+                if (isToday) {
+                    dayElement.className += ' bg-blue-500 text-white font-bold';
+                } else if (isPast) {
+                    dayElement.className += ' bg-gray-300 text-gray-500';
+                } else if (isFull) {
+                    dayElement.className += ' bg-red-500 text-white';
+                } else {
+                    dayElement.className += ' bg-green-100 text-green-700 hover:bg-green-200';
+                }
+                
+                // Click event untuk memilih tanggal
+                dayElement.addEventListener('click', function() {
+                    if (!isPast && !isFull) {
+                        dateInput.value = dateString;
+                        checkDateAvailability();
+                        updateQuotaInfo();
+                    }
+                });
+            } else {
+                dayElement.className += ' text-gray-300';
+                dayElement.textContent = date.getDate();
+            }
+            
+            calendarContainer.appendChild(dayElement);
+        }
+    }
+    
+    // Render kalender saat halaman dimuat
+    renderCalendarPreview();
 });
 </script>
 @endpush
+
 @endsection

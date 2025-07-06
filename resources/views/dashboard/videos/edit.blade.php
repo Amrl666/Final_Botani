@@ -67,6 +67,21 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+
+
+                        <div class="mb-4">
+                            <label for="name" class="form-label">Nama Video (Opsional)</label>
+                            <input type="text" 
+                                   class="form-control @error('name') is-invalid @enderror" 
+                                   id="name" 
+                                   name="name" 
+                                   value="{{ old('name', $video->name) }}" 
+                                   placeholder="Masukkan nama video (opsional)">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('dashboard.videos.index') }}" class="btn btn-light">Batal</a>

@@ -166,9 +166,7 @@
                                 <th>
                                     <i class="fas fa-users me-2"></i>Peserta
                                 </th>
-                                <th>
-                                    <i class="fas fa-map-marker-alt me-2"></i>Lokasi
-                                </th>
+
                                 <th>
                                     <i class="fas fa-toggle-on me-2"></i>Status
                                 </th>
@@ -226,12 +224,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="location-info">
-                                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                                            {{ $schedule->location ?? $schedule->eduwisata->location ?? 'TBD' }}
-                                        </div>
-                                    </td>
+
                                     <td>
                                         @php
                                             $status = 'upcoming';
@@ -338,14 +331,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="location" name="location" placeholder="Masukkan lokasi">
-                                <label for="location">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Lokasi
-                                </label>
-                            </div>
-                        </div>
+
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="max_participants" name="max_participants" placeholder="Masukkan maksimal peserta" min="1">

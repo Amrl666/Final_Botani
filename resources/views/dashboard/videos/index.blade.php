@@ -69,7 +69,7 @@
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="video-meta">
-                                <span class="badge bg-primary">{{ $video->category }}</span>
+                                <span class="badge bg-primary">{{ $video->category ?? 'Video' }}</span>
                                 <small class="text-muted ms-2">
                                     <i class="far fa-calendar-alt me-1"></i>
                                     {{ $video->created_at->format('d M Y') }}

@@ -16,9 +16,13 @@ class CartController extends Controller
             ->where('session_id', $sessionId)
             ->get();
 
-        $total = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        });
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $quantity = $item->quantity;
+            
+            $total += $product->calculateTotalPrice($quantity);
+        }
 
         return view('Frontend.cart.index', compact('cartItems', 'total'));
     }

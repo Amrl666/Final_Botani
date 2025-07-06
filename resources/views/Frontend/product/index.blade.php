@@ -377,6 +377,23 @@
                         </span>
                     </div>
 
+                    @if($product->hasBundle())
+                        <div class="mb-3 p-2 bg-orange-50 rounded border border-orange-200">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-semibold text-orange-800">
+                                    <i class="fas fa-gift me-1"></i>Paket Hemat
+                                </span>
+                                <span class="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded">
+                                    -{{ $product->getBundleSavingsPercentage() }}%
+                                </span>
+                            </div>
+                            <div class="text-xs text-orange-700">
+                                Rp {{ number_format($product->bundle_price, 0, ',', '.') }} 
+                                untuk {{ $product->bundle_quantity }} {{ $product->unit ?? 'satuan' }}
+                            </div>
+                        </div>
+                    @endif
+
                     <p class="product-description">{{ $product->description }}</p>
 
 
