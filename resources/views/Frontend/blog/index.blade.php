@@ -135,5 +135,70 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .min-h-screen {
+        min-height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .text-lg {
+        font-size: 1rem;
+    }
+
+    .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    .p-6 {
+        padding: 1rem;
+    }
+
+    .text-xl {
+        font-size: 1.125rem;
+    }
+
+    .h-48 {
+        height: 12rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+
+    .text-lg {
+        font-size: 0.9rem;
+    }
+
+    .p-6 {
+        padding: 0.75rem;
+    }
+
+    .text-xl {
+        font-size: 1rem;
+    }
+
+    .h-48 {
+        height: 10rem;
+    }
+
+    .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        gap: 1rem;
+    }
+}
 </style>
 @endsection

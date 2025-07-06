@@ -37,6 +37,21 @@
         }
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
     /* Hero Section Styles */
     .hero-section {
         position: relative;
@@ -117,19 +132,20 @@
     /* Blog and Product Cards */
     .content-card {
         background: white;
-        border-radius: 1rem;
+        border-radius: 16px;
         overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
-        animation: fadeInUp 0.6s ease-out;
-        animation-delay: calc(var(--delay) * 0.1s);
+        min-height: 450px; /* Minimum height untuk konsistensi */
     }
 
     .content-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
     .content-image {
+        position: relative;
         height: 200px;
         overflow: hidden;
     }
@@ -138,11 +154,121 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: transform 0.3s ease;
     }
 
     .content-card:hover .content-image img {
-        transform: scale(1.1);
+        transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+        }
+
+        .quick-access-card {
+            padding: 1rem;
+        }
+
+        .quick-access-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .floating-icon {
+            width: 2rem;
+        }
+
+        .about-image-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .content-image {
+            height: 180px;
+        }
+
+        .content-card {
+            min-height: 400px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-content h1 {
+            font-size: 1.5rem;
+        }
+
+        .hero-content h2 {
+            font-size: 2rem;
+        }
+
+        .hero-content p {
+            font-size: 0.9rem;
+        }
+
+        .quick-access-card {
+            padding: 0.75rem;
+        }
+
+        .quick-access-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .floating-icon {
+            width: 1.5rem;
+        }
+
+        .content-image {
+            height: 160px;
+        }
+
+        .content-card {
+            min-height: 380px;
+        }
+
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: var(--delay, 0s);
+    }
+
+    .animate-slide-down {
+        animation: slideDown 1s ease-out forwards;
+    }
+
+    .animate-slide-up {
+        opacity: 0;
+        animation: slideUp 1s ease-out forwards;
+        animation-delay: var(--delay, 0s);
+    }
+
+    .animate-scale-in {
+        animation: scaleIn 0.8s ease-out forwards;
+        animation-delay: var(--delay, 0s);
+    }
+
+    .animate-float {
+        animation: floatUpDown 3s ease-in-out infinite;
     }
 </style>
 
@@ -275,7 +401,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($products->take(3) as $product)
-            <div class="content-card" style="--delay: {{ $loop->iteration }}">
+            <div class="content-card flex flex-col h-full" style="--delay: {{ $loop->iteration }}">
                 <div class="content-image">
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
@@ -285,7 +411,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="p-6">
+                <div class="p-6 flex flex-col flex-grow">
                     <h3 class="font-bold text-xl mb-2 text-gray-800">{{ $product->name }}</h3>
                     <div class="flex items-center justify-between mb-4">
                         <span class="product-price text-green-600 font-semibold text-lg">
@@ -294,13 +420,11 @@
                         </span>
                     </div>
 
-                    <p class="product-description">{{ $product->description }}</p>
+                    <p class="product-description text-gray-600 text-sm mb-4 flex-grow">{{ Str::limit($product->description, 100) }}</p>
 
-
-
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-2 mt-auto">
                         <a href="{{ route('product.show', $product->id) }}" 
-                           class="w-full text-center bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300">
+                           class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 text-sm">
                             Pesan
                         </a>
                         @if($product->stock > 0)
@@ -309,24 +433,23 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="1">
                                 <button type="submit" 
-                                        class=" bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-300">
-                                    <i class="fas fa-cart-plus me-1"></i>
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-300 text-sm">
+                                    <i class="fas fa-cart-plus"></i>
                                 </button>
                             </form>
                         @else
                             <button disabled 
-                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-2 rounded-lg cursor-not-allowed">
-                                <i class="fas fa-times me-1"></i>Habis
+                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-2 rounded-lg cursor-not-allowed text-sm">
+                                <i class="fas fa-times"></i>
                             </button>
                         @endif
-
                     </div>
                 </div>
             </div>
             @endforeach
 
             @if($products->count() > 3)
-            <div class="content-card bg-green-50" style="--delay: 4">
+            <div class="content-card bg-green-50 flex flex-col h-full" style="--delay: 4">
                 <div class="p-6 flex flex-col items-center justify-center h-full">
                     <i class="fas fa-plus-circle text-5xl text-green-600 mb-4"></i>
                     <h3 class="font-bold text-xl mb-2 text-green-800">Lihat Semua Produk</h3>

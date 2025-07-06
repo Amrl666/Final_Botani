@@ -82,95 +82,73 @@
     }
 
     .filter-btn:hover {
-        border-color: #059669;
-        color: #059669;
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(5, 150, 105, 0.2);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
 
     .filter-btn.active {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        background: linear-gradient(135deg, #10b981, #059669);
         color: white;
-        border-color: #059669;
+        border-color: #10b981;
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
     }
 
     .product-card {
         background: white;
-        border-radius: 1.5rem;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s ease;
-        position: relative;
-    }
-
-    .product-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 1;
-    }
-
-    .product-card:hover::before {
-        opacity: 1;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        min-height: 500px; /* Minimum height untuk konsistensi */
     }
 
     .product-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
     .product-image-container {
         position: relative;
-        overflow: hidden;
         height: 200px;
+        overflow: hidden;
     }
 
     .product-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        transition: transform 0.3s ease;
     }
 
     .product-card:hover .product-image {
-        transform: scale(1.15);
+        transform: scale(1.05);
     }
 
     .featured-badge {
         position: absolute;
-        top: 1rem;
-        left: 1rem;
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        color: #92400e;
+        top: 12px;
+        left: 12px;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
         font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 2;
-        animation: floatUpDown 2s ease-in-out infinite;
+        font-weight: 600;
+        z-index: 10;
     }
 
     .stock-badge {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        top: 12px;
+        right: 12px;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
         font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 2;
+        font-weight: 600;
+        z-index: 10;
     }
 
     .product-content {
@@ -245,44 +223,73 @@
     }
 
     .empty-state {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        border-radius: 1.5rem;
-        padding: 3rem;
         text-align: center;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
     .empty-state i {
         font-size: 4rem;
-        color: #94a3b8;
-        margin-bottom: 1.5rem;
-        animation: floatUpDown 3s ease-in-out infinite;
+        color: #d1d5db;
+        margin-bottom: 1rem;
     }
 
     .stats-section {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        border-radius: 1.5rem;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
     }
 
     .stat-item {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
         text-align: center;
-        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
     }
 
     .stat-number {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #059669;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #10b981;
         margin-bottom: 0.5rem;
     }
 
     .stat-label {
-        font-size: 0.875rem;
+        font-size: 1rem;
         color: #6b7280;
         font-weight: 500;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .product-card {
+            min-height: 450px;
+        }
+        
+        .product-image-container {
+            height: 180px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .product-card {
+            min-height: 400px;
+        }
+        
+        .product-image-container {
+            height: 160px;
+        }
     }
 </style>
 
@@ -336,7 +343,7 @@
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             @forelse($products as $product)
-            <div class="product-card animate-scale-in" style="--delay: {{ $loop->iteration * 0.1 }}s">
+            <div class="product-card flex flex-col h-full animate-scale-in" style="--delay: {{ $loop->iteration * 0.1 }}s">
                 <div class="product-image-container">
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" 
@@ -361,45 +368,23 @@
                     @endif
                 </div>
 
-                <div class="product-content">
-                    <div class="flex items-start justify-between mb-4"> {{-- Ubah items-center menjadi items-start --}}
-                        <h3 class="product-title text-lg font-semibold">{{ $product->name }}</h3>
-
-                        <span class="product-stock flex items-center text-sm text-gray-600">
-                            <i class="fas fa-boxes me-1 text-gray-500"></i>
-                            Stok: {{ $product->stock }} {{ $product->unit ?? 'satuan' }}
-                        </span>
-                    </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="font-bold text-xl mb-2 text-gray-800">{{ $product->name }}</h3>
                     <div class="flex items-center justify-between mb-4">
-                        <span class="product-price">
+                        <span class="product-price text-green-600 font-semibold text-lg">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                             <span class="text-sm text-gray-500">/{{ $product->unit ?? 'satuan' }}</span>
                         </span>
+                        <span class="text-sm text-gray-500">
+                            <i class="fas fa-boxes me-1"></i>{{ $product->stock }} {{ $product->unit ?? 'satuan' }}
+                        </span>
                     </div>
 
-                    @if($product->hasBundle())
-                        <div class="mb-3 p-2 bg-orange-50 rounded border border-orange-200">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-xs font-semibold text-orange-800">
-                                    <i class="fas fa-gift me-1"></i>Paket Hemat
-                                </span>
-                                <span class="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded">
-                                    -{{ $product->getBundleSavingsPercentage() }}%
-                                </span>
-                            </div>
-                            <div class="text-xs text-orange-700">
-                                Rp {{ number_format($product->bundle_price, 0, ',', '.') }} 
-                                untuk {{ $product->bundle_quantity }} {{ $product->unit ?? 'satuan' }}
-                            </div>
-                        </div>
-                    @endif
+                    <p class="product-description text-gray-600 text-sm mb-4 flex-grow">{{ Str::limit($product->description, 120) }}</p>
 
-                    <p class="product-description">{{ $product->description }}</p>
-
-
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-2 mt-auto">
                         <a href="{{ route('product.show', $product->id) }}" 
-                           class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-center">
+                           class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-center text-sm">
                             <i class="fas fa-eye me-2"></i>Detail
                         </a>
                         
@@ -409,13 +394,13 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="1">
                                 <button type="submit" 
-                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-sm">
                                     <i class="fas fa-cart-plus me-1"></i>Keranjang
                                 </button>
                             </form>
                         @else
                             <button disabled 
-                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg cursor-not-allowed">
+                                    class="flex-1 bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg cursor-not-allowed text-sm">
                                 <i class="fas fa-times me-1"></i>Habis
                             </button>
                         @endif

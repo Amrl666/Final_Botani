@@ -148,6 +148,24 @@
         }
 
         @media (max-width: 768px) {
+            .profil-container {
+                padding: 20px 15px;
+            }
+
+            .section-title {
+                font-size: 22px;
+                margin: 40px 0 20px;
+            }
+
+            .section-subtitle {
+                font-size: 18px;
+                margin: 20px 0 8px;
+            }
+
+            .section-text {
+                font-size: 14px;
+            }
+
             .prestasi-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -168,6 +186,51 @@
 
             .prestasi-text {
                 font-size: 13px;
+            }
+
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profil-container {
+                padding: 15px 10px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin: 30px 0 15px;
+            }
+
+            .section-subtitle {
+                font-size: 16px;
+                margin: 15px 0 6px;
+            }
+
+            .section-text {
+                font-size: 13px;
+            }
+
+            .prestasi-grid {
+                gap: 15px;
+            }
+
+            .prestasi-image {
+                height: 150px;
+            }
+
+            .prestasi-content {
+                padding: 12px;
+            }
+
+            .prestasi-title {
+                font-size: 14px;
+            }
+
+            .prestasi-text {
+                font-size: 12px;
             }
         }
 

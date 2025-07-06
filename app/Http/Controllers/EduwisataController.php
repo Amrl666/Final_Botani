@@ -180,8 +180,6 @@ class EduwisataController extends Controller
             }
         }
         
-
-        
         return view('Frontend.eduwisata.schedule', compact('eduwisata', 'fullDates', 'quotaArray'));
     }
     
@@ -238,7 +236,9 @@ class EduwisataController extends Controller
         
         return response()->json([
             'quotaData' => $quotaArray,
-            'fullDates' => $fullDates
+            'fullDates' => $fullDates,
+            'currentTime' => now()->toISOString(),
+            'currentDate' => now()->toDateString()
         ]);
     }
 

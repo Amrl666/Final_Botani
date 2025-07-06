@@ -39,10 +39,10 @@ class OrderController extends Controller
             $jumlah = $data['jumlah_orang'] ?? 0;
             $tanggal = $data['tanggal_kunjungan'] ?? null;
             
-            // Validasi minimal 5 orang per grup
-            if ($jumlah < 5) {
+            // Validasi minimal 1 orang per grup
+            if ($jumlah < 1) {
                 return back()->withErrors([
-                    'jumlah_orang' => 'Minimal 5 orang per grup untuk pemesanan eduwisata.'
+                    'jumlah_orang' => 'Minimal 1 orang untuk pemesanan eduwisata.'
                 ])->withInput();
             }
             

@@ -176,5 +176,91 @@
         opacity: .5;
     }
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .min-h-screen {
+        min-height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .text-lg {
+        font-size: 1rem;
+    }
+
+    .flex.flex-col.md\\:flex-row {
+        flex-direction: column;
+    }
+
+    .md\\:w-2\\/5 {
+        width: 100%;
+    }
+
+    .md\\:w-3\\/5 {
+        width: 100%;
+    }
+
+    .p-8 {
+        padding: 1.5rem;
+    }
+
+    .space-y-6 > * + * {
+        margin-top: 1rem;
+    }
+
+    .w-10.h-10 {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+
+    .text-lg {
+        font-size: 0.9rem;
+    }
+
+    .p-8 {
+        padding: 1rem;
+    }
+
+    .w-10.h-10 {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .text-2xl {
+        font-size: 1.25rem;
+    }
+
+    .space-y-6 > * + * {
+        margin-top: 0.75rem;
+    }
+
+    .px-4.py-3 {
+        padding: 0.75rem;
+    }
+
+    .py-3.px-6 {
+        padding: 0.75rem 1rem;
+    }
+}
 </style>
 @endsection

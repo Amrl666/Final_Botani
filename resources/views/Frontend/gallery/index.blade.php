@@ -124,9 +124,98 @@
     }
 
     @media (max-width: 768px) {
+        .min-h-screen {
+            min-height: auto;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .text-4xl {
+            font-size: 2rem;
+        }
+
+        .text-5xl {
+            font-size: 2.5rem;
+        }
+
+        .text-lg {
+            font-size: 1rem;
+        }
+
         .video-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
+        }
+
+        .grid.grid-cols-1.sm\\:grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .h-64 {
+            height: 12rem;
+        }
+
+        .p-4 {
+            padding: 0.75rem;
+        }
+
+        .p-6 {
+            padding: 1rem;
+        }
+
+        .text-xl {
+            font-size: 1.125rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .text-4xl {
+            font-size: 1.5rem;
+        }
+
+        .text-5xl {
+            font-size: 2rem;
+        }
+
+        .text-lg {
+            font-size: 0.9rem;
+        }
+
+        .grid.grid-cols-1.sm\\:grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .h-64 {
+            height: 10rem;
+        }
+
+        .p-4 {
+            padding: 0.5rem;
+        }
+
+        .p-6 {
+            padding: 0.75rem;
+        }
+
+        .text-xl {
+            font-size: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
         }
     }
 </style>

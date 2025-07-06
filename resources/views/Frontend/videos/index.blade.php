@@ -154,16 +154,59 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .min-h-screen {
+        min-height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .text-lg {
+        font-size: 1rem;
+    }
+
     .video-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.5rem;
     }
+
+    .p-6 {
+        padding: 1rem;
+    }
+
+    .text-xl {
+        font-size: 1.125rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+
+    .text-lg {
+        font-size: 0.9rem;
+    }
+
     .video-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+
+    .p-6 {
+        padding: 0.75rem;
+    }
+
+    .text-xl {
+        font-size: 1rem;
     }
 }
 

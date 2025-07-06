@@ -198,6 +198,93 @@
         transform: scale(1.2);
     }
 
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .min-h-screen {
+            min-height: auto;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .text-4xl {
+            font-size: 2rem;
+        }
+
+        .text-5xl {
+            font-size: 2.5rem;
+        }
+
+        .text-lg {
+            font-size: 1rem;
+        }
+
+        .eduwisata-card {
+            border-radius: 1rem;
+        }
+
+        .eduwisata-content {
+            padding: 1rem;
+        }
+
+        .eduwisata-title {
+            font-size: 1.125rem;
+        }
+
+        .eduwisata-description {
+            font-size: 0.8rem;
+        }
+
+        .price-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .text-4xl {
+            font-size: 1.5rem;
+        }
+
+        .text-5xl {
+            font-size: 2rem;
+        }
+
+        .text-lg {
+            font-size: 0.9rem;
+        }
+
+        .eduwisata-content {
+            padding: 0.75rem;
+        }
+
+        .eduwisata-title {
+            font-size: 1rem;
+        }
+
+        .eduwisata-description {
+            font-size: 0.75rem;
+        }
+
+        .price-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+        }
+
+        .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+            gap: 1rem;
+        }
+    }
+
     .features-section {
         background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         border-radius: 1.5rem;

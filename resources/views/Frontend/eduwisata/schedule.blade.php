@@ -42,10 +42,6 @@
                         </div>
                         <div class="space-y-2">
                             <div class="flex items-center text-gray-700">
-                                <i class="fas fa-users mr-3 text-green-600"></i>
-                                <span>Minimal 5 orang per grup</span>
-                            </div>
-                            <div class="flex items-center text-gray-700">
                                 <i class="fas fa-clock mr-3 text-green-600"></i>
                                 <span>Durasi 2-3 jam</span>
                             </div>
@@ -122,7 +118,7 @@
                                        required 
                                        value="{{ old('jumlah_orang') }}"
                                        class="form-input rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 @error('jumlah_orang') border-red-500 @enderror"
-                                       placeholder="Minimal 1, maksimal 15">
+                                       placeholder="maksimal 15">
                                 @error('jumlah_orang')
                                     <div class="text-red-500 text-sm mt-1">
                                         <i class="fas fa-exclamation-circle me-1"></i>
@@ -131,7 +127,7 @@
                                 @enderror
                                 <div class="text-xs text-gray-500">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Maksimal 15 orang per hari. Minimal 5 orang per grup.
+                                    Maksimal 15 orang per hari
                                 </div>
                             </div>
                             <div class="flex flex-col space-y-2">
@@ -282,128 +278,94 @@ document.addEventListener('DOMContentLoaded', function() {
     const dateFull = document.getElementById('dateFull');
     const datePast = document.getElementById('datePast');
     const submitButton = document.querySelector('button[type="submit"]');
-    
-    // Data tanggal yang sudah penuh dari backend
-    const fullDates = {!! json_encode($fullDates ?? []) !!};
-    const quotaData = {!! json_encode($quotaArray ?? []) !!};
-    
 
-    
+    // Data from backend
+    let fullDates = {!! json_encode($fullDates ?? []) !!};
+    let quotaData = {!! json_encode($quotaArray ?? []) !!};
+
+    // --- FIX 1: Get today's date in a timezone-agnostic way ---
+    // This creates a date string like "2025-07-06" based on local time,
+    // which prevents timezone-related "off-by-one-day" errors.
+    function getTodayDateString() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    const todayString = getTodayDateString();
+    dateInput.min = todayString; // Set the minimum selectable date in the input
+
     function checkDateAvailability() {
         const selectedDate = dateInput.value;
         const jumlahOrang = parseInt(jumlahInput.value) || 0;
-        const today = new Date().toISOString().split('T')[0];
-        
-        // Reset semua status
+
+        // Reset all status messages
         dateInfo.classList.add('hidden');
         dateAvailable.classList.add('hidden');
         dateFull.classList.add('hidden');
         datePast.classList.add('hidden');
-        
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+
         if (!selectedDate) {
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
             return;
         }
-        
-        // Cek apakah tanggal sudah lewat
-        if (selectedDate < today) {
+
+        // Check if the selected date is in the past
+        if (selectedDate < todayString) {
             dateInfo.classList.remove('hidden');
             datePast.classList.remove('hidden');
             submitButton.disabled = true;
             submitButton.classList.add('opacity-50', 'cursor-not-allowed');
             return;
         }
-        
-        // Cek kuota tersisa
+
         const kuotaTersisa = quotaData[selectedDate] !== undefined ? quotaData[selectedDate] : 15;
-        
-        // Cek apakah tanggal sudah penuh
+
+        // Check if date is full
         if (kuotaTersisa <= 0) {
             dateInfo.classList.remove('hidden');
             dateFull.classList.remove('hidden');
+            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Tanggal sudah penuh (15 orang)</span>`;
             submitButton.disabled = true;
             submitButton.classList.add('opacity-50', 'cursor-not-allowed');
             return;
         }
-        
-        // Cek apakah jumlah orang melebihi kuota tersisa
+
+        // Check if requested number exceeds available quota
         if (jumlahOrang > kuotaTersisa) {
             dateInfo.classList.remove('hidden');
-            dateFull.classList.remove('hidden');
-            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Kuota tidak mencukupi. Tersisa ${kuotaTersisa} slot untuk tanggal ini.</span>`;
+            dateFull.classList.remove('hidden'); // Re-using element
+            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Kuota tidak mencukupi. Tersisa ${kuotaTersisa} slot.</span>`;
             submitButton.disabled = true;
             submitButton.classList.add('opacity-50', 'cursor-not-allowed');
             return;
         }
-        
-        // Cek minimal 5 orang per grup
-        if (jumlahOrang < 5) {
-            dateInfo.classList.remove('hidden');
-            dateFull.classList.remove('hidden');
-            dateFull.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i><span>Minimal 5 orang per grup untuk pemesanan eduwisata.</span>`;
-            submitButton.disabled = true;
-            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-            return;
+
+        // If all checks pass, show availability
+        if (selectedDate && jumlahOrang >= 1) {
+             dateInfo.classList.remove('hidden');
+             dateAvailable.classList.remove('hidden');
+             dateAvailable.innerHTML = `<i class="fas fa-check-circle me-1"></i><span>Tanggal tersedia. Kuota tersisa: ${kuotaTersisa} slot</span>`;
         }
-        
-        // Tanggal tersedia
-        dateInfo.classList.remove('hidden');
-        dateAvailable.classList.remove('hidden');
-        dateAvailable.innerHTML = `<i class="fas fa-check-circle me-1"></i><span>Tanggal tersedia. Kuota tersisa: ${kuotaTersisa} slot</span>`;
-        submitButton.disabled = false;
-        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
     }
-    
-    // Event listener untuk perubahan tanggal dan jumlah orang
+
     dateInput.addEventListener('change', checkDateAvailability);
-    dateInput.addEventListener('input', checkDateAvailability);
-    jumlahInput.addEventListener('change', checkDateAvailability);
     jumlahInput.addEventListener('input', checkDateAvailability);
-    
-    // Set tanggal minimum ke hari ini
-    dateInput.min = new Date().toISOString().split('T')[0];
-    
-    // Tambahkan tooltip untuk tanggal yang sudah penuh
-    const calendarIcon = document.createElement('div');
-    calendarIcon.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400';
-    
-    
-    const dateContainer = dateInput.parentElement;
-    dateContainer.style.position = 'relative';
-    dateContainer.appendChild(calendarIcon);
-    
-    // Tambahkan info kuota tersisa
-    function updateQuotaInfo() {
-        const selectedDate = dateInput.value;
-        if (selectedDate && !fullDates.includes(selectedDate) && selectedDate >= new Date().toISOString().split('T')[0]) {
-            // Hitung kuota tersisa (implementasi bisa ditambahkan nanti)
-            const quotaInfo = document.createElement('div');
-            quotaInfo.className = 'text-xs text-blue-600 mt-1';
-            quotaInfo.innerHTML = '<i class="fas fa-users me-1"></i>Kuota tersisa: Tersedia';
-            
-            // Hapus info sebelumnya jika ada
-            const existingQuota = dateContainer.querySelector('.quota-info');
-            if (existingQuota) {
-                existingQuota.remove();
-            }
-            
-            quotaInfo.classList.add('quota-info');
-            dateContainer.appendChild(quotaInfo);
-        }
-    }
-    
-    dateInput.addEventListener('change', updateQuotaInfo);
-    
-    // Render kalender preview
+
     function renderCalendarPreview() {
         const calendarContainer = document.getElementById('calendarPreview');
         calendarContainer.innerHTML = ''; // Clear existing content
-        
+
+        // --- FIX 2: Use local date parts consistently ---
         const today = new Date();
-        // Gunakan UTC untuk konsistensi
-        const currentMonth = today.getUTCMonth();
-        const currentYear = today.getUTCFullYear();
-        
-        // Header hari
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+
         const daysOfWeek = ['M', 'S', 'S', 'R', 'K', 'J', 'S'];
         daysOfWeek.forEach(day => {
             const dayHeader = document.createElement('div');
@@ -411,114 +373,92 @@ document.addEventListener('DOMContentLoaded', function() {
             dayHeader.textContent = day;
             calendarContainer.appendChild(dayHeader);
         });
-        
-        // Hari-hari dalam bulan
-        const firstDay = new Date(Date.UTC(currentYear, currentMonth, 1));
-        const lastDay = new Date(Date.UTC(currentYear, currentMonth + 1, 0));
-        const startDate = new Date(firstDay);
-        startDate.setUTCDate(startDate.getUTCDate() - firstDay.getUTCDay() + 1);
-        
-        for (let i = 0; i < 42; i++) {
-            const date = new Date(startDate);
-            date.setUTCDate(startDate.getUTCDate() + i);
-            
+
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Adjust for Sunday being 0 in getDay()
+        const startOffset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth -1;
+
+        // Add blank days for the start of the month
+        for (let i = 0; i < startOffset; i++) {
+            const emptyCell = document.createElement('div');
+            calendarContainer.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'text-center p-1 rounded cursor-pointer transition-colors';
-            
-            if (date.getUTCMonth() === currentMonth) {
-                const dateString = date.toISOString().split('T')[0];
-                const isToday = dateString === today.toISOString().split('T')[0];
-                const isPast = date < today;
-                const kuotaTersisa = quotaData[dateString] !== undefined ? quotaData[dateString] : 15;
-                const isFull = kuotaTersisa <= 0;
-                
+            dayElement.textContent = day;
 
-                
-                dayElement.textContent = date.getUTCDate();
-                
-                // Tambahkan tooltip dengan info kuota
-                if (!isPast) {
-                    dayElement.title = `Kuota tersisa: ${kuotaTersisa} slot`;
-                }
-                
-                if (isToday) {
-                    dayElement.className += ' bg-blue-500 text-white font-bold';
-                } else if (isPast) {
-                    dayElement.className += ' bg-gray-300 text-gray-500';
-                } else if (isFull) {
-                    dayElement.className += ' bg-red-500 text-white';
-                } else if (kuotaTersisa <= 5) {
-                    dayElement.className += ' bg-yellow-100 text-yellow-700 hover:bg-yellow-200';
-                } else {
-                    dayElement.className += ' bg-green-100 text-green-700 hover:bg-green-200';
-                }
-                
-                // Click event untuk memilih tanggal
-                dayElement.addEventListener('click', function() {
-                    if (!isPast && !isFull) {
-                        // Pastikan format tanggal yang benar (YYYY-MM-DD)
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const day = String(date.getUTCDate()).padStart(2, '0');
-                        const formattedDate = `${year}-${month}-${day}`;
-                        
-                        dateInput.value = formattedDate;
-                        checkDateAvailability();
-                        updateQuotaInfo();
-                    }
-                });
-            } else {
-                dayElement.className += ' text-gray-300';
-                dayElement.textContent = date.getUTCDate();
+            const date = new Date(currentYear, currentMonth, day);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${dayStr}`;
+
+            const kuotaTersisa = quotaData[dateString] !== undefined ? quotaData[dateString] : 15;
+            const isFull = kuotaTersisa <= 0;
+            const isToday = dateString === todayString;
+            // --- FIX 3: Correctly identify past dates ---
+            const isPast = dateString < todayString;
+
+            if (!isPast) {
+                dayElement.title = `Kuota tersisa: ${kuotaTersisa} slot`;
             }
-            
+
+            if (isToday) {
+                dayElement.classList.add('bg-blue-500', 'text-white', 'font-bold');
+            } else if (isPast) {
+                dayElement.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+            } else if (isFull) {
+                dayElement.classList.add('bg-red-500', 'text-white', 'cursor-not-allowed');
+            } else if (kuotaTersisa <= 5) {
+                dayElement.classList.add('bg-yellow-100', 'text-yellow-700', 'hover:bg-yellow-200');
+            } else {
+                dayElement.classList.add('bg-green-100', 'text-green-700', 'hover:bg-green-200');
+            }
+
+            dayElement.addEventListener('click', () => {
+                if (!isPast && !isFull) {
+                    dateInput.value = dateString;
+                    checkDateAvailability();
+                }
+            });
+
             calendarContainer.appendChild(dayElement);
         }
-        
-
     }
-    
-    // Render kalender saat halaman dimuat
-    renderCalendarPreview();
-    
-    // Fungsi untuk refresh kalender manual
+
     window.refreshCalendar = function() {
+        // Show loading indicator
+        const refreshButton = this;
+        const icon = refreshButton.querySelector('i');
+        icon.classList.add('fa-spin');
+
         fetch('{{ route("eduwisata.quota.data", $eduwisata) }}')
             .then(response => response.json())
             .then(data => {
-                // Update data global
-                Object.assign(quotaData, data.quotaData);
-                fullDates.length = 0;
-                fullDates.push(...data.fullDates);
-                // Re-render kalender
+                quotaData = data.quotaData;
+                fullDates = data.fullDates;
                 renderCalendarPreview();
             })
             .catch(error => {
                 console.error('Error fetching quota data:', error);
+                alert('Gagal memuat ulang data kuota.');
+            })
+            .finally(() => {
+                // Remove loading indicator
+                icon.classList.remove('fa-spin');
             });
     };
-    
 
-    
-    // Refresh kalender setiap 30 detik untuk update real-time
-    setInterval(function() {
-        // Fetch data terbaru dari API
-        fetch('{{ route("eduwisata.quota.data", $eduwisata) }}')
-            .then(response => response.json())
-            .then(data => {
-                // Update data global
-                Object.assign(quotaData, data.quotaData);
-                fullDates.length = 0;
-                fullDates.push(...data.fullDates);
-                // Re-render kalender
-                renderCalendarPreview();
-            })
-            .catch(error => {
-                console.error('Error fetching quota data:', error);
-            });
-    }, 30000); // Refresh setiap 30 detik
-    
+    // Initial render
+    renderCalendarPreview();
+    checkDateAvailability(); // Check status for any `old()` values on page load
 
+    // Auto-refresh interval
+    setInterval(window.refreshCalendar, 30000); // Refresh every 30 seconds
 });
 </script>
 @endpush

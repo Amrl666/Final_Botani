@@ -152,6 +152,10 @@
             transition: all 0.3s ease;
         }
 
+        .navbar .container {
+            position: relative;
+        }
+
         .navbar.scrolled {
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -172,6 +176,33 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
+        }
+
+        /* Desktop menu visibility */
+        .nav-menu.hidden.md\\:flex {
+            display: none;
+        }
+
+        .mobile-menu {
+            /* Mengubah menu mobile menjadi layout flex-column */
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Memastikan menu memenuhi lebar kontainer */
+            padding-top: 1rem; /* Memberi jarak dari navbar atas */
+            border-top: 1px solid #e5e7eb; /* Garis pemisah opsional */
+            margin-top: 1rem;
+        }
+
+        .mobile-menu .nav-link {
+            padding: 0.75rem 0; /* Memberi padding vertikal pada setiap link */
+            width: 100%;
+        }
+        
+
+        @media (min-width: 768px) {
+            .nav-menu.hidden.md\\:flex {
+                display: flex !important;
+            }
         }
 
         .nav-link {
@@ -308,7 +339,6 @@
 
         /* Mobile Menu */
         .mobile-menu-button {
-            display: none;
             background: none;
             border: none;
             font-size: 1.5rem;
@@ -317,6 +347,74 @@
             padding: 0.5rem;
             border-radius: 0.5rem;
             transition: all 0.3s ease;
+            z-index: 9999;
+            position: relative;
+            min-width: 44px;
+            min-height: 44px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+        
+        .mobile-menu-button:hover {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-button:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Mobile menu container */
+        #mobileMenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            flex-direction: column;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+        
+        #mobileMenu.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Show mobile menu button only on mobile */
+        @media (max-width: 767px) {
+            .mobile-menu-button {
+                display: flex !important;
+                position: relative;
+                z-index: 9999;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                background: rgba(255, 255, 255, 0.9) !important;
+                border: 1px solid #e5e7eb !important;
+                width: 44px !important;
+                height: 44px !important;
+                margin: 0 !important;
+                padding: 8px !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+            }
+            
+            /* Ensure mobile menu button is clickable */
+            .mobile-menu-button i {
+                pointer-events: none;
+            }
         }
 
         .mobile-menu-button:hover {
@@ -385,8 +483,19 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-menu {
+        @media (max-width: 767px) {
+            /* Desktop menu hidden on mobile */
+            .nav-menu.hidden.md\\:flex {
+                display: none !important;
+            }
+            
+            /* Ensure mobile menu button is visible */
+            .mobile-menu-button {
+                display: flex !important;
+            }
+
+            /* Mobile menu styles */
+            #mobileMenu {
                 display: none;
                 position: absolute;
                 top: 100%;
@@ -397,20 +506,38 @@
                 padding: 1rem;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 border-top: 1px solid var(--border-color);
+                z-index: 1000;
+                max-height: 80vh;
+                overflow-y: auto;
             }
 
-            .nav-menu.active {
+            #mobileMenu.active {
                 display: flex;
             }
 
             .mobile-menu-button {
-                display: block;
+                display: flex !important;
+                position: relative;
+                z-index: 1001;
+            }
+
+            /* Ensure mobile menu button is visible and clickable */
+            .mobile-menu-button i {
+                font-size: 1.5rem;
+                color: var(--text-color);
+            }
+
+            .mobile-menu-button:hover {
+                background: rgba(5, 150, 105, 0.1);
+                color: var(--primary-color);
             }
 
             .nav-link {
                 width: 100%;
                 text-align: center;
                 padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                margin-bottom: 0.25rem;
             }
 
             .user-dropdown {
@@ -425,6 +552,101 @@
                 margin-top: 0.5rem;
                 box-shadow: none;
                 border: 1px solid var(--border-color);
+                border-radius: 0.5rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .logo img {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+
+        /* Desktop Menu Styles */
+        @media (min-width: 768px) {
+            /* Ensure desktop menu is visible */
+            .nav-menu.hidden.md\\:flex {
+                display: flex !important;
+            }
+            
+            /* Hide mobile menu on desktop */
+            #mobileMenu {
+                display: none !important;
+            }
+            
+            .nav-menu {
+                display: flex !important;
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-height: none;
+                overflow: visible;
+                flex-direction: row;
+                align-items: center;
+                gap: 1.5rem;
+            }
+
+            .nav-link {
+                width: auto;
+                text-align: left;
+                padding: 0.5rem 1rem;
+                margin-bottom: 0;
+            }
+
+            .user-dropdown {
+                width: auto;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                margin-top: 0.5rem;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                border: 1px solid var(--border-color);
+            }
+
+            /* Hide mobile menu on desktop */
+            #mobileMenu {
+                display: none !important;
+            }
+
+            /* Hide mobile menu button on desktop */
+            .mobile-menu-button {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .nav-menu {
+                padding: 0.75rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .logo img {
+                width: 1.75rem;
+                height: 1.75rem;
             }
         }
 
@@ -459,143 +681,122 @@
     </div>
 
     {{-- Navbar --}}
-    <nav class="navbar">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <a href="{{ url('/') }}" class="logo flex items-center space-x-2">
-                    <img src="{{ asset('images/logo/logobotani.png') }}" 
-                        alt="BO TANI Logo" 
-                        class="w-10 h-10 object-contain drop-shadow-lg">
-                    <span class="text-green-500">BO</span><span class="text-black">TANI</span>
-                </a>
+  <nav class="navbar bg-white shadow-sm">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-4">
+            
+            <a href="{{ url('/') }}" class="logo flex items-center space-x-2">
+                <img src="{{ asset('images/logo/logobotani.png') }}" 
+                     alt="BO TANI Logo" 
+                     class="w-10 h-10 object-contain drop-shadow-lg">
+                <span class="text-lg font-bold"><span class="text-green-500">BO</span><span class="text-black">TANI</span></span>
+            </a>
 
-                <!-- Desktop Menu -->
-                <div class="nav-menu">
+            <div class="flex items-center space-x-4">
+                
+                <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
                     <a href="{{ route('product.index_fr') }}" class="nav-link {{ request()->routeIs('product.index_fr') ? 'active' : '' }}">Produk</a>
                     <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
                     <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
                     <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
-                    <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">Profile</a>
-                    <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('contact') }}">Kontak</a>
+                    <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
+                    <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
+                    <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
 
-                    <!-- Right Side Actions -->
-                    <div class="hidden md:flex items-center gap-4">
-                        <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-green-600 p-2">
-                            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
-                                0
-                            </span>
-                            <i class="fas fa-shopping-cart text-xl"></i>
+                
+                    <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-green-600 p-2">
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
+                            0
+                        </span>
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                    </a>
+                    
+                     @if(session()->has('telepon'))
+                        <div class="user-dropdown">
+                            <button class="user-button">
+                                <i class="fas fa-user-circle text-xl"></i>
+                                <span class="text-sm md:text-base">{{ session('telepon') }}</span>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
+                            </button>
                             
-                        </a>
-
-                         {{-- User Session Dropdown --}}
-                        @if(session()->has('telepon'))
-                            <div class="user-dropdown">
-                                <button class="user-button">
-                                    <i class="fas fa-user-circle text-xl"></i>
-                                    <span class="text-sm md:text-base">{{ session('telepon') }}</span>
-                                    <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                                
-                                <div class="dropdown-menu">
-                                    <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
-                                    class="dropdown-item">
-                                    <i class="fas fa-shopping-bag mr-2"></i>
-                                    Riwayat Produk
-                                    </a>
-                                    <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
-                                    class="dropdown-item">
-                                    <i class="fas fa-graduation-cap mr-2"></i>
-                                    Riwayat Eduwisata
-                                    </a>
-                                    <a href="{{ route('logout.riwayat') }}"
-                                    class="dropdown-item logout">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>
-                                    Keluar Riwayat
-                                    </a>
-                                </div>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}" class="dropdown-item">
+                                    <i class="fas fa-shopping-bag mr-2"></i> Riwayat Produk
+                                </a>
+                                <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}" class="dropdown-item">
+                                    <i class="fas fa-graduation-cap mr-2"></i> Riwayat Eduwisata
+                                </a>
+                                <a href="{{ route('logout.riwayat') }}" class="dropdown-item logout">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Keluar Riwayat
+                                </a>
                             </div>
-                        @else
-                            <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
-                                <i class="fas fa-history mr-2"></i>
-                                Lihat Riwayat
-                            </a>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
+                            <i class="fas fa-history mr-2"></i> Lihat Riwayat
+                        </a>
+                    @endif
                 </div>
 
-                {{-- <!-- Mobile Menu Button -->
-                <button class="mobile-menu-button" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
+                <div class="nav-menu hidden md:flex" id="desktopMenu">
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="mobile-menu-button text-gray-800 focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" style="display: none;">
+                    <i class="fas fa-bars text-2xl"></i>
                 </button>
+
             </div>
-
-            <!-- Mobile Menu -->
-            <div class="nav-menu md:hidden" id="mobileMenu">
-                <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
-                <a href="{{ route('product.index_fr') }}" class="nav-link {{ request()->routeIs('product.index_fr') ? 'active' : '' }}">Produk</a>
-                <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
-                <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
-                <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
-                <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
-                <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
-                <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
-
-                {{-- Mobile User Session --}}
-                {{-- @if(session()->has('telepon'))
-                    <div class="user-dropdown">
-                        <button class="user-button w-full justify-center">
-                            <i class="fas fa-user-circle text-xl"></i>
-                            <span>{{ session('telepon') }}</span>
-                        </button>
-                        
-                        <div class="dropdown-menu">
-                            <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}"
-                               class="dropdown-item">
-                               <i class="fas fa-shopping-bag mr-2"></i>
-                               Riwayat Produk
-                            </a>
-                            <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}"
-                               class="dropdown-item">
-                               <i class="fas fa-graduation-cap mr-2"></i>
-                               Riwayat Eduwisata
-                            </a>
-                            <a href="{{ route('logout.riwayat') }}"
-                               class="dropdown-item logout">
-                               <i class="fas fa-sign-out-alt mr-2"></i>
-                               Keluar Riwayat
-                            </a>
-                        </div>
-                    </div>
-                @else
-                    <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
-                        <i class="fas fa-history mr-2"></i>
-                        Lihat Riwayat
-                    </a>
-                @endif
-            </div> --}} 
         </div>
-    </nav>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var btn = document.getElementById('riwayatDropdownBtn');
-        var menu = document.getElementById('riwayatDropdownMenu');
-        if(btn && menu) {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-            });
-            document.addEventListener('click', function(e) {
-                if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                    menu.style.display = 'none';
-                }
-            });
-        }
-    });
-    </script>
+        <div id="mobileMenu" class="hidden md:hidden pb-4">
+            <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+            <a href="{{ route('product.index_fr') }}" class="nav-link {{ request()->routeIs('product.index_fr') ? 'active' : '' }}">Produk</a>
+            <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
+            <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
+            <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
+            <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
+            <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
+            <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
+
+            <a href="{{ route('cart.index') }}" class="nav-link relative">
+                <i class="fas fa-shopping-cart mr-2"></i>
+                Keranjang
+                <span id="cart-count-mobile" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
+                    0
+                </span>
+            </a>
+
+            @if(session()->has('telepon'))
+                <div class="user-dropdown">
+                    <button class="user-button w-full justify-center">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>{{ session('telepon') }}</span>
+                    </button>
+                    
+                    <div class="dropdown-menu">
+                        <a href="{{ route('riwayat.produk', ['telepon' => session('telepon')]) }}" class="dropdown-item">
+                            <i class="fas fa-shopping-bag mr-2"></i> Riwayat Produk
+                        </a>
+                        <a href="{{ route('riwayat.eduwisata', ['telepon' => session('telepon')]) }}" class="dropdown-item">
+                            <i class="fas fa-graduation-cap mr-2"></i> Riwayat Eduwisata
+                        </a>
+                        <a href="{{ route('logout.riwayat') }}" class="dropdown-item logout">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Keluar Riwayat
+                        </a>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('login.wa') }}" class="nav-link text-green-600 hover:bg-green-50">
+                    <i class="fas fa-history mr-2"></i>
+                    Lihat Riwayat
+                </a>
+            @endif
+        </div>
+    </div>
+</nav>
+
 
     {{-- Main Content --}}
     <main class="animate-fade-in page-transition" id="mainContent">
@@ -695,32 +896,32 @@
             }
         });
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
+        // Window resize handler for debugging
+        window.addEventListener('resize', function() {
+            console.log('Window resized to:', window.innerWidth); // Debug log
             const mobileMenu = document.getElementById('mobileMenu');
-            const button = document.querySelector('.mobile-menu-button i');
+            const desktopMenu = document.getElementById('desktopMenu');
+            const mobileButton = document.querySelector('.mobile-menu-button');
             
-            mobileMenu.classList.toggle('active');
-            
-            if (mobileMenu.classList.contains('active')) {
-                button.classList.remove('fa-bars');
-                button.classList.add('fa-times');
-            } else {
-                button.classList.remove('fa-times');
-                button.classList.add('fa-bars');
-            }
-        }
+            console.log('Mobile menu display:', mobileMenu ? getComputedStyle(mobileMenu).display : 'not found');
+            console.log('Desktop menu display:', desktopMenu ? getComputedStyle(desktopMenu).display : 'not found');
+            console.log('Mobile button display:', mobileButton ? getComputedStyle(mobileButton).display : 'not found');
+        });
+
+
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const mobileMenu = document.getElementById('mobileMenu');
-            const mobileButton = document.querySelector('.mobile-menu-button');
+            const mobileButton = document.getElementById('mobileMenuButton');
             
-            if (!mobileMenu.contains(event.target) && !mobileButton.contains(event.target)) {
+            if (mobileMenu && mobileButton && !mobileMenu.contains(event.target) && !mobileButton.contains(event.target)) {
                 mobileMenu.classList.remove('active');
-                const button = mobileButton.querySelector('i');
-                button.classList.remove('fa-times');
-                button.classList.add('fa-bars');
+                const buttonIcon = mobileButton.querySelector('i');
+                if (buttonIcon) {
+                    buttonIcon.classList.remove('fa-times');
+                    buttonIcon.classList.add('fa-bars');
+                }
             }
         });
 
@@ -787,12 +988,75 @@
                 });
             }
 
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
+            // Debug: Check all elements
+            console.log('=== DEBUG INFO ===');
+            console.log('Window width:', window.innerWidth);
+            console.log('Is mobile:', window.innerWidth <= 767);
+            
+            // Direct mobile menu button event listener
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            console.log('Mobile menu button found:', mobileMenuButton);
+            console.log('Mobile menu button display:', mobileMenuButton ? getComputedStyle(mobileMenuButton).display : 'not found');
+            console.log('Mobile menu button visibility:', mobileMenuButton ? getComputedStyle(mobileMenuButton).visibility : 'not found');
+            
+            // Set mobile menu button visibility based on screen size
+            function updateMobileMenuButton() {
+                if (mobileMenuButton) {
+                    if (window.innerWidth <= 767) {
+                        mobileMenuButton.style.display = 'flex';
+                        console.log('Mobile menu button shown');
+                    } else {
+                        mobileMenuButton.style.display = 'none';
+                        console.log('Mobile menu button hidden');
+                    }
+                }
+            }
+            
+            // Initial call
+            updateMobileMenuButton();
+            
+            // Update on window resize
+            window.addEventListener('resize', updateMobileMenuButton);
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile menu button clicked directly');
+                    
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    const buttonIcon = mobileMenuButton.querySelector('i');
+                    
+                    if (mobileMenu && buttonIcon) {
+                        mobileMenu.classList.toggle('active');
+                        
+                        if (mobileMenu.classList.contains('active')) {
+                            buttonIcon.classList.remove('fa-bars');
+                            buttonIcon.classList.add('fa-times');
+                            console.log('Mobile menu opened');
+                        } else {
+                            buttonIcon.classList.remove('fa-times');
+                            buttonIcon.classList.add('fa-bars');
+                            console.log('Mobile menu closed');
+                        }
+                    }
+                });
+            }
+
+            // Close mobile menu when clicking on menu items
             const mobileMenu = document.getElementById('mobileMenu');
-            if(menuToggle && mobileMenu) {
-                menuToggle.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            if (mobileMenu) {
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        const mobileMenuButton = document.getElementById('mobileMenuButton');
+                        const buttonIcon = mobileMenuButton ? mobileMenuButton.querySelector('i') : null;
+                        if (buttonIcon) {
+                            buttonIcon.classList.remove('fa-times');
+                            buttonIcon.classList.add('fa-bars');
+                        }
+                    });
                 });
             }
 
@@ -803,20 +1067,34 @@
         // Function to update cart count
         function updateCartCount() {
             const cartCountElement = document.getElementById('cart-count');
-            if (!cartCountElement) return;
-
+            const cartCountMobileElement = document.getElementById('cart-count-mobile');
+            
             fetch('{{ route('cart.count') }}')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.count > 0) {
-                        cartCountElement.textContent = data.count;
-                        cartCountElement.classList.remove('hidden');
-                    } else {
-                        cartCountElement.classList.add('hidden');
+                    // Update desktop cart count
+                    if (cartCountElement) {
+                        if (data.count > 0) {
+                            cartCountElement.textContent = data.count;
+                            cartCountElement.classList.remove('hidden');
+                        } else {
+                            cartCountElement.classList.add('hidden');
+                        }
+                    }
+                    
+                    // Update mobile cart count
+                    if (cartCountMobileElement) {
+                        if (data.count > 0) {
+                            cartCountMobileElement.textContent = data.count;
+                            cartCountMobileElement.classList.remove('hidden');
+                        } else {
+                            cartCountMobileElement.classList.add('hidden');
+                        }
                     }
                 })
                 .catch(error => console.error('Error fetching cart count:', error));
         }
+
     </script>
 </body>
 </html>

@@ -200,6 +200,117 @@
     </div>
 </div>
 
+<style>
+/* Responsive Design */
+@media (max-width: 768px) {
+    .min-h-screen {
+        min-height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+
+    .text-lg {
+        font-size: 1rem;
+    }
+
+    .flex.items-center.space-x-4 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .flex.items-center.space-x-2 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .w-20.h-20 {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .w-16 {
+        width: 3rem;
+    }
+
+    .p-6 {
+        padding: 1rem;
+    }
+
+    .p-4 {
+        padding: 0.75rem;
+    }
+
+    .grid.grid-cols-1.md\\:grid-cols-2 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .md\\:col-span-2 {
+        grid-column: span 1;
+    }
+
+    .flex.space-x-4 {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+
+    .text-2xl {
+        font-size: 1.25rem;
+    }
+
+    .text-lg {
+        font-size: 0.9rem;
+    }
+
+    .w-20.h-20 {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .w-16 {
+        width: 2.5rem;
+    }
+
+    .p-6 {
+        padding: 0.75rem;
+    }
+
+    .p-4 {
+        padding: 0.5rem;
+    }
+
+    .px-4.py-3 {
+        padding: 0.75rem;
+    }
+
+    .py-3.px-6 {
+        padding: 0.75rem 1rem;
+    }
+}
+</style>
+</div>
+
 <script>
 function showCheckoutForm() {
     document.getElementById('checkoutForm').classList.remove('hidden');

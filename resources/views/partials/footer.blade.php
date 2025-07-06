@@ -356,8 +356,105 @@
             }
 
             .logo-container img {
-                width: 12rem;
-                height: 12rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .text-3xl {
+                font-size: 1.875rem;
+            }
+
+            .text-4xl {
+                font-size: 2.25rem;
+            }
+
+            .text-5xl {
+                font-size: 3rem;
+            }
+
+            .grid-cols-1.md\\:grid-cols-3 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .flex.flex-col.lg\\:flex-row {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .text-center.lg\\:text-left {
+                text-align: center;
+            }
+
+            .flex.space-x-6 {
+                justify-content: center;
+            }
+
+            .flex.flex-col.md\\:flex-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .text-center.md\\:text-left {
+                text-align: center;
+            }
+
+            .text-center.md\\:text-right {
+                text-align: center;
+            }
+
+            .justify-center.md\\:justify-start {
+                justify-content: center;
+            }
+
+            .justify-center.md\\:justify-end {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feature-card {
+                padding: 1rem 0.75rem;
+            }
+
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .feature-title {
+                font-size: 1rem;
+            }
+
+            .logo-container img {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+
+            .text-4xl {
+                font-size: 1.875rem;
+            }
+
+            .text-5xl {
+                font-size: 2.25rem;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+            }
+
+            .social-link i {
+                font-size: 1rem;
             }
         }
 

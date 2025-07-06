@@ -116,7 +116,7 @@
             <div class="col-md-6 col-lg-4 col-xl-3 product-item" 
                  data-category="{{ strtolower($product->name) }}" 
                  data-stock="{{ $product->stock > 0 ? ($product->stock <= 5 ? 'low-stock' : 'in-stock') : 'out-of-stock' }}">
-                <div class="card h-100 product-card animate-fade-in" style="--delay: {{ 0.6 + ($loop->index * 0.1) }}s">
+                <div class="card h-100 product-card animate-fade-in d-flex flex-column" style="--delay: {{ 0.6 + ($loop->index * 0.1) }}s">
                     <div class="product-image-container">
                         <img src="{{ asset('storage/' . $product->image) }}" 
                              class="card-img-top product-image" 
@@ -136,9 +136,9 @@
                         </div>
                     </div>
                     {{-- Product Info --}}
-                    <div class="card-body p-3 d-flex flex-column">
+                    <div class="card-body p-3 d-flex flex-column flex-grow">
                         <h5 class="card-title text-truncate mb-1">{{ $product->name }}</h5>
-                        <p class="card-text text-muted small mb-2">
+                        <p class="card-text text-muted small mb-2 flex-grow">
                             {{ Str::limit($product->description, 60) }}
                         </p>
 
@@ -154,22 +154,20 @@
                             </div>
 
                             {{-- Actions --}}
-                            <div class="d-flex justify-content-between gap-2">
-                                <a href="{{ route('dashboard.product.edit', $product) }}" 
-                                class="btn btn-sm btn-outline-primary d-flex align-items-center">
-                                    <i class="fas fa-edit me-1"></i> Ubah
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('dashboard.product.show', $product->id) }}" 
+                                   class="btn btn-sm btn-outline-primary flex-fill">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <form action="{{ route('dashboard.product.destroy', $product) }}" 
-                                    method="POST" 
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-sm btn-outline-danger d-flex align-items-center" 
-                                            title="Hapus Produk">
-                                        <i class="fas fa-trash me-1"></i> Hapus
-                                    </button>
-                                </form>
+                                <a href="{{ route('dashboard.product.edit', $product->id) }}" 
+                                   class="btn btn-sm btn-outline-warning flex-fill">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-danger flex-fill"
+                                        onclick="deleteProduct({{ $product->id }}, '{{ $product->name }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -245,17 +243,21 @@
 }
 
 .animate-fade-in {
+    opacity: 0;
     animation: fadeIn 0.6s ease-out forwards;
     animation-delay: var(--delay, 0s);
 }
 
 .animate-slide-in {
+    opacity: 0;
     animation: slideIn 0.6s ease-out forwards;
     animation-delay: var(--delay, 0s);
 }
 
 .animate-bounce-in {
-    animation: bounceIn 0.6s ease-out forwards;
+    opacity: 0;
+    animation: bounceIn 0.8s ease-out forwards;
+    animation-delay: var(--delay, 0s);
 }
 
 /* Card Styles */
@@ -274,28 +276,27 @@
 
 /* Stats Cards */
 .stats-card {
-    background: linear-gradient(135deg, #fff, #f8f9fa);
-    border-left: 4px solid var(--primary-color);
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .stats-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .stats-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 1rem;
-    font-size: 28px;
-    transition: all 0.3s ease;
-}
-
-.stats-card:hover .stats-icon {
-    transform: scale(1.1) rotate(5deg);
+    font-size: 1.25rem;
 }
 
 .counter {
@@ -312,7 +313,7 @@
 
 .search-icon {
     position: absolute;
-    left: 1rem;
+    left: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: #6c757d;
@@ -320,54 +321,40 @@
 }
 
 .search-input {
-    padding-left: 3rem;
-    border-radius: 0.75rem;
+    padding-left: 40px;
     border: 2px solid #e9ecef;
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 
 .search-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25);
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
 /* Product Cards */
 .product-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
     overflow: hidden;
-}
-
-.product-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.product-card:hover::before {
-    left: 100%;
+    min-height: 400px; /* Minimum height untuk konsistensi */
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .product-image-container {
     position: relative;
+    height: 180px;
     overflow: hidden;
-    padding-top: 75%; /* 4:3 Aspect Ratio */
 }
 
 .product-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -375,7 +362,7 @@
 }
 
 .product-card:hover .product-image {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .product-overlay {
@@ -384,10 +371,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -396,35 +380,11 @@
     opacity: 1;
 }
 
-.product-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.product-actions .btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.product-actions .btn:hover {
-    transform: scale(1.1);
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 .product-badge {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
 }
 
 .product-details {
@@ -453,7 +413,9 @@
 
 /* Empty State */
 .empty-state {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
 }
 
 .empty-icon {
@@ -615,6 +577,24 @@
     
     .product-actions-bottom {
         flex-direction: column;
+    }
+    
+    .product-card {
+        min-height: 350px;
+    }
+    
+    .product-image-container {
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-card {
+        min-height: 320px;
+    }
+    
+    .product-image-container {
+        height: 140px;
     }
 }
 
@@ -896,6 +876,30 @@ function bulkDelete() {
 function updateStock(productId, newStock) {
     showAlert('Memperbarui stok...', 'info');
     // Add your stock update logic here
+}
+
+// Delete Product Function
+function deleteProduct(productId, productName) {
+    if (confirm(`Apakah Anda yakin ingin menghapus produk "${productName}"?`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/dashboard/product/${productId}`;
+        
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        
+        const methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        
+        form.appendChild(csrfToken);
+        form.appendChild(methodField);
+        document.body.appendChild(form);
+        form.submit();
+    }
 }
 </script>
 @endpush

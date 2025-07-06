@@ -19,18 +19,19 @@
 
             <!-- Success Message -->
             <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-center space-x-3 text-green-600">
-                        <i class="fas fa-whatsapp text-2xl"></i>
-                        <span class="text-lg font-semibold">Notifikasi WhatsApp Terkirim</span>
-                    </div>
-                    
-                    <div class="text-gray-600">
-                        <p class="mb-2">✅ Notifikasi telah dikirim ke admin</p>
-                        <p class="mb-2">✅ Konfirmasi telah dikirim ke nomor Anda</p>
-                        <p>⏰ Admin akan segera menghubungi Anda</p>
-                    </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-center space-x-3 text-green-600">
+                <span class="text-lg font-semibold">
+                    <i class="fas fa-bell text-yellow-500 mr-2"></i>
+                    Notifikasi WhatsApp Terkirim
+                </span>
                 </div>
+                <div class="text-gray-600">
+                <p class="mb-2">✅ Notifikasi telah dikirim ke admin</p>
+                <p class="mb-2">✅ Konfirmasi telah dikirim ke nomor Anda</p>
+                <p>⏰ Admin akan segera menghubungi Anda</p>
+                </div>
+            </div>
             </div>
 
             <!-- Next Steps -->
