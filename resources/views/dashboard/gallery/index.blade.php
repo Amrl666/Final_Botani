@@ -434,12 +434,43 @@
                 </div>
             @endforelse
         </div>
-
         @if($galleries->hasPages())
-            <div class="d-flex justify-content-center mt-4 animate-fade-in" style="--delay: 0.6s">
-                {{ $galleries->links() }}
-            </div>
-        @endif
+        <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination pagination-lg shadow-sm">
+                            {{-- Tombol Sebelumnya --}}
+                            @if ($galleries->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">‹</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $galleries->previousPageUrl() }}" rel="prev">‹</a>
+                                </li>
+                            @endif
+
+                            {{-- Angka Halaman --}}
+                            @foreach ($galleries->getUrlRange(1, $galleries->lastPage()) as $page => $url)
+                                <li class="page-item {{ $galleries->currentPage() == $page ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            {{-- Tombol Selanjutnya --}}
+                            @if ($galleries->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $galleries->nextPageUrl() }}" rel="next">›</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">›</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            @endif
+        </div>
     </div>
 
     @push('scripts')

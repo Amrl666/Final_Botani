@@ -122,9 +122,43 @@
     </div>
 
     <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4">
-        {{ $prestasis->links() }}
-    </div>
+    @if($prestasis->hasPages())
+        <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination pagination-lg shadow-sm">
+                            {{-- Tombol Sebelumnya --}}
+                            @if ($prestasis->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">‹</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $prestasis->previousPageUrl() }}" rel="prev">‹</a>
+                                </li>
+                            @endif
+
+                            {{-- Angka Halaman --}}
+                            @foreach ($prestasis->getUrlRange(1, $prestasis->lastPage()) as $page => $url)
+                                <li class="page-item {{ $prestasis->currentPage() == $page ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            {{-- Tombol Selanjutnya --}}
+                            @if ($prestasis->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $prestasis->nextPageUrl() }}" rel="next">›</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">›</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            @endif
+        </div>
 </div>
 
 <style>
