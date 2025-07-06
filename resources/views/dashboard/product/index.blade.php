@@ -114,13 +114,13 @@
     <div class="row g-4" id="productsGrid">
         @forelse($products as $product)
             <div class="col-md-6 col-lg-4 col-xl-3 product-item" 
-                 data-category="{{ strtolower($product->name) }}" 
-                 data-stock="{{ $product->stock > 0 ? ($product->stock <= 5 ? 'low-stock' : 'in-stock') : 'out-of-stock' }}">
+                data-category="{{ strtolower($product->name) }}" 
+                data-stock="{{ $product->stock > 0 ? ($product->stock <= 5 ? 'low-stock' : 'in-stock') : 'out-of-stock' }}">
                 <div class="card h-100 product-card animate-fade-in d-flex flex-column" style="--delay: {{ 0.6 + ($loop->index * 0.1) }}s">
                     <div class="product-image-container">
                         <img src="{{ asset('storage/' . $product->image) }}" 
-                             class="card-img-top product-image" 
-                             alt="{{ $product->name }}">
+                            class="card-img-top product-image" 
+                            alt="{{ $product->name }}">
                         <div class="product-overlay">
                         </div>
                         <div class="product-badge">
@@ -153,22 +153,37 @@
                                 </div>
                             </div>
 
-                            {{-- Actions --}}
-                            <div class="d-flex gap-1">
-                                <a href="{{ route('dashboard.product.show', $product->id) }}" 
-                                   class="btn btn-sm btn-outline-primary flex-fill">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('dashboard.product.edit', $product->id) }}" 
-                                   class="btn btn-sm btn-outline-warning flex-fill">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button type="button" 
-                                        class="btn btn-sm btn-outline-danger flex-fill"
-                                        onclick="deleteProduct({{ $product->id }}, '{{ $product->name }}')">
-                                    <i class="fas fa-trash"></i>
+                          {{-- Actions --}}
+                        <div class="d-flex gap-1">
+
+                            {{-- Tombol Detail --}}
+                            <a href="{{ route('dashboard.product.show', $product->id) }}"
+                            class="btn btn-sm btn-outline-primary flex-fill" title="Detail Produk">
+                                <i class="fas fa-eye me-xl-1"></i>
+                                <span class="d-none d-xl-inline">Detail</span>
+                            </a>
+
+                            {{-- Tombol Edit --}}
+                            <a href="{{ route('dashboard.product.edit', $product->id) }}"
+                            class="btn btn-sm btn-outline-warning flex-fill" title="Edit Produk">
+                                <i class="fas fa-edit me-xl-1"></i>
+                                <span class="d-none d-xl-inline">Edit</span>
+                            </a>
+
+                            {{-- Form Tombol Hapus --}}
+                            <form action="{{ route('dashboard.product.destroy', $product->id) }}" method="POST" class="flex-fill">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger w-100"
+                                        title="Hapus Produk"
+                                        onclick="return confirm('Anda yakin ingin menghapus produk \'{{ $product->name }}\'?')">
+                                    <i class="fas fa-trash me-xl-1"></i>
+                                    <span class="d-none d-xl-inline">Hapus</span>
                                 </button>
-                            </div>
+                            </form>
+
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -192,9 +207,43 @@
     </div>
 
     <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4">
-        {{ $products->links() }}
-    </div>
+    @if($products->hasPages())
+        <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination pagination-lg shadow-sm">
+                            {{-- Tombol Sebelumnya --}}
+                            @if ($products->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">‹</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev">‹</a>
+                                </li>
+                            @endif
+
+                            {{-- Angka Halaman --}}
+                            @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                                <li class="page-item {{ $products->currentPage() == $page ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+
+                            {{-- Tombol Selanjutnya --}}
+                            @if ($products->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next">›</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true">
+                                    <span class="page-link">›</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            @endif
+        </div>
 </div>
 
 <!-- Quick View Modal -->

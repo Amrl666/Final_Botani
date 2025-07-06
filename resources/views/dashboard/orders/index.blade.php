@@ -379,7 +379,6 @@
         </div>
 
         <!-- Pagination -->
-        <!-- Pagination -->
     @if($orders->hasPages())
         <div class="d-flex justify-content-center mt-5 animate-fade-in" style="--delay: 0.9s">
                     <nav aria-label="Navigasi halaman">
@@ -417,6 +416,7 @@
                 </div>
             @endif
         </div>
+
 
 <style>
 .avatar-circle {

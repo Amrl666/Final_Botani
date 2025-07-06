@@ -384,7 +384,7 @@
 
                     <div class="flex space-x-2 mt-auto">
                         <a href="{{ route('product.show', $product->id) }}" 
-                           class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-center text-sm">
+                        class="flex flex-1 items-center justify-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 text-center text-sm">
                             <i class="fas fa-eye me-2"></i>Detail
                         </a>
                         

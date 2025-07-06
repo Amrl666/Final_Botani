@@ -210,71 +210,60 @@ button[type="submit"]:active {
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const jumlahInput = document.getElementById('jumlah');
-    const cartQuantityInput = document.getElementById('cart_quantity');
-    const maxStock = {{ $product->stock }};
-    
-    if (jumlahInput) {
-        jumlahInput.addEventListener('input', () => {
-            if (parseInt(jumlahInput.value) > maxStock) {
-                jumlahInput.value = maxStock;
-            }
-        });
-    }
+    // Mengambil elemen dan data dari Blade
+    const jumlahInput = document.getElementById('jumlah');
+    const totalHargaDiv = document.getElementById('totalHarga');
+    const maxStock = {{ $product->stock }};
+    const hargaProduk = {{ $product->price }};
+    const hasBundle = {{ $product->hasBundle() ? 'true' : 'false' }};
+    const bundleQuantity = {{ $product->bundle_quantity ?? 0 }};
+    const bundlePrice = {{ $product->bundle_price ?? 0 }};
 
-    if (cartQuantityInput) {
-        cartQuantityInput.addEventListener('input', () => {
-            if (parseInt(cartQuantityInput.value) > maxStock) {
-                cartQuantityInput.value = maxStock;
-            }
-        });
-    }
-});
+    // Validasi input agar tidak melebihi stok
+    if (jumlahInput) {
+        jumlahInput.addEventListener('input', () => {
+            // DIUBAH: Menggunakan parseFloat untuk validasi yang benar dengan desimal
+            if (parseFloat(jumlahInput.value) > maxStock) {
+                jumlahInput.value = maxStock;
+            }
+            // Memanggil fungsi update setelah validasi
+            updateTotal();
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const jumlahInput = document.getElementById('jumlah');
-    const totalHargaDiv = document.getElementById('totalHarga');
-    const hargaProduk = {{ $product->price }};
-    const hasBundle = {{ $product->hasBundle() ? 'true' : 'false' }};
-    const bundleQuantity = {{ $product->bundle_quantity ?? 0 }};
-    const bundlePrice = {{ $product->bundle_price ?? 0 }};
-    
+    // Fungsi untuk mengupdate total harga secara dinamis
+    function updateTotal() {
+        // DIUBAH: Menggunakan parseFloat untuk mendapatkan nilai desimal dari input
+        let qty = parseFloat(jumlahInput.value) || 0;
+        let total = 0;
+        
+        if (hasBundle && bundleQuantity > 0 && qty >= bundleQuantity) {
+            // Kalkulasi harga jika ada promo bundle
+            let completeBundles = Math.floor(qty / bundleQuantity);
+            let remainingItems = qty % bundleQuantity;
+            
+            let bundleTotal = completeBundles * bundlePrice;
+            let regularTotal = remainingItems * hargaProduk;
+            total = bundleTotal + regularTotal;
+            
+            let bundleText = `Bundle: ${completeBundles}x${bundleQuantity}`;
+            if (remainingItems > 0) {
+                bundleText += ` + ${remainingItems} satuan`;
+            }
+            totalHargaDiv.innerHTML = `Rp ${total.toLocaleString('id-ID')}<br><span class="text-sm text-orange-600">${bundleText}</span>`;
+
+        } else {
+            // Kalkulasi harga normal
+            total = hargaProduk * qty;
+            totalHargaDiv.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+    }
+
+    // Panggil fungsi sekali saat halaman dimuat untuk menampilkan harga awal
     if(jumlahInput && totalHargaDiv) {
-        function updateTotal() {
-            var qty = parseInt(jumlahInput.value) || 1;
-            var total = 0;
-            
-            if (hasBundle && bundleQuantity > 0) {
-                // Calculate bundle pricing
-                var completeBundles = Math.floor(qty / bundleQuantity);
-                var remainingItems = qty % bundleQuantity;
-                
-                var bundleTotal = completeBundles * bundlePrice;
-                var regularTotal = remainingItems * hargaProduk;
-                total = bundleTotal + regularTotal;
-                
-                // Show bundle info if applicable
-                if (completeBundles > 0) {
-                    let bundleText = 'Bundle: ' + completeBundles + 'x' + bundleQuantity;
-                    if (remainingItems > 0) {
-                        bundleText += ' + ' + remainingItems + ' satuan';
-                    }
-                    totalHargaDiv.innerHTML = 'Rp ' + total.toLocaleString('id-ID') + 
-                        '<br><span class="text-sm text-orange-600">' + bundleText + '</span>';
-                } else {
-                    totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
-                }
-            } else {
-                total = hargaProduk * qty;
-                totalHargaDiv.textContent = 'Rp ' + total.toLocaleString('id-ID');
-            }
-        }
-        jumlahInput.addEventListener('input', updateTotal);
         updateTotal();
     }
 });
-
-
 </script>
 @endpush
 @endsection
