@@ -18,6 +18,10 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
             $table->integer('stock')->default(0);
+            $table->string('unit')->default('satuan');
+            $table->decimal('min_increment', 8, 2)->default(1.00);
+            $table->integer('bundle_quantity')->default(0);
+            $table->decimal('bundle_price', 10, 2)->default(0.00);
             $table->boolean('featured')->default(false);
             $table->timestamps();
         });

@@ -114,7 +114,7 @@
                     <div class="text-green-100 text-sm">
                         <span class="flex items-center justify-center md:justify-end">
                             <i class="fas fa-phone mr-2"></i>
-                            +62 812-3456-7890
+                            +6282379044166
                         </span>
                     </div>
                 </div>

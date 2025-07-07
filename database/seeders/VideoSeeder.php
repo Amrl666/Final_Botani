@@ -15,100 +15,70 @@ class VideoSeeder extends Seeder
     {
         $videos = [
             [
-                'name' => 'Cara Menanam Cabai Merah',
-                'title' => 'Cara Menanam Cabai Merah yang Benar',
-                'video' => 'https://www.youtube.com/embed/abc123',
-                'description' => 'Video tutorial lengkap cara menanam cabai merah dari persiapan lahan hingga panen. Tips dan trik untuk mendapatkan hasil panen yang berkualitas tinggi.'
+                'name' => 'Tutorial Cabai Organik',
+                'title' => 'Cara Menanam Cabai Organik',
+                'video' => 'videos/cabai-organik.mp4',
+                'description' => 'Video tutorial lengkap cara menanam cabai organik dari persiapan lahan hingga panen. Cocok untuk petani pemula.'
             ],
             [
-                'name' => 'Teknik Pemupukan Organik',
-                'title' => 'Teknik Pemupukan Organik untuk Sayuran',
-                'video' => 'https://www.youtube.com/embed/def456',
-                'description' => 'Video panduan teknik pemupukan organik yang benar untuk berbagai jenis sayuran. Menggunakan pupuk alami untuk hasil yang sehat dan berkualitas.'
+                'name' => 'Hidroponik Sederhana',
+                'title' => 'Teknik Hidroponik Sederhana',
+                'video' => 'videos/hidroponik-sederhana.mp4',
+                'description' => 'Panduan lengkap membuat sistem hidroponik sederhana untuk menanam sayuran di rumah. Hemat lahan dan efisien.'
             ],
             [
-                'name' => 'Pengendalian Hama Terpadu',
-                'title' => 'Pengendalian Hama Terpadu Ramah Lingkungan',
-                'video' => 'https://www.youtube.com/embed/ghi789',
-                'description' => 'Video tutorial pengendalian hama terpadu menggunakan metode ramah lingkungan. Teknik yang efektif tanpa merusak ekosistem.'
+                'name' => 'Pupuk Kompos',
+                'title' => 'Pembuatan Pupuk Kompos',
+                'video' => 'videos/pupuk-kompos.mp4',
+                'description' => 'Tutorial cara membuat pupuk kompos dari limbah dapur dan sisa tanaman. Ramah lingkungan dan ekonomis.'
             ],
             [
-                'name' => 'Budidaya Tomat Cherry',
-                'title' => 'Budidaya Tomat Cherry di Lahan Terbatas',
-                'video' => 'https://www.youtube.com/embed/jkl012',
-                'description' => 'Video panduan lengkap budidaya tomat cherry di pekarangan rumah atau lahan terbatas. Cocok untuk pemula yang ingin berkebun.'
+                'name' => 'Pengendalian Hama',
+                'title' => 'Pengendalian Hama Terpadu',
+                'video' => 'videos/pengendalian-hama.mp4',
+                'description' => 'Cara mengendalikan hama tanaman secara alami tanpa pestisida kimia. Aman untuk konsumen dan lingkungan.'
             ],
             [
-                'name' => 'Cara Panen dan Pasca Panen',
-                'title' => 'Cara Panen dan Pasca Panen yang Benar',
-                'video' => 'https://www.youtube.com/embed/mno345',
-                'description' => 'Video tutorial cara panen dan pasca panen yang benar untuk berbagai jenis sayuran. Teknik yang tepat untuk menjaga kualitas produk.'
+                'name' => 'Panen Pasca Panen',
+                'title' => 'Panen dan Pasca Panen',
+                'video' => 'videos/panen-pasca-panen.mp4',
+                'description' => 'Teknik panen yang benar dan penanganan pasca panen untuk menjaga kualitas produk pertanian.'
             ],
             [
-                'name' => 'Sistem Irigasi Tetes',
-                'title' => 'Sistem Irigasi Tetes untuk Pertanian',
-                'video' => 'https://www.youtube.com/embed/pqr678',
-                'description' => 'Video penjelasan sistem irigasi tetes untuk pertanian yang efisien. Menghemat air dan tenaga kerja dalam perawatan tanaman.'
+                'name' => 'Tomat Cherry',
+                'title' => 'Budidaya Tomat Cherry',
+                'video' => 'videos/tomat-cherry.mp4',
+                'description' => 'Panduan lengkap budidaya tomat cherry dari pembibitan hingga panen. Hasil panen berkualitas tinggi.'
             ],
             [
-                'name' => 'Pembuatan Pupuk Kompos',
-                'title' => 'Pembuatan Pupuk Kompos dari Limbah Dapur',
-                'video' => 'https://www.youtube.com/embed/stu901',
-                'description' => 'Video tutorial pembuatan pupuk kompos dari limbah dapur. Cara mudah mengolah sampah organik menjadi pupuk berkualitas.'
+                'name' => 'Irigasi Tetes',
+                'title' => 'Sistem Irigasi Tetes',
+                'video' => 'videos/irigasi-tetes.mp4',
+                'description' => 'Cara membuat dan mengatur sistem irigasi tetes untuk efisiensi penggunaan air di lahan pertanian.'
             ],
             [
-                'name' => 'Teknik Rotasi Tanaman',
-                'title' => 'Teknik Rotasi Tanaman untuk Kesuburan Lahan',
-                'video' => 'https://www.youtube.com/embed/vwx234',
-                'description' => 'Video penjelasan teknik rotasi tanaman untuk menjaga kesuburan lahan. Sistem pertanian berkelanjutan yang menguntungkan.'
+                'name' => 'Pengolahan Pertanian',
+                'title' => 'Pengolahan Hasil Pertanian',
+                'video' => 'videos/pengolahan-pertanian.mp4',
+                'description' => 'Tutorial mengolah hasil pertanian menjadi produk bernilai tambah seperti selai, keripik, dan produk olahan lainnya.'
             ],
             [
-                'name' => 'Cara Menanam Beras Organik',
-                'title' => 'Cara Menanam Beras Organik',
-                'video' => 'https://www.youtube.com/embed/yzab567',
-                'description' => 'Video panduan lengkap cara menanam beras organik dari persiapan benih hingga panen. Teknik pertanian organik yang ramah lingkungan.'
+                'name' => 'Bibit Unggul',
+                'title' => 'Pemilihan Bibit Unggul',
+                'video' => 'videos/bibit-unggul.mp4',
+                'description' => 'Cara memilih dan menyiapkan bibit unggul untuk hasil panen yang optimal. Tips dari petani berpengalaman.'
             ],
             [
-                'name' => 'Pengolahan Hasil Pertanian',
-                'title' => 'Pengolahan Hasil Pertanian Menjadi Produk Olahan',
-                'video' => 'https://www.youtube.com/embed/cdef890',
-                'description' => 'Video tutorial pengolahan hasil pertanian menjadi produk olahan yang bernilai tambah. Menambah penghasilan petani.'
-            ],
-            [
-                'name' => 'Teknik Hidroponik',
-                'title' => 'Teknik Hidroponik untuk Pemula',
-                'video' => 'https://www.youtube.com/embed/fghi123',
-                'description' => 'Video panduan teknik hidroponik untuk pemula. Cara menanam sayuran tanpa tanah yang mudah dan praktis.'
-            ],
-            [
-                'name' => 'Pemilihan Benih',
-                'title' => 'Pemilihan Benih Berkualitas untuk Pertanian',
-                'video' => 'https://www.youtube.com/embed/jklm456',
-                'description' => 'Video penjelasan cara memilih benih berkualitas untuk pertanian. Tips memilih benih yang tepat untuk hasil panen optimal.'
-            ],
-            [
-                'name' => 'Cara Menanam Sayuran di Polybag',
-                'title' => 'Cara Menanam Sayuran di Polybag',
-                'video' => 'https://www.youtube.com/embed/nopq789',
-                'description' => 'Video tutorial cara menanam sayuran di polybag. Solusi berkebun di lahan terbatas dengan hasil yang memuaskan.'
-            ],
-            [
-                'name' => 'Teknik Perbanyakan Tanaman',
-                'title' => 'Teknik Perbanyakan Tanaman Secara Vegetatif',
-                'video' => 'https://www.youtube.com/embed/rstu012',
-                'description' => 'Video panduan teknik perbanyakan tanaman secara vegetatif. Cara mudah memperbanyak tanaman tanpa biji.'
-            ],
-            [
-                'name' => 'Pemeliharaan Tanaman Sayuran',
-                'title' => 'Pemeliharaan Tanaman Sayuran',
-                'video' => 'https://www.youtube.com/embed/vwxy345',
-                'description' => 'Video tutorial pemeliharaan tanaman sayuran yang benar. Perawatan rutin untuk hasil panen yang berkualitas.'
+                'name' => 'Pertanian Vertikal',
+                'title' => 'Pertanian Vertikal',
+                'video' => 'videos/pertanian-vertikal.mp4',
+                'description' => 'Konsep dan implementasi pertanian vertikal untuk memaksimalkan penggunaan lahan terbatas.'
             ]
         ];
 
         foreach ($videos as $video) {
             Video::updateOrCreate(
-                ['title' => $video['title']],
+                ['name' => $video['name']],
                 $video
             );
         }

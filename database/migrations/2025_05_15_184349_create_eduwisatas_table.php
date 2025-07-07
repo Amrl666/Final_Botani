@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('location');
+            $table->decimal('harga', 10, 2);
             $table->string('image')->nullable();
             $table->timestamps();
         });
@@ -38,5 +38,4 @@ return new class extends Migration
         Schema::dropIfExists('eduwisata_schedules');
         Schema::dropIfExists('eduwisatas');
     }
-
 };

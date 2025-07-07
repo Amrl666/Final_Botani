@@ -33,8 +33,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-20',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => $eduwisatas->isNotEmpty() ? $eduwisatas->random()->id : null,
-                'jumlah' => 5,
-                'total_harga' => 85000,
+                'total_harga' => 85000.00,
                 'status' => 'selesai',
                 'keterangan' => 'Pesanan produk pertanian organik'
             ],
@@ -46,8 +45,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-25',
                 'produk_id' => null,
                 'eduwisata_id' => $eduwisatas->isNotEmpty() ? $eduwisatas->random()->id : null,
-                'jumlah' => null,
-                'total_harga' => 120000,
+                'total_harga' => 120000.00,
                 'status' => 'menunggu',
                 'keterangan' => 'Paket eduwisata pertanian'
             ],
@@ -59,8 +57,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-22',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => null,
-                'jumlah' => 10,
-                'total_harga' => 95000,
+                'total_harga' => 95000.00,
                 'status' => 'disetujui',
                 'keterangan' => 'Pesanan sayuran segar'
             ],
@@ -72,8 +69,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-18',
                 'produk_id' => null,
                 'eduwisata_id' => $eduwisatas->isNotEmpty() ? $eduwisatas->random()->id : null,
-                'jumlah' => null,
-                'total_harga' => 150000,
+                'total_harga' => 150000.00,
                 'status' => 'selesai',
                 'keterangan' => 'Paket wisata keluarga'
             ],
@@ -85,8 +81,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-19',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => null,
-                'jumlah' => 3,
-                'total_harga' => 75000,
+                'total_harga' => 75000.00,
                 'status' => 'ditolak',
                 'keterangan' => 'Pesanan beras organik'
             ],
@@ -98,8 +93,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-21',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => null,
-                'jumlah' => 8,
-                'total_harga' => 180000,
+                'total_harga' => 180000.00,
                 'status' => 'selesai',
                 'keterangan' => 'Pesanan sayuran organik'
             ],
@@ -111,8 +105,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-23',
                 'produk_id' => null,
                 'eduwisata_id' => $eduwisatas->isNotEmpty() ? $eduwisatas->random()->id : null,
-                'jumlah' => null,
-                'total_harga' => 110000,
+                'total_harga' => 110000.00,
                 'status' => 'menunggu',
                 'keterangan' => 'Paket edukasi hidroponik'
             ],
@@ -124,8 +117,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-24',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => null,
-                'jumlah' => 6,
-                'total_harga' => 130000,
+                'total_harga' => 130000.00,
                 'status' => 'disetujui',
                 'keterangan' => 'Pesanan cabai merah'
             ],
@@ -137,8 +129,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-26',
                 'produk_id' => $products->isNotEmpty() ? $products->random()->id : null,
                 'eduwisata_id' => null,
-                'jumlah' => 12,
-                'total_harga' => 90000,
+                'total_harga' => 90000.00,
                 'status' => 'selesai',
                 'keterangan' => 'Pesanan tomat cherry'
             ],
@@ -150,8 +141,7 @@ class OrderSeeder extends Seeder
                 'tanggal_kunjungan' => '2024-01-27',
                 'produk_id' => null,
                 'eduwisata_id' => $eduwisatas->isNotEmpty() ? $eduwisatas->random()->id : null,
-                'jumlah' => null,
-                'total_harga' => 160000,
+                'total_harga' => 160000.00,
                 'status' => 'menunggu',
                 'keterangan' => 'Paket camping di kebun'
             ]
