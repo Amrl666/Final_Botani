@@ -365,10 +365,19 @@
                 </div>
             </div>
         </div>
+        <!-- Input pencarian judul, satu baris penuh -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="searchGalleryInput" placeholder="Cari judul gambar...">
+                    <label for="searchGalleryInput"><i class="fas fa-search me-2"></i>Cari Judul Gambar</label>
+                </div>
+            </div>
+        </div>
 
-        <div class="row g-4">
+        <div class="row g-4" id="galleryGrid">
             @forelse($galleries as $gallery)
-                <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="col-md-6 col-lg-4 col-xl-3 gallery-item" data-title="{{ strtolower($gallery->title) }}">
                     <div class="gallery-card animate-zoom-in" style="--delay: {{ $loop->iteration * 0.1 }}s">
                         <div class="gallery-image-container">
                             <img src="{{ asset('storage/' . $gallery->image) }}"
@@ -534,6 +543,23 @@
                 observer.observe(el);
             });
         });
+
+        // Pencarian judul galeri
+        const searchGalleryInput = document.getElementById('searchGalleryInput');
+        const galleryItems = document.querySelectorAll('#galleryGrid .gallery-item');
+        if (searchGalleryInput) {
+            searchGalleryInput.addEventListener('input', function() {
+                const keyword = this.value.trim().toLowerCase();
+                galleryItems.forEach(function(item) {
+                    const title = item.getAttribute('data-title');
+                    if (title.includes(keyword)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
     </script>
     @endpush
     @endsection

@@ -11,16 +11,6 @@
             <p class="text-muted">Kelola video dan konten multimedia</p>
         </div>
         <div class="d-flex gap-2">
-            <div class="dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Semua Video</a></li>
-                    <li><a class="dropdown-item" href="#">Upload Terbaru</a></li>
-                    <li><a class="dropdown-item" href="#">Paling Dilihat</a></li>
-                </ul>
-            </div>
             <a href="{{ route('dashboard.videos.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Tambah Video
             </a>
@@ -46,11 +36,20 @@
                 </div>
             </div>
         </div>
-
+    </div>
+    <!-- Input pencarian judul, satu baris penuh -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="searchVideoInput" placeholder="Cari judul video...">
+                <label for="searchVideoInput"><i class="fas fa-search me-2"></i>Cari Judul Video</label>
+            </div>
+        </div>
+    </div>
     <!-- Videos Grid -->
-    <div class="row g-4">
+    <div class="row g-4" id="videoGrid">
         @forelse($videos as $video)
-            <div class="col-md-6 col-lg-4 animate-slide-up" style="--delay: {{ $loop->iteration * 0.1 }}s">
+            <div class="col-md-6 col-lg-4 animate-slide-up video-item" data-title="{{ strtolower($video->title) }}" style="--delay: {{ $loop->iteration * 0.1 }}s">
                 <div class="card h-100 video-card">
                     <div class="video-thumbnail-container">
                         <video class="w-100" controls preload="metadata" poster="https://via.placeholder.com/640x360" style="background:#000; min-height:180px;">
@@ -456,6 +455,23 @@
         document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(el => {
             observer.observe(el);
         });
+
+        // Pencarian judul video
+        const searchVideoInput = document.getElementById('searchVideoInput');
+        const videoItems = document.querySelectorAll('#videoGrid .video-item');
+        if (searchVideoInput) {
+            searchVideoInput.addEventListener('input', function() {
+                const keyword = this.value.trim().toLowerCase();
+                videoItems.forEach(function(item) {
+                    const title = item.getAttribute('data-title');
+                    if (title.includes(keyword)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
     });
 </script>
 @endpush

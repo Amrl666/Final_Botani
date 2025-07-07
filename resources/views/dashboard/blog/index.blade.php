@@ -56,21 +56,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" id="statusFilter">
-                            <option value="">Semua Status</option>
-                            <option value="published">Dipublikasikan</option>
-                            <option value="draft">Draft</option>
-                            <option value="archived">Diarsipkan</option>
-                        </select>
-                        <label for="statusFilter">
-                            <i class="fas fa-toggle-on me-2"></i>Status
-                        </label>
-                    </div>
-                </div>
-            </a>
-        </div>
+                <!-- Hapus select status (statusFilter) di samping pencarian -->
             </div>
         </div>
     </div>
@@ -87,7 +73,7 @@
             @if($blogs->count() > 0)
                 <div class="row g-4">
                     @foreach($blogs as $blog)
-                        <div class="col-lg-6 col-xl-4 blog-post-card" data-category="{{ $blog->category ?? 'other' }}" data-status="{{ $blog->status }}">
+                        <div class="col-lg-6 col-xl-4 blog-post-card">
                             <div class="card h-100 blog-card animate-scale-in">
                                 <div class="card-img-top position-relative">
                                     @if($blog->image)
@@ -108,12 +94,6 @@
                                     </div>
                                 </div>
                                 <div class="card-body d-flex flex-column">
-                                    <div class="blog-meta mb-2">
-                                        <span class="badge bg-primary">{{ $blog->category ?? 'Umum' }}</span>
-                                        <span class="badge bg-{{ $blog->status == 'published' ? 'success' : ($blog->status == 'draft' ? 'warning' : 'secondary') }}">
-                                            {{ $blog->status == 'published' ? 'Dipublikasikan' : ($blog->status == 'draft' ? 'Draft' : 'Diarsipkan') }}
-                                        </span>
-                                    </div>
                                     <h5 class="card-title blog-title">{{ $blog->title }}</h5>
                                     <p class="card-text blog-excerpt">
                                         {{ Str::limit($blog->content, 120) }}
@@ -514,43 +494,23 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Filter functionality
     const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const statusFilter = document.getElementById('statusFilter');
-    const blogCards = document.querySelectorAll('.blog-post-card');
+    const blogItems = document.querySelectorAll('.blog-post-card');
 
-    function filterBlogs() {
-        const searchValue = searchInput.value.toLowerCase();
-        const categoryValue = categoryFilter.value;
-        const statusValue = statusFilter.value;
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
 
-        blogCards.forEach(card => {
-            const category = card.dataset.category;
-            const status = card.dataset.status;
-            const text = card.textContent.toLowerCase();
+        blogItems.forEach(item => {
+            const title = item.querySelector('.card-title').textContent.toLowerCase();
+            const description = item.querySelector('.blog-excerpt').textContent.toLowerCase();
 
-            const categoryMatch = !categoryValue || category === categoryValue;
-            const statusMatch = !statusValue || status === statusValue;
-            const searchMatch = !searchValue || text.includes(searchValue);
-
-            if (categoryMatch && statusMatch && searchMatch) {
-                card.style.display = '';
-                card.classList.add('animate-scale-in');
+            if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                item.style.display = '';
+                item.style.animation = 'fadeIn 0.3s ease-out';
             } else {
-                card.style.display = 'none';
+                item.style.display = 'none';
             }
         });
-    }
-
-    searchInput.addEventListener('input', filterBlogs);
-    categoryFilter.addEventListener('change', filterBlogs);
-    statusFilter.addEventListener('input', filterBlogs);
-
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 });
 

@@ -63,24 +63,8 @@
                 
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="blog-stats">
-                            <span class="stat-item">
-                                <i class="fas fa-eye me-1"></i>
-                                <span>1.234 kali dilihat</span>
-                            </span>
-                            <span class="stat-item">
-                                <i class="fas fa-comments me-1"></i>
-                                <span>5 komentar</span>
-                            </span>
-                            <span class="stat-item">
-                                <i class="fas fa-heart me-1"></i>
-                                <span>23 suka</span>
-                            </span>
-                        </div>
                         <div class="blog-actions">
-                            <button class="btn btn-outline-primary btn-sm" onclick="sharePost()">
-                                <i class="fas fa-share me-1"></i>Bagikan
-                            </button>
+                            <!-- Hapus tombol bagikan (share) di blog-actions -->
                         </div>
                     </div>
                 </div>
@@ -120,36 +104,6 @@
                             <span class="text-dark">{{ $blog->updated_at->format('d M Y') }}</span>
                         </li>
                     </ul>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="card animate-slide-in" style="--delay: 0.4s">
-                <div class="card-header bg-transparent">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-bolt me-2 text-primary"></i>
-                        Aksi Cepat
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('dashboard.blog.edit', $blog) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-edit me-2"></i>Ubah Artikel
-                        </a>
-                        <button class="btn btn-outline-success" onclick="duplicatePost()">
-                            <i class="fas fa-copy me-2"></i>Duplikat Artikel
-                        </button>
-                        <button class="btn btn-outline-info" onclick="previewPost()">
-                            <i class="fas fa-eye me-2"></i>Pratinjau Artikel
-                        </button>
-                        <form action="{{ route('dashboard.blog.destroy', $blog) }}" method="POST" class="d-grid">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
-                                <i class="fas fa-trash me-2"></i>Hapus Artikel
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>

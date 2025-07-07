@@ -26,14 +26,6 @@
                         <input type="text" class="form-control search-input" placeholder="Cari prestasi..." id="searchInput">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <select class="form-select" id="yearFilter">
-                        <option value="">Semua Tahun</option>
-                        @for($year = date('Y'); $year >= date('Y') - 10; $year--)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
-                </div>
             </div>
         </div>
     </div>
@@ -41,10 +33,7 @@
     <!-- Achievements Grid -->
     <div class="row g-4" id="achievementsGrid">
         @forelse($prestasis as $prestasi)
-            <div class="col-md-6 col-lg-4 achievement-item" 
-                 data-year="{{ $prestasi->year ?? '' }}" 
-                 data-category="{{ strtolower($prestasi->category ?? '') }}"
-                 data-featured="{{ $prestasi->is_featured ?? false ? 'true' : 'false' }}">
+            <div class="col-md-6 col-lg-4 achievement-item">
                 <div class="card h-100 achievement-card animate-fade-in" style="--delay: {{ 0.5 + ($loop->index * 0.1) }}s">
                     <!-- Prestasi Image -->
                     @if($prestasi->image)
@@ -74,11 +63,6 @@
                             </p>
                         </div>
                         <p class="card-text achievement-description">{{ Str::limit($prestasi->content, 120) }}</p>
-                        <div class="achievement-tags mb-3">
-                            @if($prestasi->is_featured ?? false)
-                                <span class="badge bg-warning">Unggulan</span>
-                            @endif
-                        </div>
                         <div class="achievement-actions">
                             <a href="{{ route('dashboard.prestasi.edit', $prestasi) }}" 
                                class="btn btn-outline-primary btn-sm" 
@@ -615,33 +599,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Filter functionality
-    const yearFilter = document.getElementById('yearFilter');
-    const categoryFilter = document.getElementById('categoryFilter');
-
-    function applyFilters() {
-        const year = yearFilter.value;
-        const category = categoryFilter.value.toLowerCase();
-
-        achievementItems.forEach(item => {
-            const itemYear = item.dataset.year;
-            const itemCategory = item.dataset.category;
-            
-            const yearMatch = !year || itemYear === year;
-            const categoryMatch = !category || itemCategory.includes(category);
-            
-            if (yearMatch && categoryMatch) {
-                item.style.display = 'block';
-                item.style.animation = 'fadeIn 0.3s ease-out';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
-    yearFilter.addEventListener('change', applyFilters);
-    categoryFilter.addEventListener('change', applyFilters);
-
     // Dropdown filter functionality
     const dropdownItems = document.querySelectorAll('.dropdown-item[data-filter]');
     dropdownItems.forEach(item => {
@@ -653,11 +610,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (filter === 'all') {
                     achievement.style.display = 'block';
                 } else if (filter === 'featured') {
-                    if (achievement.dataset.featured === 'true') {
-                        achievement.style.display = 'block';
-                    } else {
-                        achievement.style.display = 'none';
-                    }
+                    // This filter is removed, so this block is effectively removed
                 } else if (filter === 'recent') {
                     const year = parseInt(achievement.dataset.year);
                     if (year >= new Date().getFullYear() - 2) {

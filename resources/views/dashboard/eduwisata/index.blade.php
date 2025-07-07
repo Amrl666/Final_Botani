@@ -46,13 +46,7 @@
                         <input type="text" class="form-control search-input" placeholder="Cari program..." id="searchInput">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <select class="form-select" id="statusFilter">
-                        <option value="">Semua Status</option>
-                        <option value="active">Aktif</option>
-                        <option value="inactive">Tidak Aktif</option>
-                    </select>
-                </div>
+                <!-- Hapus filter kategori -->
             </div>
         </div>
     </div>
@@ -60,7 +54,7 @@
     <!-- Programs Grid -->
     <div class="row g-4" id="programsGrid">
         @forelse($eduwisatas as $eduwisata)
-            <div class="col-md-6 col-lg-4 program-item" data-category="{{ strtolower($eduwisata->name) }}" data-status="active">
+            <div class="col-md-6 col-lg-4 program-item">
                 <div class="card h-100 program-card animate-fade-in" style="--delay: {{ 0.5 + ($loop->index * 0.1) }}s">
                     <div class="program-image-container">
                         @if($eduwisata->image)
@@ -74,9 +68,7 @@
                         @endif
                         <div class="program-overlay">
                         </div>
-                        <div class="program-badge">
-                            <span class="badge bg-primary">{{ $eduwisata->schedules->count() }} Jadwal</span>
-                        </div>
+                        <!-- Hapus badge jadwal -->
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
@@ -85,12 +77,8 @@
                         </div> 
                         <div class="program-meta">
                             <div class="meta-item">
-                                <i class="fas fa-clock me-1"></i>
-                                <span>Durasi: 2-3 jam</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-users me-1"></i>
-                                <span>Maks: 20 orang</span>
+                                <i class="fas fa-align-left me-1"></i>
+                                <span>{{ Str::limit($eduwisata->description, 40) }}</span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-4">
@@ -557,33 +545,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Filter functionality
-    const categoryFilter = document.getElementById('categoryFilter');
-    const statusFilter = document.getElementById('statusFilter');
-
-    function applyFilters() {
-        const category = categoryFilter.value.toLowerCase();
-        const status = statusFilter.value.toLowerCase();
-
-        programItems.forEach(item => {
-            const itemCategory = item.dataset.category;
-            const itemStatus = item.dataset.status;
-            
-            const categoryMatch = !category || itemCategory.includes(category);
-            const statusMatch = !status || itemStatus === status;
-            
-            if (categoryMatch && statusMatch) {
-                item.style.display = 'block';
-                item.style.animation = 'fadeIn 0.3s ease-out';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
-    categoryFilter.addEventListener('change', applyFilters);
-    statusFilter.addEventListener('change', applyFilters);
 
     // Add loading states to forms
     const forms = document.querySelectorAll('form');

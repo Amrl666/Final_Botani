@@ -115,43 +115,6 @@
                                     Gunakan pemformatan markdown untuk struktur konten yang lebih baik
                                 </div>
                             </div>
-
-                            <!-- Category Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Pilih kategori</option>
-                                        <option value="news" {{ old('category', $blog->category) == 'news' ? 'selected' : '' }}>Berita</option>
-                                        <option value="tutorial" {{ old('category', $blog->category) == 'tutorial' ? 'selected' : '' }}>Tutorial</option>
-                                        <option value="guide" {{ old('category', $blog->category) == 'guide' ? 'selected' : '' }}>Panduan</option>
-                                        <option value="update" {{ old('category', $blog->category) == 'update' ? 'selected' : '' }}>Pembaruan</option>
-                                        <option value="other" {{ old('category', $blog->category) == 'other' ? 'selected' : '' }}>Lainnya</option>
-                                    </select>
-                                    <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Kategori
-                                    </label>
-                                    @error('category')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Status Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                        <option value="draft" {{ old('status', $blog->status ?? 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        <option value="published" {{ old('status', $blog->status ?? 'published') == 'published' ? 'selected' : '' }}>Dipublikasikan</option>
-                                        <option value="archived" {{ old('status', $blog->status ?? 'archived') == 'archived' ? 'selected' : '' }}>Diarsipkan</option>
-                                    </select>
-                                    <label for="status">
-                                        <i class="fas fa-toggle-on me-2"></i>Status
-                                    </label>
-                                    @error('status')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Form Actions -->

@@ -101,7 +101,7 @@
                             </div>
                             
                             <!-- Date Field -->
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <div class="form-floating">
                                     <input 
                                         type="date" 
@@ -117,84 +117,6 @@
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <!-- Category Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('category') is-invalid @enderror" id="category" name="category">
-                                        <option value="">Pilih kategori</option>
-                                        <option value="events" {{ old('category', $gallery->category) == 'events' ? 'selected' : '' }}>Acara</option>
-                                        <option value="activities" {{ old('category', $gallery->category) == 'activities' ? 'selected' : '' }}>Kegiatan</option>
-                                        <option value="facilities" {{ old('category', $gallery->category) == 'facilities' ? 'selected' : '' }}>Fasilitas</option>
-                                        <option value="products" {{ old('category', $gallery->category) == 'products' ? 'selected' : '' }}>Produk</option>
-                                        <option value="other" {{ old('category', $gallery->category) == 'other' ? 'selected' : '' }}>Lainnya</option>
-                                    </select>
-                                    <label for="category">
-                                        <i class="fas fa-tags me-2"></i>Kategori
-                                    </label>
-                                    @error('category')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Description Field -->
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea 
-                                        class="form-control @error('alt_text') is-invalid @enderror" 
-                                        id="alt_text" 
-                                        name="alt_text" 
-                                        placeholder="Masukkan deskripsi gambar"
-                                        rows="3"
-                                        style="height: 100px;"
-                                    >{{ old('alt_text', $gallery->alt_text ?? '') }}</textarea>
-                                    <label for="alt_text">
-                                        <i class="fas fa-align-left me-2"></i>Deskripsi Gambar (Opsional)
-                                    </label>
-                                    @error('alt_text')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Berikan deskripsi untuk aksesibilitas dan tujuan SEO
-                                </div>
-                            </div>
-
-                            <!-- Status Field -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                        <option value="active" {{ old('status', $gallery->status ?? 'active') == 'active' ? 'selected' : '' }}>Aktif</option>
-                                        <option value="inactive" {{ old('status', $gallery->status ?? 'inactive') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                                        <option value="draft" {{ old('status', $gallery->status ?? 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                    </select>
-                                    <label for="status">
-                                        <i class="fas fa-toggle-on me-2"></i>Status
-                                    </label>
-                                    @error('status')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Featured Field -->
-                            <div class="col-md-6">
-                                <div class="form-check form-switch mt-4">
-                                    <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        id="featured" 
-                                        name="featured" 
-                                        value="1"
-                                        {{ old('featured', $gallery->featured ?? false) ? 'checked' : '' }}
-                                    >
-                                    <label class="form-check-label" for="featured">
-                                        <i class="fas fa-star me-2"></i>Gambar Unggulan
-                                    </label>
                                 </div>
                             </div>
                         </div>

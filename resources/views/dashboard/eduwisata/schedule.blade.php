@@ -120,19 +120,6 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <select class="form-select" id="statusFilter">
-                            <option value="">Semua Status</option>
-                            <option value="upcoming">Mendatang</option>
-                            <option value="ongoing">Sedang Berlangsung</option>
-                            <option value="completed">Selesai</option>
-                        </select>
-                        <label for="statusFilter">
-                            <i class="fas fa-toggle-on me-2"></i>Filter berdasarkan Status
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-floating">
                         <input type="text" class="form-control" id="searchInput" placeholder="Cari jadwal...">
                         <label for="searchInput">
                             <i class="fas fa-search me-2"></i>Cari
@@ -706,25 +693,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Filter functionality
     const programFilter = document.getElementById('programFilter');
-    const statusFilter = document.getElementById('statusFilter');
     const searchInput = document.getElementById('searchInput');
     const scheduleRows = document.querySelectorAll('.schedule-row');
 
     function filterSchedules() {
         const programValue = programFilter.value;
-        const statusValue = statusFilter.value;
         const searchValue = searchInput.value.toLowerCase();
 
         scheduleRows.forEach(row => {
             const program = row.dataset.program;
-            const status = row.dataset.status;
             const text = row.textContent.toLowerCase();
 
             const programMatch = !programValue || program === programValue;
-            const statusMatch = !statusValue || status === statusValue;
             const searchMatch = !searchValue || text.includes(searchValue);
 
-            if (programMatch && statusMatch && searchMatch) {
+            if (programMatch && searchMatch) {
                 row.style.display = '';
                 row.classList.add('animate-bounce-in');
             } else {
@@ -734,7 +717,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     programFilter.addEventListener('change', filterSchedules);
-    statusFilter.addEventListener('input', filterSchedules);
     searchInput.addEventListener('input', filterSchedules);
 
     // Add schedule form

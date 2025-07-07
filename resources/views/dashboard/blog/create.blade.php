@@ -47,7 +47,7 @@
                                        onchange="previewImage(event)">
                                 <small class="text-muted d-block mt-2">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Opsional. Format yang didukung: JPG, PNG, GIF (Ukuran maks: 5MB)
+                                    Opsional. Format yang didukung: JPG, PNG, GIF 
                                 </small>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>

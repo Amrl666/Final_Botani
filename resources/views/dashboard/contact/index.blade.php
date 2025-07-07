@@ -230,21 +230,6 @@
             <h1 class="h3 mb-0">Pesan Kontak</h1>
             <p class="text-muted">Kelola dan tanggapi pertanyaan pelanggan</p>
         </div>
-        <div class="d-flex gap-2">
-            <div class="dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i>Semua Pesan</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-envelope-open me-2"></i>Belum Dibaca</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-check me-2"></i>Sudah Dibaca</a></li>
-                </ul>
-            </div>
-            <button class="btn btn-primary">
-                <i class="fas fa-download me-2"></i>Export
-            </button>
-        </div>
     </div>
 
     <!-- Stats Cards -->

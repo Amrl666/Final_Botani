@@ -69,39 +69,6 @@
 
         <!-- Message Actions & Info -->
         <div class="col-lg-4">
-            <!-- Message Actions -->
-            <div class="card mb-4 animate-slide-in" style="--delay: 0.2s">
-                <div class="card-header bg-transparent">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-bolt me-2 text-primary"></i>
-                        Aksi Cepat
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary" onclick="markAsRead()">
-                            <i class="fas fa-check me-2"></i>Tandai Sudah Dibaca
-                        </button>
-                        <button class="btn btn-outline-success" onclick="markAsImportant()">
-                            <i class="fas fa-star me-2"></i>Tandai Penting
-                        </button>
-                        <button class="btn btn-outline-info" onclick="archiveMessage()">
-                            <i class="fas fa-archive me-2"></i>Arsipkan Pesan
-                        </button>
-                        <a href="mailto:{{ $contact->email }}?subject=Re: {{ $contact->subject }}" class="btn btn-outline-warning">
-                            <i class="fas fa-reply me-2"></i>Balas via Email
-                        </a>
-                        <form action="{{ route('dashboard.contact.destroy', $contact) }}" method="POST" class="d-grid">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus pesan ini?')">
-                                <i class="fas fa-trash me-2"></i>Hapus Pesan
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
             <!-- Message Information -->
             <div class="card animate-slide-in" style="--delay: 0.4s">
                 <div class="card-header bg-transparent">
@@ -129,20 +96,6 @@
                                 <i class="fab fa-whatsapp me-2"></i>Nomor WhatsApp
                             </span>
                             <span class="text-dark">{{ $contact->whatsapp }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-muted">
-                                <i class="fas fa-tag me-2"></i>Status
-                            </span>
-                            @if($contact->read_at)
-                                <span class="badge bg-success">
-                                    <i class="fas fa-check me-1"></i>Sudah Dibaca
-                                </span>
-                            @else
-                                <span class="badge bg-warning">
-                                    <i class="fas fa-clock me-1"></i>Belum Dibaca
-                                </span>
-                            @endif
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-muted">

@@ -700,7 +700,6 @@
                     <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
                     <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
                     <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
-                    <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
                     <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
                     <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
 
@@ -756,7 +755,6 @@
             <a href="{{ route('eduwisata') }}" class="nav-link {{ request()->routeIs('eduwisata') ? 'active' : '' }}">Eduwisata</a>
             <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
             <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}">Galeri</a>
-            <a href="{{ route('videos') }}" class="nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">Video</a>
             <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">Profil</a>
             <a href="{{ route('contact.index') }}" class="nav-link {{ request()->routeIs('contact.index') ? 'active' : '' }}">Kontak</a>
 
